@@ -9,6 +9,11 @@
   home.homeDirectory = "/home/joseph";
   home.stateVersion = "25.05";
 
+  # Ensure dconf is available for GTK/dconf settings (prevents activation errors)
+  home.packages = with pkgs; [
+    dconf
+  ];
+
   # Enable and configure common CLI programs
   programs.bash.enable = true;
   programs.git.enable = true;
