@@ -1,13 +1,9 @@
 # modules/hp-dv9500-pavilion-nixos/desktop.nix
-# LXQt desktop, LightDM greeter, Nouveau driver, and xscreensaver for HP dv9500 Pavilion
+# LXQt desktop, LightDM greeter, and xscreensaver for HP dv9500 Pavilion
 
 { config, pkgs, ... }:
 
 {
-  # Enable the X server and use Nouveau for NVIDIA GeForce 7150M
-  services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "nouveau" ];
-
   # Keyboard layout (US)
   services.xserver.xkb = {
     layout = "us";
@@ -44,3 +40,4 @@
     xscreensaver
   ];
 }
+

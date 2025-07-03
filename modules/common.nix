@@ -4,6 +4,9 @@
 { config, pkgs, ... }:
 
 {
+  # Allow unfree packages (required for proprietary drivers like NVIDIA)
+  nixpkgs.config.allowUnfree = true;
+
   # Enable modern Nix CLI and flakes support for all hosts
   nix.settings.extra-experimental-features = [ "nix-command" "flakes" ];
 
