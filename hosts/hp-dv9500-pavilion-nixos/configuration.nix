@@ -1,3 +1,6 @@
+# hosts/hp-dv9500-pavilion-nixos/configuration.nix
+# Host-specific configuration for HP dv9500 Pavilion (AMD Turion 64 X2)
+
 { config, pkgs, ... }:
 
 {
@@ -12,8 +15,9 @@
   # Enable AMD CPU microcode updates (for AMD Turion 64 X2)
   hardware.cpu.amd.updateMicrocode = true;
 
-  # Enable Nix flakes and nix-command (the modern Nix CLI and flake support)
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
+  # Enable dconf system-wide for xscreensaver and GTK/GNOME apps
+  services.dbus.packages = [ pkgs.dconf ];
+
+  # Ensure PAM configuration exists for xscreensaver password authentication
+  security.pam.services.xscreensaver = {};
 }
