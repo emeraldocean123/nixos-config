@@ -53,35 +53,25 @@
           ];
         };
 
-        # MSI GE75 Raider host
-        msi-ge75-raider-nixos = nixpkgs.lib.nixosSystem {
-          inherit system;
-          modules = [
-            ./modules/common.nix
-
-            # Host-specific modules
-            ./modules/msi-ge75-raider-nixos/desktop.nix
-            ./modules/msi-ge75-raider-nixos/nvidia.nix
-            # Uncomment/add more as needed:
-            # ./modules/msi-ge75-raider-nixos/networking.nix
-            # ./modules/msi-ge75-raider-nixos/packages.nix
-            # ./modules/msi-ge75-raider-nixos/services.nix
-            # ./modules/msi-ge75-raider-nixos/users.nix
-
-            # Standard NixOS host files
-            ./hosts/msi-ge75-raider-nixos/configuration.nix
-            ./hosts/msi-ge75-raider-nixos/hardware-configuration.nix
-
-            # Home Manager integration for users
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useUserPackages = true;
-              home-manager.useGlobalPkgs = true;
-              home-manager.users.joseph = import ./home/msi-ge75-raider-nixos/joseph.nix;
-              # Add more users for MSI here as needed
-            }
-          ];
-        };
+        # MSI GE75 Raider host (commented out until installed)
+        #msi-ge75-raider-nixos = nixpkgs.lib.nixosSystem {
+        #  inherit system;
+        #  modules = [
+        #    ./modules/common.nix
+        #    ./modules/msi-ge75-raider-nixos/desktop.nix
+        #    ./modules/msi-ge75-raider-nixos/nvidia.nix
+        #    ./hosts/msi-ge75-raider-nixos/configuration.nix
+        #    ./hosts/msi-ge75-raider-nixos/hardware-configuration.nix
+        #    # Home Manager integration for users
+        #    home-manager.nixosModules.home-manager
+        #    {
+        #      home-manager.useUserPackages = true;
+        #      home-manager.useGlobalPkgs = true;
+        #      home-manager.users.joseph = import ./home/msi-ge75-raider-nixos/joseph.nix;
+        #      # Add more users for MSI here as needed
+        #    }
+        #  ];
+        #};
       };
     };
 }
