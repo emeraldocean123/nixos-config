@@ -1,5 +1,5 @@
 # /etc/nixos/home/hp-dv9500-pavilion-nixos/follett.nix
-# Home Manager configuration for user follett on HP dv9500 Pavilion
+# Home Manager configuration for user 'follett' on HP dv9500 Pavilion
 
 { config, pkgs, ... }:
 
