@@ -1,4 +1,7 @@
-# /etc/nixos/configuration.nix
+# /etc/nixos/config-backups/hp-dv9500-pavilion-nixos/configuration.nix.bak8
+# System configuration backup for HP dv9500 Pavilion (2007, AMD Turion 64 X2, NVIDIA GeForce 7150M)
+
+{ config, pkgs, ... }:/nixos/configuration.nix
 #
 # This file defines the system configuration for your NixOS system.
 # The NixOS manual is available by running ‘nixos-help’.
@@ -45,6 +48,13 @@
   services.xserver.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
 
+  # Set the theme and background for the LightDM GTK Greeter.
+  # The background is a stable symlink in /etc/lightdm, managed declaratively.
+  services.xserver.displayManager.lightdm.background = "/etc/lightdm/background.png";
+  services.xserver.displayManager.lightdm.greeters.gtk.enable = true;
+  services.xserver.displayManager.lightdm.greeters.gtk.theme.name = "Arc-Dark";
+  services.xserver.displayManager.lightdm.greeters.gtk.iconTheme.name = "Papirus";
+
   # Explicitly set the open-source graphics driver for stability on old hardware.
   services.xserver.videoDrivers = [ "nouveau" ];
 
@@ -83,27 +93,46 @@
   };
 
   # --- User Management ---
-  users.users.joseph = {
-    isNormalUser = true;
-    description = "Joseph";
-    extraGroups = [ "networkmanager" "wheel" ];
+  users.users = {
+    joseph = {
+      isNormalUser = true;
+      description = "Joseph";
+      extraGroups = [ "networkmanager" "wheel" ];
+    };
+    follett = {
+      isNormalUser = true;
+      description = "Follett";
+      extraGroups = [ "networkmanager" "wheel" ];
+    };
   };
 
   # --- Packages & Nix Settings ---
   # List packages to install system-wide.
   environment.systemPackages = with pkgs; [
+    # System Utilities
     htop                          # An interactive process viewer for the terminal
     fastfetch                     # A tool to fetch and display system information with a logo
+
+    # Web Browsers
     brave                         # A privacy-focused web browser
     librewolf                     # A community-maintained fork of Firefox, focused on privacy
+
+    # Theming & Appearance
     nixos-icons                   # Adds NixOS-branded app icons
     papirus-icon-theme            # A clean, modern icon set that works well
+    arc-theme                     # A popular flat theme for windows and controls
+    qgnomeplatform                # Engine to make GTK themes (like Arc) work in Qt (LXQt)
   ];
+
+  # Declaratively link the NixOS wallpaper to /etc/lightdm/background.png for LightDM.
+  environment.etc."lightdm/background.png" = {
+    source = "${pkgs.nixos-artwork.wallpapers.simple-blue}/share/backgrounds/nixos/nix-wallpaper-simple-blue.png";
+  };
 
   # Allow proprietary packages to be installed.
   nixpkgs.config.allowUnfree = true;
 
-  # Disable the Firefox module (Brave is installed via systemPackages).
+  # Disable the Firefox module (Brave & LibreWolf are installed via systemPackages).
   programs.firefox.enable = false;
 
   # This value determines the NixOS release from which the default

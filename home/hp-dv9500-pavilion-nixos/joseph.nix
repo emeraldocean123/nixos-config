@@ -1,5 +1,5 @@
 # /etc/nixos/home/hp-dv9500-pavilion-nixos/joseph.nix
-# Home Manager configuration for user 'joseph' on HP dv9500 Pavilion
+# Home Manager configuration for user 'joseph' on HP dv9500 Pavilion (2007, AMD Turion 64 X2, NVIDIA GeForce 7150M)
 
 { config, pkgs, ... }:
 

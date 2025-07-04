@@ -1,5 +1,5 @@
-# /etc/nixos/old-config-backups/configuration.nix
-# System configuration backup for NixOS (old config)
+# /etc/nixos/config-backups/hp-dv9500-pavilion-nixos/configuration.nix.bak5
+# System configuration backup for HP dv9500 Pavilion (2007, AMD Turion 64 X2, NVIDIA GeForce 7150M)
 
 { config, pkgs, ... }:
 
@@ -43,12 +43,15 @@
   services.xserver.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
 
-  # Set the theme and background for the LightDM GTK Greeter.
-  # The background is a stable symlink in /etc/lightdm, managed declaratively.
-  services.xserver.displayManager.lightdm.background = "/etc/lightdm/background.png";
-  services.xserver.displayManager.lightdm.greeters.gtk.enable = true;
-  services.xserver.displayManager.lightdm.greeters.gtk.theme.name = "Arc-Dark";
-  services.xserver.displayManager.lightdm.greeters.gtk.iconTheme.name = "Papirus";
+  # LightDM display manager with GTK greeter
+  services.xserver.displayManager.lightdm.greeters.gtk = {
+    enable = true;
+    theme.name = "Arc-Dark";
+    iconTheme.name = "Papirus";
+    extraConfig = ''
+      background = ${pkgs.nixos-artwork.wallpapers.nineish-dark-gray}/share/backgrounds/nixos/nineish-dark-gray.png
+    '';
+  };
 
   # Explicitly set the open-source graphics driver for stability on old hardware.
   services.xserver.videoDrivers = [ "nouveau" ];
@@ -60,12 +63,14 @@
   };
 
   # --- Desktop Environment ---
+  # To switch to a window manager like IceWM, comment the lxqt line below
+  # and add a line like: services.xserver.windowManager.icewm.enable = true;
   services.xserver.desktopManager.lxqt.enable = true;
 
   # --- Sound ---
   # Enable sound with PipeWire, the modern audio server.
   security.rtkit.enable = true;
-  services.pulseaudio.enable = false; # Required to use PipeWire's implementation;
+  services.pulseaudio.enable = false; # Required to use PipeWire's implementation.
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -88,46 +93,41 @@
   };
 
   # --- User Management ---
-  users.users = {
-    joseph = {
-      isNormalUser = true;
-      description = "Joseph";
-      extraGroups = [ "networkmanager" "wheel" ];
-    };
-    follett = {
-      isNormalUser = true;
-      description = "Follett";
-      extraGroups = [ "networkmanager" "wheel" ];
-    };
+  users.users.joseph = {
+    isNormalUser = true;
+    description = "Joseph";
+    extraGroups = [ "networkmanager" "wheel" ];
   };
 
   # --- Packages & Nix Settings ---
   # List packages to install system-wide.
   environment.systemPackages = with pkgs; [
-    # System Utilities
     htop                          # An interactive process viewer for the terminal
     fastfetch                     # A tool to fetch and display system information with a logo
-
-    # Web Browsers
     brave                         # A privacy-focused web browser
     librewolf                     # A community-maintained fork of Firefox, focused on privacy
-
-    # Theming & Appearance
     nixos-icons                   # Adds NixOS-branded app icons
     papirus-icon-theme            # A clean, modern icon set that works well
     arc-theme                     # A popular flat theme for windows and controls
-    qgnomeplatform                # Engine to make GTK themes (like Arc) work in Qt (LXQt)
+    libsForQt5.qt5ct              # Allows Qt applications to use GTK themes
+    libsForQt5.qtstyleplugin-kvantum  # Additional Qt style engine for better theme support
   ];
-
-  # Declaratively link the NixOS wallpaper to /etc/lightdm/background.png for LightDM.
-  environment.etc."lightdm/background.png" = {
-    source = "${pkgs.nixos-artwork.wallpapers.simple-blue}/share/backgrounds/nixos/nix-wallpaper-simple-blue.png";
-  };
 
   # Allow proprietary packages to be installed.
   nixpkgs.config.allowUnfree = true;
 
-  # Disable the Firefox module (Brave & LibreWolf are installed via systemPackages).
+  # --- System-Wide Environment ---
+  # Force Qt applications to use qt5ct for theming, overriding LXQt's default
+  environment.variables = {
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+  };
+  
+  # Additional session variables that get loaded before the desktop session
+  environment.sessionVariables = {
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+  };
+
+  # Disable the Firefox module (Brave is installed via systemPackages).
   programs.firefox.enable = false;
 
   # This value determines the NixOS release from which the default

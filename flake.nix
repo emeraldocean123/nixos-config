@@ -1,5 +1,5 @@
 # /etc/nixos/flake.nix
-# Main flake configuration for NixOS and Home Manager across multiple hosts and users
+# NixOS and Home Manager configuration for multiple hosts and users using Nix flakes
 
 {
   description = "NixOS and Home Manager configuration for multiple hosts and users";

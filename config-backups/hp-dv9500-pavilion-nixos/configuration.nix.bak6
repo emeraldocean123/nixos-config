@@ -1,7 +1,10 @@
-# /etc/nixos/configuration.nix
+# /etc/nixos/config-backups/hp-dv9500-pavilion-nixos/configuration.nix.bak6
+# System configuration backup for HP dv9500 Pavilion (2007, AMD Turion 64 X2, NVIDIA GeForce 7150M)
+
+{ config, pkgs, ... }:/nixos/configuration.nix
 #
 # This file defines the system configuration for your NixOS system.
-# The NixOS manual is available by running 'nixos-help'.
+# The NixOS manual is available by running ‘nixos-help’.
 
 { config, pkgs, ... }:
 
@@ -45,16 +48,6 @@
   services.xserver.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
 
-  # LightDM display manager with GTK greeter
-  services.xserver.displayManager.lightdm.greeters.gtk = {
-    enable = true;
-    theme.name = "Arc-Dark";
-    iconTheme.name = "Papirus";
-    extraConfig = ''
-      background = ${pkgs.nixos-artwork.wallpapers.nineish-dark-gray}/share/backgrounds/nixos/nineish-dark-gray.png
-    '';
-  };
-
   # Explicitly set the open-source graphics driver for stability on old hardware.
   services.xserver.videoDrivers = [ "nouveau" ];
 
@@ -65,8 +58,6 @@
   };
 
   # --- Desktop Environment ---
-  # To switch to a window manager like IceWM, comment the lxqt line below
-  # and add a line like: services.xserver.windowManager.icewm.enable = true;
   services.xserver.desktopManager.lxqt.enable = true;
 
   # --- Sound ---
@@ -110,7 +101,6 @@
     librewolf                     # A community-maintained fork of Firefox, focused on privacy
     nixos-icons                   # Adds NixOS-branded app icons
     papirus-icon-theme            # A clean, modern icon set that works well
-    arc-theme                     # A popular flat theme for windows and controls
   ];
 
   # Allow proprietary packages to be installed.

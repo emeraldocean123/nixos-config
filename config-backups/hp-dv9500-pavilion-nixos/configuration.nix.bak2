@@ -1,8 +1,5 @@
-# /etc/nixos/old-config-backups/configuration.nix.bak1
-# This is a backup of the original configuration.nix file
-# Please do not modify this file directly
-
-# Original configuration.nix contents start here
+# /etc/nixos/config-backups/hp-dv9500-pavilion-nixos/configuration.nix.bak2
+# System configuration backup for HP dv9500 Pavilion (2007, AMD Turion 64 X2, NVIDIA GeForce 7150M)
 
 { config, pkgs, ... }:
 

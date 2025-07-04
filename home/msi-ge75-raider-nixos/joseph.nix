@@ -1,5 +1,5 @@
 # /etc/nixos/home/msi-ge75-raider-nixos/joseph.nix
-# Home Manager configuration for user 'joseph' on MSI GE75 Raider
+# Home Manager configuration for user 'joseph' on MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)
 
 { config, pkgs, ... }:
 
