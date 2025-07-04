@@ -1,3 +1,6 @@
+# /etc/nixos/flake.nix
+# NixOS and Home Manager configuration for multiple hosts and users
+
 {
   description = "NixOS and Home Manager configuration for multiple hosts and users";
 

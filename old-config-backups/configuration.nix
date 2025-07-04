@@ -1,7 +1,5 @@
-# /etc/nixos/configuration.nix
-#
-# This file defines the system configuration for your NixOS system.
-# The NixOS manual is available by running ‘nixos-help’.
+# /etc/nixos/old-config-backups/configuration.nix
+# System configuration backup for NixOS (old config)
 
 { config, pkgs, ... }:
 
@@ -67,7 +65,7 @@
   # --- Sound ---
   # Enable sound with PipeWire, the modern audio server.
   security.rtkit.enable = true;
-  services.pulseaudio.enable = false; # Required to use PipeWire's implementation.
+  services.pulseaudio.enable = false; # Required to use PipeWire's implementation;
   services.pipewire = {
     enable = true;
     alsa.enable = true;

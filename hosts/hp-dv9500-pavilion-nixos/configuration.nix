@@ -1,4 +1,4 @@
-# hosts/hp-dv9500-pavilion-nixos/configuration.nix
+# /etc/nixos/hosts/hp-dv9500-pavilion-nixos/configuration.nix
 # Host-specific configuration for HP dv9500 Pavilion (AMD Turion 64 X2)
 
 { config, pkgs, ... }:

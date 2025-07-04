@@ -1,4 +1,4 @@
-# home/hp-dv9500-pavilion-nixos/joseph.nix
+# /etc/nixos/home/hp-dv9500-pavilion-nixos/joseph.nix
 # Home Manager configuration for user joseph on HP dv9500 Pavilion
 
 { config, pkgs, ... }:

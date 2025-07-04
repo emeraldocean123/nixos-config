@@ -1,4 +1,4 @@
-# modules/msi-ge75-raider-nixos/desktop.nix
+# /etc/nixos/modules/msi-ge75-raider-nixos/desktop.nix
 # KDE Plasma desktop and SDDM configuration for MSI GE75 Raider
 
 { config, pkgs, ... }:

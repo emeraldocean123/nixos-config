@@ -1,4 +1,4 @@
-# modules/msi-ge75-raider-nixos/nvidia.nix
+# /etc/nixos/modules/msi-ge75-raider-nixos/nvidia.nix
 # Proprietary NVIDIA driver configuration for MSI GE75 Raider
 
 { config, pkgs, ... }:

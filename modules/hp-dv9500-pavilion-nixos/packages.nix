@@ -1,4 +1,4 @@
-# modules/hp-dv9500-pavilion-nixos/packages.nix
+# /etc/nixos/modules/hp-dv9500-pavilion-nixos/packages.nix
 # System-wide packages for HP dv9500 Pavilion
 
 { config, pkgs, ... }:

@@ -1,4 +1,4 @@
-# modules/hp-dv9500-pavilion-nixos/users.nix
+# /etc/nixos/modules/hp-dv9500-pavilion-nixos/users.nix
 # User account definitions for HP dv9500 Pavilion
 
 { config, pkgs, ... }:

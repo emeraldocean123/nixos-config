@@ -1,4 +1,4 @@
-# modules/hp-dv9500-pavilion-nixos/networking.nix
+# /etc/nixos/modules/hp-dv9500-pavilion-nixos/networking.nix
 # Networking configuration for HP dv9500 Pavilion (hostname, NetworkManager, and tray applet)
 
 { config, pkgs, ... }:
