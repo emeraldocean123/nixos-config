@@ -111,23 +111,10 @@
     nixos-icons                   # Adds NixOS-branded app icons
     papirus-icon-theme            # A clean, modern icon set that works well
     arc-theme                     # A popular flat theme for windows and controls
-    libsForQt5.qt5ct              # Allows Qt applications to use GTK themes
-    libsForQt5.qtstyleplugin-kvantum  # Additional Qt style engine for better theme support
   ];
 
   # Allow proprietary packages to be installed.
   nixpkgs.config.allowUnfree = true;
-
-  # --- System-Wide Environment ---
-  # Force Qt applications to use qt5ct for theming, overriding LXQt's default
-  environment.variables = {
-    QT_QPA_PLATFORMTHEME = "qt5ct";
-  };
-  
-  # Additional session variables that get loaded before the desktop session
-  environment.sessionVariables = {
-    QT_QPA_PLATFORMTHEME = "qt5ct";
-  };
 
   # Disable the Firefox module (Brave is installed via systemPackages).
   programs.firefox.enable = false;

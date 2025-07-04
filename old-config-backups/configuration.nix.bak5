@@ -1,7 +1,7 @@
 # /etc/nixos/configuration.nix
 #
 # This file defines the system configuration for your NixOS system.
-# The NixOS manual is available by running ‘nixos-help’.
+# The NixOS manual is available by running 'nixos-help'.
 
 { config, pkgs, ... }:
 
@@ -45,6 +45,16 @@
   services.xserver.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
 
+  # LightDM display manager with GTK greeter
+  services.xserver.displayManager.lightdm.greeters.gtk = {
+    enable = true;
+    theme.name = "Arc-Dark";
+    iconTheme.name = "Papirus";
+    extraConfig = ''
+      background = ${pkgs.nixos-artwork.wallpapers.nineish-dark-gray}/share/backgrounds/nixos/nineish-dark-gray.png
+    '';
+  };
+
   # Explicitly set the open-source graphics driver for stability on old hardware.
   services.xserver.videoDrivers = [ "nouveau" ];
 
@@ -55,6 +65,8 @@
   };
 
   # --- Desktop Environment ---
+  # To switch to a window manager like IceWM, comment the lxqt line below
+  # and add a line like: services.xserver.windowManager.icewm.enable = true;
   services.xserver.desktopManager.lxqt.enable = true;
 
   # --- Sound ---
@@ -98,10 +110,24 @@
     librewolf                     # A community-maintained fork of Firefox, focused on privacy
     nixos-icons                   # Adds NixOS-branded app icons
     papirus-icon-theme            # A clean, modern icon set that works well
+    arc-theme                     # A popular flat theme for windows and controls
+    libsForQt5.qt5ct              # Allows Qt applications to use GTK themes
+    libsForQt5.qtstyleplugin-kvantum  # Additional Qt style engine for better theme support
   ];
 
   # Allow proprietary packages to be installed.
   nixpkgs.config.allowUnfree = true;
+
+  # --- System-Wide Environment ---
+  # Force Qt applications to use qt5ct for theming, overriding LXQt's default
+  environment.variables = {
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+  };
+  
+  # Additional session variables that get loaded before the desktop session
+  environment.sessionVariables = {
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+  };
 
   # Disable the Firefox module (Brave is installed via systemPackages).
   programs.firefox.enable = false;
