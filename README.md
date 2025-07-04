@@ -54,8 +54,8 @@ NixOS and Home Manager configuration for multiple hosts and users using Nix flak
    # For HP dv9500 Pavilion
    sudo nixos-rebuild switch --flake .#hp-dv9500-pavilion-nixos
    
-   # For MSI GE75 Raider
-   sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
+   # For MSI GE75 Raider (currently commented out in flake.nix)
+   # sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
    ```
 
 ### Daily Usage
@@ -117,8 +117,12 @@ Home Manager configurations are integrated into the flake and will be applied au
 All `.nix` files follow this header format:
 ```nix
 # /etc/nixos/<relative-path>
-# <Brief purpose description>
+# <Brief purpose description> for <Device Name> (<Year>, <CPU>, <GPU>)
 ```
+
+For example:
+- HP files: `# Hardware-specific configuration for HP dv9500 Pavilion (2007, AMD Turion 64 X2, NVIDIA GeForce 7150M)`
+- MSI files: `# KDE Plasma desktop and SDDM configuration for MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)`
 
 ## 🤝 Contributing
 
