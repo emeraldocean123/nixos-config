@@ -21,8 +21,7 @@
   # Enable OpenGL/graphics support
   hardware.graphics.enable = true;
 
-  # Enable sound (ALSA/PipeWire)
-  sound.enable = true;
+  # Enable sound (PipeWire)
   hardware.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
