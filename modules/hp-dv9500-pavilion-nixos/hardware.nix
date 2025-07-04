@@ -22,7 +22,7 @@
   hardware.graphics.enable = true;
 
   # Enable sound (PipeWire)
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -32,7 +32,7 @@
   security.rtkit.enable = true;
 
   # Enable touchpad (libinput, if present)
-  services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
 
   # Enable TLP for power management (recommended for laptops)
   services.tlp.enable = true;

@@ -17,14 +17,14 @@
       # sync.enable = true;
     };
   };
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
 
   # Enable firmware and microcode updates
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
   # Enable sound (Intel HDA, Realtek, etc.)
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -40,5 +40,5 @@
   hardware.bluetooth.enable = true;
 
   # Enable touchpad (if present)
-  services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
 }
