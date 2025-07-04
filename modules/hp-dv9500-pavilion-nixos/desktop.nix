@@ -4,6 +4,9 @@
 { config, pkgs, ... }:
 
 {
+  # Enable the X server (required for graphical desktop and LightDM)
+  services.xserver.enable = true;
+
   # Keyboard layout (US)
   services.xserver.xkb = {
     layout = "us";

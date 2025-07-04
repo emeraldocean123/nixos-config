@@ -17,14 +17,4 @@
     lidSwitchDocked = "ignore";
     lidSwitchExternalPower = "ignore";
   };
-
-  # PipeWire for modern audio (replaces PulseAudio)
-  security.rtkit.enable = true;
-  services.pulseaudio.enable = false; # Use PipeWire's PulseAudio replacement
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
 }
