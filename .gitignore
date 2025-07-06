@@ -1,0 +1,20 @@
+# NixOS build artifacts
+result
+result-*
+.direnv/
+
+# IDE files
+.vscode/settings.json
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*~
+
+# Temporary files
+*.tmp
+*.temp
