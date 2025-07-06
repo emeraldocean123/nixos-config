@@ -4,6 +4,11 @@
 { config, pkgs, ... }:
 
 {
+  # Import shared dotfiles configuration
+  imports = [
+    ../../modules/shared/dotfiles.nix
+  ];
+
   # Set the username and home directory for this Home Manager profile
   home.username = "joseph";
   home.homeDirectory = "/home/joseph";
@@ -24,55 +29,53 @@
     # Shell enhancement
     oh-my-posh
     fzf
+    
+    # Gaming and performance tools (MSI-specific)
+    htop
+    fastfetch
+    neofetch
+    glxinfo
+    nvidia-settings
+    steam-run
   ];
 
-  # Configure bash with dotfiles-style configuration
-  programs.bash = {
-    enable = true;
+  # MSI-specific bash configuration (extends shared dotfiles)
+  programs.bash.bashrcExtra = ''
+    # MSI Gaming Laptop specific configuration
     
-    # History settings
-    historyControl = [ "ignoreboth" ];
-    historySize = 1000;
-    historyFileSize = 2000;
+    # Oh My Posh prompt (using custom theme)
+    if command -v oh-my-posh &> /dev/null; then
+      eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/jandedobbeleer.omp.json)"
+    fi
     
-    # Shell options
-    shellOptions = [
-      "histappend"
-      "checkwinsize"
-    ];
+    # Gaming and performance aliases
+    alias gpu-temp="nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits"
+    alias gpu-usage="nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits"
+    alias gpu-info="nvidia-smi"
+    alias cpu-temp="sensors | grep 'Package id 0' | awk '{print \$4}'"
+    alias performance="sudo cpupower frequency-set -g performance"
+    alias powersave="sudo cpupower frequency-set -g powersave"
     
-    # Custom aliases (matching dotfiles)
-    shellAliases = {
-      ll = "ls -lah";
-      la = "ls -A";
-      l = "ls -CF";
-      gs = "git status";
-      ".." = "cd ..";
-      
-      # Enable color support
-      ls = "ls --color=auto";
-      grep = "grep --color=auto";
-    };
+    # Gaming shortcuts
+    alias steam-native="steam"
+    alias steam-proton="steam-run steam"
     
-    # Bash functions (matching dotfiles)
-    bashrcExtra = ''
-      # fzf functions
-      ff() { find . -type f | fzf; }
-      fd() { find . -type d | fzf | xargs -r cd; }
-      
-      # Oh My Posh prompt
-      if command -v oh-my-posh &> /dev/null; then
-        eval "$(oh-my-posh init bash --config ${pkgs.oh-my-posh}/share/oh-my-posh/themes/jandedobbeleer.omp.json)"
-      fi
-    '';
-  };
-
-  # Git configuration (matching dotfiles)
-  programs.git = {
-    enable = true;
-    userName = "Joseph";
-    userEmail = "emeraldocean123@users.noreply.github.com";
-  };
+    # Development shortcuts for gaming
+    alias build-fast="make -j$(nproc)"
+    alias compile-fast="gcc -O3 -march=native"
+    
+    # System monitoring for gaming
+    show_system_performance() {
+      echo "=== MSI GE75 Raider Performance Monitor ==="
+      echo "CPU Temperature: $(sensors 2>/dev/null | grep 'Package id 0' | awk '{print $4}' || echo 'N/A')"
+      echo "GPU Temperature: $(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits 2>/dev/null)°C"
+      echo "GPU Usage: $(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits 2>/dev/null)%"
+      echo "Memory Usage: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
+      echo "Load Average: $(cat /proc/loadavg | awk '{print $1, $2, $3}')"
+    }
+    
+    alias sysperf="show_system_performance"
+  '';
 
   # Enable other CLI programs
   programs.htop.enable = true;
@@ -84,27 +87,61 @@
     enableBashIntegration = true;
   };
 
-  # KDE Plasma theming for user applications (adjust as desired)
-  # You can replace these with your preferred Plasma/GTK themes
+  # KDE Plasma theming for user applications (MSI gaming setup)
   gtk = {
     enable = true;
     theme.name = "Breeze-Dark";
     iconTheme.name = "Breeze";
   };
 
-  # Optional: Create dotfiles symlinks for external compatibility
-  # This allows the bootstrap script to work if needed
+  # MSI-specific home files and configurations
   home.file = {
-    ".bash_aliases".text = ''
-      alias gs='git status'
-      alias ll='ls -lah'
-      alias ..='cd ..'
+    # Oh My Posh theme configuration
+    ".config/oh-my-posh/jandedobbeleer.omp.json".source = ../../modules/shared/jandedobbeleer.omp.json;
+    
+    # MSI gaming laptop configuration
+    ".msi-gaming-config".text = ''
+      # MSI GE75 Raider 9SF specific configuration
+      # 2018 gaming laptop with Intel Core i7-9750H, RTX 2070
+      
+      # Hardware info
+      export MSI_MODEL="GE75-Raider-9SF"
+      export MSI_YEAR="2018"
+      export MSI_CPU="Intel_Core_i7-9750H"
+      export MSI_GPU="NVIDIA_RTX_2070"
+      export MSI_RAM="32GB_DDR4"
+      
+      # Gaming optimizations
+      function gaming_mode() {
+        echo "Activating MSI Gaming Mode..."
+        sudo cpupower frequency-set -g performance 2>/dev/null || echo "cpupower not available"
+        echo "Gaming mode activated!"
+      }
+      
+      function power_save() {
+        echo "Activating Power Save Mode..."
+        sudo cpupower frequency-set -g powersave 2>/dev/null || echo "cpupower not available"
+        echo "Power save mode activated!"
+      }
+      
+      function show_gpu_stats() {
+        if command -v nvidia-smi &> /dev/null; then
+          nvidia-smi --query-gpu=name,temperature.gpu,utilization.gpu,memory.used,memory.total --format=csv,noheader
+        else
+          echo "nvidia-smi not available"
+        fi
+      }
     '';
     
-    ".gitconfig".text = ''
-      [user]
-      	name = Joseph
-      	email = emeraldocean123@users.noreply.github.com
+    # Gaming shortcuts desktop file
+    ".local/share/applications/gaming-tools.desktop".text = ''
+      [Desktop Entry]
+      Name=MSI Gaming Tools
+      Comment=Gaming performance tools for MSI laptop
+      Exec=konsole -e 'bash -c "echo MSI Gaming Tools; sysperf; read"'
+      Icon=applications-games
+      Type=Application
+      Categories=Game;System;
     '';
   };
 }

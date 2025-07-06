@@ -4,41 +4,57 @@
 { config, pkgs, ... }:
 
 {
-  # Enable proprietary NVIDIA driver for RTX 2070
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-    modesetting.enable = true;
-    powerManagement.enable = true;
-    prime = {
-      # Uncomment and set BusID if using Optimus/hybrid graphics
-      # intelBusId = "PCI:0:2:0";
-      # nvidiaBusId = "PCI:1:0:0";
-      # sync.enable = true;
-    };
+  # Hardware acceleration and graphics
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
   };
-  hardware.graphics.enable = true;
 
   # Enable firmware and microcode updates
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
-  # Enable sound (Intel HDA, Realtek, etc.)
-  services.pulseaudio.enable = false;
-  services.pipewire = {
+  # Enable Bluetooth
+  hardware.bluetooth = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        Enable = "Source,Sink,Media,Socket";
+        Experimental = true;
+      };
+    };
   };
-  security.rtkit.enable = true;
 
-  # Power management (TLP recommended for laptops)
-  services.tlp.enable = true;
+  # Enable touchpad and input devices
+  services.libinput = {
+    enable = true;
+    touchpad = {
+      tapping = true;
+      naturalScrolling = true;
+      disableWhileTyping = true;
+    };
+  };
 
-  # Enable Bluetooth (if present)
-  hardware.bluetooth.enable = true;
+  # Gaming hardware optimizations
+  boot.kernel.sysctl = {
+    # Reduce input lag
+    "kernel.sched_migration_cost_ns" = 5000000;
+    # Improve gaming performance
+    "vm.dirty_background_ratio" = 5;
+    "vm.dirty_ratio" = 10;
+  };
 
-  # Enable touchpad (if present)
-  services.libinput.enable = true;
+  # Enable performance monitoring
+  hardware.sensor = {
+    hddtemp.enable = true;
+  };
+
+  # Enable USB devices (gaming peripherals)
+  services.udev.extraRules = ''
+    # Gaming mouse/keyboard permissions
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="046d", MODE="0666"  # Logitech
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="1532", MODE="0666"  # Razer
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="0b05", MODE="0666"  # ASUS
+  '';
 }
