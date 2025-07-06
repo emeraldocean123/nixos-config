@@ -265,45 +265,6 @@
   };
 
   # Nano configuration
-  programs.nano = {
-    enable = true;
-    nanorc = ''
-      # Enable syntax highlighting
-      include "/usr/share/nano/*.nanorc"
-      
-      # Enable line numbers
-      set linenumbers
-      
-      # Enable mouse support
-      set mouse
-      
-      # Convert tabs to spaces
-      set tabstospaces
-      
-      # Set tab size to 4
-      set tabsize 4
-      
-      # Enable auto-indentation
-      set autoindent
-      
-      # Enable soft word wrapping
-      set softwrap
-      
-      # Show cursor position
-      set constantshow
-      
-      # Enable spell checking
-      set speller "aspell -x -c"
-      
-      # Backup files
-      set backup
-      set backupdir "~/.nano/backups"
-      
-      # Better search
-      set casesensitive
-      set regexp
-    '';
-  };
 
   # Create necessary directories
   home.file.".nano/backups/.keep".text = "";
