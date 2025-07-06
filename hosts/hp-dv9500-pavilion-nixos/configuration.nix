@@ -7,11 +7,8 @@
   # NixOS system state version (do not change after install)
   system.stateVersion = "25.05";
 
-  # Import hardware-specific and desktop settings
-  imports = [
-    ../../modules/hp-dv9500-pavilion-nixos/hardware.nix
-    ../../modules/hp-dv9500-pavilion-nixos/desktop.nix
-  ];
+  # Host-specific configuration is handled by flake.nix module imports
+  # No additional imports needed here to avoid conflicts
 
   # Enable dconf system-wide for xscreensaver and GTK/GNOME apps
   services.dbus.packages = [ pkgs.dconf ];

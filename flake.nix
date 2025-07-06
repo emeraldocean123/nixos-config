@@ -32,6 +32,7 @@
             ./modules/common.nix
 
             # Host-specific modules
+            ./modules/hp-dv9500-pavilion-nixos/hardware.nix
             ./modules/hp-dv9500-pavilion-nixos/desktop.nix
             ./modules/hp-dv9500-pavilion-nixos/networking.nix
             ./modules/hp-dv9500-pavilion-nixos/packages.nix
