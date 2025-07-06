@@ -13,11 +13,11 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
-
   # Bootloader configuration for GRUB
   boot.loader.grub.enable = true;
-  boot.loader.grub.device =  /dev/sda;
+  boot.loader.grub.device = \ /dev/sda\;
   boot.loader.grub.useOSProber = true;
+
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/eecce2a7-5717-4ae3-a9a0-0c96cdb033b3";
