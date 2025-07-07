@@ -16,15 +16,13 @@ This repository provides a modular, maintainable NixOS configuration for multipl
 - **joseph** - Primary user (available on both hosts)
 - **follett** - Secondary user (HP laptop only)
 
-## �️ **Repository Structure**
+## 🏗️ **Repository Structure**
 
 ```
 nixos-config/
 ├── 📄 flake.nix                       # Main flake configuration
 ├── 📄 flake.lock                      # Reproducible dependency versions
-├── 📄 deploy-dotfiles.sh              # Automated deployment script
-├── 📄 DEPLOYMENT-GUIDE.md             # Step-by-step deployment instructions
-├── 📄 CLEANUP-REVIEW.md               # Repository cleanup documentation
+├── 📄 README.md                       # This documentation
 │
 ├── 🏠 hosts/                          # Host-specific configurations
 │   ├── hp-dv9500-pavilion-nixos/
@@ -83,20 +81,27 @@ sudo git clone https://github.com/emeraldocean123/nixos-config.git /etc/nixos
 cd /etc/nixos
 ```
 
-### **2. Quick Deployment**
+### **2. Deploy Configuration**
 
-Use the automated deployment script:
+Build and activate the configuration for your host:
 ```bash
-# Make script executable
-sudo chmod +x deploy-dotfiles.sh
+# For HP dv9500 Pavilion
+sudo nixos-rebuild switch --flake .#hp-dv9500-pavilion-nixos
 
-# Run deployment wizard
-sudo ./deploy-dotfiles.sh
+# For MSI GE75 Raider  
+sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
 ```
 
-**Recommended**: Choose option 6 (Full deployment) for first-time setup.
+### **3. Update Flake Dependencies**
 
-### **3. Manual Deployment**
+Keep your system updated:
+```bash
+# Update flake inputs
+sudo nix flake update
+
+# Rebuild with updated dependencies
+sudo nixos-rebuild switch --flake .#<your-host>
+```
 
 For more control over the process:
 ```bash
@@ -309,11 +314,15 @@ Edit the appropriate packages.nix file:
 
 Then rebuild: `sudo nixos-rebuild switch --flake .#$(hostname)`
 
-## 📚 **Additional Documentation**
+## 📚 **Additional Resources**
 
-- **[DEPLOYMENT-GUIDE.md](DEPLOYMENT-GUIDE.md)** - Step-by-step deployment instructions
-- **[CLEANUP-REVIEW.md](CLEANUP-REVIEW.md)** - Repository cleanup documentation
+### **🛠️ NixOS Tools Repository**
+For deployment scripts, troubleshooting guides, and management tools, see the companion repository:
+- **[nixos-tools](../nixos-tools/)** - Deployment automation, SSH guides, and system management scripts
+
+### **📖 Configuration Documentation**
 - **[modules/shared/dotfiles.nix](modules/shared/dotfiles.nix)** - Unified dotfiles management
+- **[flake.nix](flake.nix)** - Main flake configuration with inputs and outputs
 
 ## 🎯 **Post-Deployment Verification**
 
@@ -323,6 +332,20 @@ After successful deployment, you should have:
 - ✅ **Host-optimized desktop** (LXQt for HP, KDE for MSI)
 - ✅ **Gaming setup** (MSI) or **legacy support** (HP)
 - ✅ **SSH access** for remote development
+
+## 🔧 **Maintenance Commands**
+
+```bash
+# Update and rebuild system
+sudo nix flake update /etc/nixos && sudo nixos-rebuild switch --flake /etc/nixos#$(hostname)
+
+# Clean up old generations (keep last 7 days)
+sudo nix-collect-garbage --delete-older-than 7d
+
+# Check system status
+systemctl --failed
+journalctl -p 3 -xb  # Show errors from current boot
+```
 - ✅ **Declarative system management** through NixOS
 
 ---
