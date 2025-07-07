@@ -4,6 +4,11 @@
 { config, pkgs, ... }:
 
 {
+  # Import shared dotfiles configuration
+  imports = [
+    ../../modules/shared/dotfiles.nix
+  ];
+
   # Set the username and home directory for this Home Manager profile
   home.username = "follett";
   home.homeDirectory = "/home/follett";
@@ -12,13 +17,9 @@
   # Ensure dconf is available for GTK/dconf settings (prevents activation errors)
   home.packages = with pkgs; [
     dconf
+    htop
+    fastfetch
   ];
-
-  # Enable and configure common CLI programs
-  programs.bash.enable = true;
-  programs.git.enable = true;
-  programs.htop.enable = true;
-  programs.fastfetch.enable = true;
 
   # GTK theming for user applications (matches system theming)
   gtk = {
@@ -27,5 +28,12 @@
     iconTheme.name = "Papirus";
   };
 
-  # Add more user-level programs and dotfiles here as needed
+  # Follett-specific configurations can be added here
+  programs.bash.bashrcExtra = ''
+    # Follett user specific bash configuration
+    echo "Welcome, Follett!"
+    
+    # User-specific aliases if needed
+    alias notes="cd ~/Documents/Notes"
+  '';
 }
