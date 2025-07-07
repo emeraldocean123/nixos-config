@@ -45,7 +45,10 @@
 
   # Hardware monitoring
   hardware.sensor = {
-    hddtemp.enable = true;
+    hddtemp = {
+      enable = true;
+      drives = [ "/dev/sda" ];  # Monitor the main drive temperature
+    };
   };
 
   # Power management optimizations for 2007 hardware
