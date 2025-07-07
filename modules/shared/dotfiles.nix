@@ -264,47 +264,88 @@
     '';
   };
 
-  # Nano configuration
-  programs.nano = {
-    enable = true;
-    nanorc = ''
-      # Enable syntax highlighting
-      include "/usr/share/nano/*.nanorc"
-      
-      # Enable line numbers
-      set linenumbers
-      
-      # Enable mouse support
-      set mouse
-      
-      # Convert tabs to spaces
-      set tabstospaces
-      
-      # Set tab size to 4
-      set tabsize 4
-      
-      # Enable auto-indentation
-      set autoindent
-      
-      # Enable soft word wrapping
-      set softwrap
-      
-      # Show cursor position
-      set constantshow
-      
-      # Enable spell checking
-      set speller "aspell -x -c"
-      
-      # Backup files
-      set backup
-      set backupdir "~/.nano/backups"
-      
-      # Better search
-      set casesensitive
-      set regexp
-    '';
-  };
+  # Nano configuration - commented out as programs.nano may not be available in home-manager 25.05
+  # programs.nano = {
+  #   enable = true;
+  #   nanorc = ''
+  #     # Enable syntax highlighting
+  #     include "/usr/share/nano/*.nanorc"
+  #     
+  #     # Enable line numbers
+  #     set linenumbers
+  #     
+  #     # Enable mouse support
+  #     set mouse
+  #     
+  #     # Convert tabs to spaces
+  #     set tabstospaces
+  #     
+  #     # Set tab size to 4
+  #     set tabsize 4
+  #     
+  #     # Enable auto-indentation
+  #     set autoindent
+  #     
+  #     # Enable soft word wrapping
+  #     set softwrap
+  #     
+  #     # Show cursor position
+  #     set constantshow
+  #     
+  #     # Enable spell checking
+  #     set speller "aspell -x -c"
+  #     
+  #     # Backup files
+  #     set backup
+  #     set backupdir "~/.nano/backups"
+  #     
+  #     # Better search
+  #     set casesensitive
+  #     set regexp
+  #   '';
+  # };
 
-  # Create necessary directories
+  # Create necessary directories (also commented out for now)
+  # home.file.".nano/backups/.keep".text = "";
+
+  # Alternative: Use home.file to create .nanorc directly
+  home.file.".nanorc".text = ''
+    # Enable syntax highlighting
+    include "/usr/share/nano/*.nanorc"
+    
+    # Enable line numbers
+    set linenumbers
+    
+    # Enable mouse support
+    set mouse
+    
+    # Convert tabs to spaces
+    set tabstospaces
+    
+    # Set tab size to 4
+    set tabsize 4
+    
+    # Enable auto-indentation
+    set autoindent
+    
+    # Enable soft word wrapping
+    set softwrap
+    
+    # Show cursor position
+    set constantshow
+    
+    # Enable spell checking
+    set speller "aspell -x -c"
+    
+    # Backup files
+    set backup
+    set backupdir "~/.nano/backups"
+    
+    # Better search
+    set casesensitive
+    set regexp
+  '';
+
+  # Create nano backup directory
   home.file.".nano/backups/.keep".text = "";
 }
