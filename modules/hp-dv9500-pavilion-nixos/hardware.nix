@@ -4,39 +4,56 @@
 { config, pkgs, ... }:
 
 {
-  # Bootloader configuration
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
-
   # Enable AMD CPU microcode updates (for AMD Turion 64 X2)
   hardware.cpu.amd.updateMicrocode = true;
 
   # Enable redistributable firmware (recommended for WiFi, etc.)
   hardware.enableRedistributableFirmware = true;
 
-  # Use the open-source nouveau driver for NVIDIA GeForce 7150M GPU
+  # Use the open-source nouveau driver for legacy NVIDIA GeForce 7150M GPU
   services.xserver.videoDrivers = [ "nouveau" ];
 
-  # Enable OpenGL/graphics support
-  hardware.graphics.enable = true;
-
-  # Enable sound (PipeWire)
-  services.pulseaudio.enable = false;
-  services.pipewire = {
+  # Enable OpenGL/graphics support for legacy hardware
+  hardware.graphics = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+    enable32Bit = true;
   };
-  security.rtkit.enable = true;
 
-  # Enable touchpad (libinput, if present)
-  services.libinput.enable = true;
+  # Enable touchpad and input devices
+  services.libinput = {
+    enable = true;
+    touchpad = {
+      tapping = true;
+      naturalScrolling = false;  # Traditional scrolling for older users
+      disableWhileTyping = true;
+    };
+  };
 
-  # Enable TLP for power management (recommended for laptops)
-  services.tlp.enable = true;
+  # Enable Bluetooth (if present on this model)
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = false;  # Save battery on old laptop
+  };
 
-  # Enable Bluetooth (if present)
-  hardware.bluetooth.enable = true;
+  # Legacy hardware optimizations
+  boot.kernel.sysctl = {
+    # Optimize for older hardware
+    "vm.swappiness" = 60;  # Higher swap usage for limited RAM
+    "vm.dirty_background_ratio" = 15;
+    "vm.dirty_ratio" = 20;
+  };
+
+  # Hardware monitoring
+  hardware.sensor = {
+    hddtemp = {
+      enable = true;
+      drives = [ "/dev/sda" ];  # Monitor the main drive temperature
+    };
+  };
+
+  # Power management optimizations for 2007 hardware
+  powerManagement = {
+    enable = true;
+    powertop.enable = true;
+  };
 }
