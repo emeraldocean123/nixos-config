@@ -192,15 +192,6 @@ gaming_mode # Activate performance mode
 - **System status** indicators
 - **Custom theme** with consistent colors
 
-2. Apply configuration for your host:
-   ```bash
-   # For HP dv9500 Pavilion
-   sudo nixos-rebuild switch --flake .#hp-dv9500-pavilion-nixos
-   
-   # For MSI GE75 Raider (currently commented out in flake.nix)
-   # sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
-   ```
-
 ### Daily Usage
 
 ```bash
