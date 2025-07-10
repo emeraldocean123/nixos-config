@@ -48,13 +48,40 @@
   ];
 
   # MSI-specific bash configuration (extends shared dotfiles)
-  programs.bash.bashrcExtra = ''
-    # MSI Gaming Laptop specific configuration
+  programs.bash = {
+    enable = true;
+    shellAliases = {
+      # Directory listing (matching PowerShell functions)
+      ll = "ls -lah --color=auto";
+      la = "ls -lah --color=auto";
+      l = "ls -lh --color=auto";
+      ls = "ls --color=auto";
+      
+      # Git aliases (matching PowerShell)
+      gs = "git status";
+      ga = "git add";
+      gc = "git commit";
+      gp = "git push";
+      gl = "git log --oneline -10";
+      gd = "git diff";
+      
+      # Navigation
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      "...." = "cd ../../..";
+    };
     
-    # Oh My Posh prompt (using custom theme)
-    if command -v oh-my-posh &> /dev/null; then
-      eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/jandedobbeleer.omp.json)"
-    fi
+    bashrcExtra = ''
+      # MSI Gaming Laptop specific configuration
+      
+      # Oh My Posh prompt (using custom theme)
+      if command -v oh-my-posh &> /dev/null; then
+        if [ -f ~/.config/oh-my-posh/jandedobbeleer.omp.json ]; then
+          eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/jandedobbeleer.omp.json)"
+        else
+          eval "$(oh-my-posh init bash --config $(oh-my-posh config list | grep jandedobbeleer | head -1))"
+        fi
+      fi
     
     # Gaming and performance aliases
     alias gpu-temp="nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits"

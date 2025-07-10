@@ -43,18 +43,45 @@
   ];
 
   # Host-specific bash configuration (extends shared dotfiles)
-  programs.bash.bashrcExtra = ''
-    # HP-specific bash configuration
+  programs.bash = {
+    enable = true;
+    shellAliases = {
+      # Directory listing (matching PowerShell functions)
+      ll = "ls -lah --color=auto";
+      la = "ls -lah --color=auto";
+      l = "ls -lh --color=auto";
+      ls = "ls --color=auto";
+      
+      # Git aliases (matching PowerShell)
+      gs = "git status";
+      ga = "git add";
+      gc = "git commit";
+      gp = "git push";
+      gl = "git log --oneline -10";
+      gd = "git diff";
+      
+      # Navigation
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      "...." = "cd ../../..";
+      
+      # HP laptop specific aliases
+      battery = "cat /sys/class/power_supply/BAT*/capacity";
+      temp = "sensors | grep 'Core\\|temp'";
+      brightness = "xrandr --verbose | grep -i brightness";
+    };
     
-    # Oh My Posh prompt (using custom theme)
-    if command -v oh-my-posh &> /dev/null; then
-      eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/jandedobbeleer.omp.json)"
-    fi
-    
-    # HP laptop specific aliases
-    alias battery="cat /sys/class/power_supply/BAT*/capacity"
-    alias temp="sensors | grep 'Core\|temp'"
-    alias brightness="xrandr --verbose | grep -i brightness"
+    bashrcExtra = ''
+      # HP-specific bash configuration
+      
+      # Oh My Posh prompt (using custom theme)
+      if command -v oh-my-posh &> /dev/null; then
+        if [ -f ~/.config/oh-my-posh/jandedobbeleer.omp.json ]; then
+          eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/jandedobbeleer.omp.json)"
+        else
+          eval "$(oh-my-posh init bash --config $(oh-my-posh config list | grep jandedobbeleer | head -1))"
+        fi
+      fi
     
     # Legacy hardware specific functions
     legacy_mode() {
