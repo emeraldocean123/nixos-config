@@ -1,6 +1,5 @@
-# /home/joseph/nixos-config/home/hp-dv9500-pavilion-nixos/follett.nix
+# /home/hp-dv9500-pavilion-nixos/follett.nix
 # Home Manager configuration for user 'follett' on HP dv9500 Pavilion (2007, AMD Turion 64 X2, NVIDIA GeForce 7150M)
-
 { config, pkgs, ... }:
 
 {
@@ -32,7 +31,7 @@
   programs.bash.bashrcExtra = ''
     # Follett user specific bash configuration
     echo "Welcome, Follett!"
-    
+
     # User-specific aliases if needed
     alias notes="cd ~/Documents/Notes"
   '';

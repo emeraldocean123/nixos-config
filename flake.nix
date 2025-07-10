@@ -1,6 +1,5 @@
-# /home/joseph/nixos-config/flake.nix
+# /flake.nix
 # NixOS and Home Manager configuration for multiple hosts and users using Nix flakes
-
 {
   description = "NixOS and Home Manager configuration for multiple hosts and users";
 

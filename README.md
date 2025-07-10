@@ -88,7 +88,7 @@ Build and activate the configuration for your host:
 # For HP dv9500 Pavilion
 sudo nixos-rebuild switch --flake .#hp-dv9500-pavilion-nixos
 
-# For MSI GE75 Raider  
+# For MSI GE75 Raider
 sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
 ```
 

@@ -1,14 +1,12 @@
-# /etc/nixos/modules/msi-ge75-raider-nixos/networking.nix
+# /modules/msi-ge75-raider-nixos/networking.nix
 # Networking configuration for MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)
-
 { config, pkgs, ... }:
 
 {
   # Set system hostname
   networking.hostName = "msi-ge75-raider-nixos";
 
-  # Enable NetworkManager for network management
-  networking.networkmanager.enable = true;
+  # NetworkManager is enabled globally in modules/common.nix
 
   # Enable the NetworkManager applet in the system tray
   programs.nm-applet.enable = true;
@@ -32,16 +30,16 @@
   networking.firewall = {
     enable = true;
     # Common gaming ports (Steam, Discord, etc.)
-    allowedTCPPorts = [ 
+    allowedTCPPorts = [
       22    # SSH
       27015 # Steam
       27036 # Steam
       3478  # Discord voice
     ];
-    allowedUDPPorts = [ 
+    allowedUDPPorts = [
       27015 # Steam
       27031 # Steam
-      27036 # Steam  
+      27036 # Steam
       50000 # Discord voice range start
     ];
     allowedUDPPortRanges = [
