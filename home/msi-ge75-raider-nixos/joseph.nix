@@ -1,4 +1,4 @@
-## /home/joseph/nixos-config/home/msi-ge75-raider-nixos/joseph.nix
+# /home/joseph/nixos-config/home/msi-ge75-raider-nixos/joseph.nix
 { config, pkgs, ... }:
 
 {

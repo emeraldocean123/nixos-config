@@ -1,4 +1,5 @@
-## /home/joseph/nixos-config/modules/msi-ge75-raider-nixos/services.nix
+# /home/joseph/nixos-config/modules/msi-ge75-raider-nixos/services.nix
+{ config, pkgs, ... }:
 { config, pkgs, ... }:
 
 {

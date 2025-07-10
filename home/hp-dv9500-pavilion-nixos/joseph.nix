@@ -1,4 +1,4 @@
-## /home/joseph/nixos-config/home/hp-dv9500-pavilion-nixos/joseph.nix
+# /home/joseph/nixos-config/home/hp-dv9500-pavilion-nixos/joseph.nix
 { config, pkgs, ... }:
 
 {

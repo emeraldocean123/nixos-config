@@ -1,4 +1,4 @@
-## /home/joseph/nixos-config/modules/shared/dotfiles.nix
+# /home/joseph/nixos-config/modules/shared/dotfiles.nix
 # Shared dotfiles configuration for all hosts
 # This module manages common dotfiles using Home Manager
 
