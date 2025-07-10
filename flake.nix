@@ -1,4 +1,4 @@
-# /etc/nixos/flake.nix
+# /home/joseph/nixos-config/flake.nix
 # NixOS and Home Manager configuration for multiple hosts and users using Nix flakes
 
 {

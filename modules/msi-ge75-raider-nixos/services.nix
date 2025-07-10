@@ -1,23 +1,4 @@
-# /etc/nixos/mo  # Enable sound with PipeWire (better for gaming)
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-  };
-
-  # Gaming-specific services
-  services.ratbagd.enable = true;  # Gaming mouse configuration
-  hardware.openrazer.enable = true;  # Razer peripherals support
-
-  # Performance and monitoring services
-  services.thermald.enable = true;  # Thermal management
-  services.auto-cpufreq.enable = true;  # Automatic CPU frequency scaling
-  powerManagement.cpuFreqGovernor = "ondemand";  # Balanced performanceder-nixos/services.nix
-# Services configuration for MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)
-
+## /home/joseph/nixos-config/modules/msi-ge75-raider-nixos/services.nix
 { config, pkgs, ... }:
 
 {

@@ -1,4 +1,4 @@
-# /etc/nixos/modules/common.nix
+# /home/joseph/nixos-config/modules/common.nix
 # Shared configuration for all hosts in the NixOS flake setup
 
 { config, pkgs, ... }:

@@ -1,4 +1,4 @@
-# /etc/nixos/home/hp-dv9500-pavilion-nixos/follett.nix
+# /home/joseph/nixos-config/home/hp-dv9500-pavilion-nixos/follett.nix
 # Home Manager configuration for user 'follett' on HP dv9500 Pavilion (2007, AMD Turion 64 X2, NVIDIA GeForce 7150M)
 
 { config, pkgs, ... }:

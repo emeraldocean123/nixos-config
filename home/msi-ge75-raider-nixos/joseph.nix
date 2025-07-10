@@ -1,6 +1,4 @@
-# /etc/nixos/home/msi-ge75-raider-nixos/joseph.nix
-# Home Manager configuration for user 'joseph' on MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)
-
+## /home/joseph/nixos-config/home/msi-ge75-raider-nixos/joseph.nix
 { config, pkgs, ... }:
 
 {
@@ -16,6 +14,16 @@
 
   # Essential packages including Oh My Posh and development tools
   home.packages = with pkgs; [
+  # Ensure Oh My Posh theme is available in the right location
+  home.file.".poshthemes/jandedobbeleer.omp.json".source = ../../../../dotfiles/posh-themes/jandedobbeleer.omp.json;
+
+  # Initialize Oh My Posh prompt in bash
+  programs.bash.initExtra = ''
+    # Oh My Posh prompt initialization (managed by Home Manager)
+    if command -v oh-my-posh &> /dev/null && [ -f "$HOME/.poshthemes/jandedobbeleer.omp.json" ]; then
+      eval "$(oh-my-posh init bash --config $HOME/.poshthemes/jandedobbeleer.omp.json)"
+    fi
+  '';
     # System packages
     dconf
     

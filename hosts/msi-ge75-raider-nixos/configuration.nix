@@ -1,4 +1,4 @@
-# /etc/nixos/hosts/msi-ge75-raider-nixos/configuration.nix
+# /home/joseph/nixos-config/hosts/msi-ge75-raider-nixos/configuration.nix
 # Host-specific configuration for MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)
 
 { config, pkgs, ... }:
