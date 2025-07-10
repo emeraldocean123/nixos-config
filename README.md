@@ -1,30 +1,67 @@
 🖥️ NixOS Configuration Repository
 A comprehensive NixOS and Home Manager configuration using Nix flakes
-This repository provides a modular, maintainable NixOS configuration for multiple hosts, integrating dotfiles management, user-specific configurations, and host-optimized settings.
+This repository provides a modular, maintainable NixOS configuration for multiple hosts, integrating dotfiles management, user-specific configurations, and host-optimized settings. It supports two hosts: an HP Pavilion dv9500 (legacy laptop) and an MSI GE75 Raider 9SF (gaming laptop).
 
 🏗️ Repository Structure
-The repository is organized around a main flake and three core directories for managing system and user configurations:
+The repository is organized around a main flake and three core directories for system and user configurations:
 
-.github/ – GitHub Actions workflows and issue templates
+.github/ – GitHub Actions workflows
 .gitignore – Files and directories to ignore in version control
 README.md – This file
 flake.lock – Locked dependencies for reproducible builds
 flake.nix – Main flake configuration
-home/ – Home Manager configurations
-hp-dv9500-pavilion-nixos/ – User configurations for HP Pavilion
-msi-ge75-raider-nixos/ – User configurations for MSI Raider
+home/ – Home Manager user configurations
+hp-dv9500-pavilion-nixos/
+follett.nix – User configuration for follett
+joseph.nix – User configuration for joseph
+
+
+msi-ge75-raider-nixos/
+follett.nix – User configuration for follett
+joseph.nix – User configuration for joseph
+
+
 
 
 hosts/ – Host-specific NixOS configurations
-hp-dv9500-pavilion-nixos/ – HP Pavilion system settings
-msi-ge75-raider-nixos/ – MSI Raider system settings
+hp-dv9500-pavilion-nixos/
+configuration.nix – Main host configuration
+hardware-configuration.nix – Hardware-specific settings
+
+
+msi-ge75-raider-nixos/
+configuration.nix – Main host configuration
+hardware-configuration.nix – Hardware-specific settings (placeholder, requires generation)
+
+
 
 
 modules/ – Reusable NixOS modules
 common.nix – Shared settings across hosts
-hp-dv9500-pavilion-nixos/ – HP-specific modules
-msi-ge75-raider-nixos/ – MSI-specific modules
-shared/ – Common modules for all hosts
+hp-dv9500-pavilion-nixos/
+desktop.nix – LXQt desktop configuration
+hardware.nix – Hardware-specific settings
+networking.nix – Networking configuration
+packages.nix – System-wide packages
+services.nix – System services
+users.nix – User account definitions
+
+
+msi-ge75-raider-nixos/
+desktop.nix – KDE Plasma 6 desktop configuration
+hardware.nix – Hardware-specific settings
+networking.nix – Networking configuration
+nvidia.nix – NVIDIA RTX 2070 configuration
+packages.nix – System-wide packages
+services.nix – System services
+users.nix – User account extensions
+
+
+shared/
+dotfiles.nix – Shared Git, Bash, and editor configurations
+jandedobbeleer.omp.json – Oh My Posh theme for user prompts
+
+
 
 
 
@@ -36,6 +73,7 @@ shared/ – Common modules for all hosts
 Host
 Hardware
 Description
+Users
 Status
 
 
@@ -43,12 +81,14 @@ Status
 hp-dv9500-pavilion-nixos
 HP Pavilion dv9500 (2007)AMD Turion 64 X2, NVIDIA GeForce 7150M
 Legacy laptop with LXQt desktop
+joseph, follett
 ✅ Active
 
 
 msi-ge75-raider-nixos
 MSI GE75 Raider 9SF (2018)Intel i7-9750H, NVIDIA RTX 2070
 Gaming laptop with KDE Plasma
+joseph, follett
 ✅ Active
 
 
@@ -83,7 +123,7 @@ Enable Flakes: Add the following to /etc/nixos/configuration.nix:nix.settings.ex
 
 Clone the Repository:# Back up the default configuration
 sudo mv /etc/nixos /etc/nixos.backup
-# Clone your configuration
+# Clone the configuration
 sudo git clone https://github.com/emeraldocean123/nixos-config.git /etc/nixos
 cd /etc/nixos
 
@@ -94,7 +134,7 @@ sudo nixos-rebuild switch --flake .#hp-dv9500-pavilion-nixos
 # For MSI Raider
 sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
 
-
+Note: For the MSI host, ensure hosts/msi-ge75-raider-nixos/hardware-configuration.nix is generated using nixos-generate-config before deployment.
 
 2. Daily Management Commands
 Run these commands from /etc/nixos to manage your system:
@@ -123,3 +163,4 @@ Rollback: Revert to a previous generation if a build fails:sudo nixos-rebuild sw
 
 Regularly update flake.lock to keep dependencies current.
 For advanced Home Manager configurations, refer to the home/ directory for each host.
+Both hosts support joseph and follett users with tailored configurations.
