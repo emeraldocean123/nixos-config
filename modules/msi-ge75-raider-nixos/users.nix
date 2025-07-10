@@ -1,12 +1,12 @@
 # /modules/msi-ge75-raider-nixos/users.nix
 # User configuration for MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Base user 'joseph' is defined in common.nix.
   # This module extends the user with groups and settings specific to the MSI host.
   users.users.joseph = {
-    extraGroups = [
+    extraGroups = lib.mkForce [
       "networkmanager" # Network management
       "audio"          # Audio access
       "video"          # Video devices
@@ -18,6 +18,14 @@
       "disk"           # Disk management
       "storage"        # Storage management
     ];
+    shell = pkgs.bash;
+  };
+
+  # Add 'follett' user to match the HP host
+  users.users.follett = {
+    isNormalUser = true;
+    description = "Follett";
+    extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.bash;
   };
 

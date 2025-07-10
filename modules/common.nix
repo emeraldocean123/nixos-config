@@ -7,7 +7,7 @@
   nixpkgs.config.allowUnfree = true;
 
   # Enable modern Nix CLI and flakes support for all hosts
-  nix.settings.extra-experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Common system packages available to all users
   environment.systemPackages = with pkgs; [

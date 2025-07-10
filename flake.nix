@@ -79,7 +79,7 @@
               home-manager.useUserPackages = true;
               home-manager.useGlobalPkgs = true;
               home-manager.users.joseph = import ./home/msi-ge75-raider-nixos/joseph.nix;
-              # Add more users for MSI here as needed
+              home-manager.users.follett = import ./home/msi-ge75-raider-nixos/follett.nix;
             }
           ];
         };

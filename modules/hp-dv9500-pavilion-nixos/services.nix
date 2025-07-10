@@ -68,8 +68,8 @@
   # Enable firmware updates (if supported)
   services.fwupd.enable = true;
 
-  # Thermald for thermal management
-  services.thermald.enable = true;
+  # Thermald for thermal management (disabled to avoid conflicts with tlp)
+  services.thermald.enable = false;
 
   # USB automounting
   services.udisks2.enable = true;

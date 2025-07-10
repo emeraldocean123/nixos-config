@@ -40,6 +40,7 @@
       battery = "cat /sys/class/power_supply/BAT*/capacity";
       temp = "sensors | grep 'Core\\|temp'";
       brightness = "xrandr --verbose | grep -i brightness";
+      hpstatus = "show_hp_status";
     };
 
     bashrcExtra = ''
@@ -54,22 +55,8 @@
         fi
       fi
 
-      # Legacy hardware specific functions
-      legacy_mode() {
-        echo "Setting legacy compatibility mode for 2007 hardware..."
-        # Add any legacy-specific configurations here
-      }
-
-      # HP system monitoring
-      show_hp_status() {
-        echo "=== HP dv9500 Pavilion Status ==="
-        echo "Battery: $(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null || echo 'N/A')%"
-        echo "Temperature: $(sensors 2>/dev/null | grep 'Core\|temp' | head -1 || echo 'N/A')"
-        echo "Memory Usage: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
-        echo "Load Average: $(cat /proc/loadavg | awk '{print $1, $2, $3}')"
-      }
-
-      alias hpstatus="show_hp_status"
+      # Source HP-specific config
+      [ -f ~/.hp-laptop-config ] && source ~/.hp-laptop-config
     '';
   };
 
@@ -126,6 +113,21 @@
       function legacy_compat() {
         echo "HP dv9500 Legacy Compatibility Mode"
         echo "This is a 2007 laptop - some modern features may not work"
+      }
+
+      # Legacy hardware specific functions
+      legacy_mode() {
+        echo "Setting legacy compatibility mode for 2007 hardware..."
+        # Add any legacy-specific configurations here
+      }
+
+      # HP system monitoring
+      show_hp_status() {
+        echo "=== HP dv9500 Pavilion Status ==="
+        echo "Battery: $(show_battery)%"
+        echo "Temperature: $(show_temps | head -1 || echo 'N/A')"
+        echo "Memory Usage: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
+        echo "Load Average: $(cat /proc/loadavg | awk '{print $1, $2, $3}')"
       }
     '';
   };

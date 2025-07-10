@@ -23,7 +23,6 @@
     wget
     unzip
     nano
-    code-cursor
 
     # Shell enhancement
     oh-my-posh
@@ -50,7 +49,7 @@
       gpu-temp = "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits";
       gpu-usage = "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits";
       gpu-info = "nvidia-smi";
-      cpu-temp = "sensors | grep 'Package id 0' | awk '{print \$4}'";
+      cpu-temp = "sensors | grep 'Package id 0' | awk '{print $4}'";
       performance = "sudo cpupower frequency-set -g performance";
       powersave = "sudo cpupower frequency-set -g powersave";
 
@@ -61,6 +60,7 @@
       # Development shortcuts for gaming
       "build-fast" = "make -j$(nproc)";
       "compile-fast" = "gcc -O3 -march=native";
+      sysperf = "show_system_performance";
     };
 
     bashrcExtra = ''
@@ -75,17 +75,8 @@
         fi
       fi
 
-      # System monitoring for gaming
-      show_system_performance() {
-        echo "=== MSI GE75 Raider Performance Monitor ==="
-        echo "CPU Temperature: $(sensors 2>/dev/null | grep 'Package id 0' | awk '{print $4}' || echo 'N/A')"
-        echo "GPU Temperature: $(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits 2>/dev/null)°C"
-        echo "GPU Usage: $(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits 2>/dev/null)%"
-        echo "Memory Usage: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
-        echo "Load Average: $(cat /proc/loadavg | awk '{print $1, $2, $3}')"
-      }
-
-      alias sysperf="show_system_performance"
+      # Source MSI-specific config
+      [ -f ~/.msi-gaming-config ] && source ~/.msi-gaming-config
     '';
   };
 
@@ -142,6 +133,16 @@
         else
           echo "nvidia-smi not available"
         fi
+      }
+
+      # System monitoring for gaming
+      show_system_performance() {
+        echo "=== MSI GE75 Raider Performance Monitor ==="
+        echo "CPU Temperature: $(sensors 2>/dev/null | grep 'Package id 0' | awk '{print $4}' || echo 'N/A')"
+        echo "GPU Temperature: $(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits 2>/dev/null)°C"
+        echo "GPU Usage: $(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits 2>/dev/null)%"
+        echo "Memory Usage: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
+        echo "Load Average: $(cat /proc/loadavg | awk '{print $1, $2, $3}')"
       }
     '';
 

@@ -46,7 +46,10 @@
 
   # Enable performance monitoring
   hardware.sensor = {
-    hddtemp.enable = true;
+    hddtemp = {
+      enable = true;
+      drives = [ "/dev/nvme0n1" ];  # Adjust based on actual drive (e.g., use `lsblk` to confirm)
+    };
   };
 
   # Enable USB devices (gaming peripherals)
