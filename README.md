@@ -1,159 +1,125 @@
-# 🖥️ NixOS Configuration Repository
+🖥️ NixOS Configuration Repository
+A comprehensive NixOS and Home Manager configuration using Nix flakes
+This repository provides a modular, maintainable NixOS configuration for multiple hosts, integrating dotfiles management, user-specific configurations, and host-optimized settings.
 
-**Comprehensive NixOS and Home Manager configuration using Nix flakes**
+🏗️ Repository Structure
+The repository is organized around a main flake and three core directories for managing system and user configurations:
 
-This repository provides a modular, maintainable NixOS configuration for multiple hosts with integrated dotfiles management, user-specific configurations, and host-optimized settings.
+.github/ – GitHub Actions workflows and issue templates
+.gitignore – Files and directories to ignore in version control
+README.md – This file
+flake.lock – Locked dependencies for reproducible builds
+flake.nix – Main flake configuration
+home/ – Home Manager configurations
+hp-dv9500-pavilion-nixos/ – User configurations for HP Pavilion
+msi-ge75-raider-nixos/ – User configurations for MSI Raider
 
----
 
-## 🏠 Supported Systems
+hosts/ – Host-specific NixOS configurations
+hp-dv9500-pavilion-nixos/ – HP Pavilion system settings
+msi-ge75-raider-nixos/ – MSI Raider system settings
 
-| Host                         | Hardware                                                                 | Description                       | Status   |
-| ---------------------------- | ------------------------------------------------------------------------ | --------------------------------- | -------- |
-| `hp-dv9500-pavilion-nixos` | HP dv9500 Pavilion (2007)<br/>AMD Turion 64 X2, NVIDIA GeForce 7150M | Legacy laptop with LXQt desktop   | ✅ Active |
-| `msi-ge75-raider-nixos`    | MSI GE75 Raider 9SF (2018)<br/>Intel i7-9750H, RTX 2070                  | Gaming laptop with KDE Plasma     | ✅ Active |
 
----
+modules/ – Reusable NixOS modules
+common.nix – Shared settings across hosts
+hp-dv9500-pavilion-nixos/ – HP-specific modules
+msi-ge75-raider-nixos/ – MSI-specific modules
+shared/ – Common modules for all hosts
 
-## ⚙️ Hardware Specifications
 
-This section provides a general overview of the hardware for each host, which is useful for tailoring NixOS modules.
 
-### HP Pavilion dv9500 (c. 2007)
 
-This model series had many variants. The configuration is tailored for the AMD/NVIDIA version.
+🏠 Supported Systems
 
--   **CPU**: AMD Turion 64 X2 (TL-58) or Intel Core 2 Duo (T5xxx/T7xxx series).
--   **Chipset**: Mobile Intel GM965/PM965 Express.
--   **GPU**: NVIDIA GeForce 7150M (in this config), with other models using GeForce 8400M or 8600M GS.
--   **RAM**: 2x DDR2 SODIMM slots, max 4GB (667MHz).
--   **Storage**: 2x 2.5" SATA I (1.5 Gb/s) drive bays.
--   **Display**: 17-inch WXGA+ (1440x900) or WSXGA+ (1680x1050).
--   **Networking**: 10/100 Ethernet, Broadcom or Intel Wireless-G, optional Bluetooth 2.0.
 
-### MSI GE75 Raider 9SF (c. 2018)
 
-A high-performance gaming laptop from the Coffee Lake era.
+Host
+Hardware
+Description
+Status
 
--   **CPU**: Intel Core i7-9750H (6-core, 12-thread).
--   **Chipset**: Intel HM370.
--   **GPU**: NVIDIA GeForce RTX 2070 (8GB GDDR6).
--   **RAM**: 2x DDR4 SODIMM slots (2666MHz), max 64GB.
--   **Storage**: 1x M.2 NVMe PCIe Gen3, 1x M.2 Combo (NVMe/SATA), 1x 2.5" SATA III bay.
--   **Display**: 17.3-inch FHD (1920x1080) IPS-Level, 144Hz.
--   **Networking**: Killer E2500 Gigabit Ethernet, Killer Wi-Fi 5 (802.11ac), Bluetooth 5.0.
 
----
 
-## 🚀 Deployment and Management
+hp-dv9500-pavilion-nixos
+HP Pavilion dv9500 (2007)AMD Turion 64 X2, NVIDIA GeForce 7150M
+Legacy laptop with LXQt desktop
+✅ Active
 
-This section provides all the necessary steps for deploying, managing, and accessing your systems.
 
-### 1. Initial Setup on a New Machine
+msi-ge75-raider-nixos
+MSI GE75 Raider 9SF (2018)Intel i7-9750H, NVIDIA RTX 2070
+Gaming laptop with KDE Plasma
+✅ Active
 
-To bootstrap a new NixOS system with this configuration:
 
-1.  **Install NixOS**: Perform a minimal NixOS installation. Ensure you have network connectivity and can access a terminal.
 
-2.  **Enable Flakes**: Enable flakes support if it wasn't done during installation.
-    ```bash
-    # Add to /etc/nixos/configuration.nix
-    nix.settings.extra-experimental-features = [ "nix-command" "flakes" ];
-    ```
+⚙️ Hardware Specifications
+This section outlines the hardware for each host, aiding in tailoring NixOS modules.
+HP Pavilion dv9500 (c. 2007)
 
-3.  **Clone the Repository**:
-    ```bash
-    # Backup the default configuration
-    sudo mv /etc/nixos /etc/nixos.backup
+CPU: AMD Turion 64 X2 (TL-58) or Intel Core 2 Duo (T5xxx/T7xxx series)
+GPU: NVIDIA GeForce 7150M (this config); other models may use GeForce 8400M or 8600M GS
+RAM: 2x DDR2 SODIMM slots, max 4GB (667 MHz)
+Storage: 2x 2.5" SATA I (1.5 Gb/s) drive bays
+Networking: 10/100 Ethernet, Broadcom or Intel Wireless-G, optional Bluetooth 2.0
 
-    # Clone your configuration
-    sudo git clone [https://github.com/emeraldocean123/nixos-config.git](https://github.com/emeraldocean123/nixos-config.git) /etc/nixos
-    cd /etc/nixos
-    ```
+MSI GE75 Raider 9SF (c. 2018)
 
-4.  **Deploy the System**: Run `nixos-rebuild` with the flake pointing to the correct host configuration.
-    ```bash
-    # For the HP Laptop
-    sudo nixos-rebuild switch --flake .#hp-dv9500-pavilion-nixos
+CPU: Intel Core i7-9750H (6-core, 12-thread)
+GPU: NVIDIA GeForce RTX 2070 (8GB GDDR6)
+RAM: 2x DDR4 SODIMM slots (2666 MHz), max 64GB
+Storage: 1x M.2 NVMe PCIe Gen3, 1x M.2 Combo (NVMe/SATA), 1x 2.5" SATA III bay
+Networking: Killer E2500 Gigabit Ethernet, Killer Wi-Fi 5 (802.11ac), Bluetooth 5.0
 
-    # For the MSI Laptop
-    sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
-    ```
-    After the reboot, your system will be fully configured.
 
-### 2. Daily Management Commands
+🚀 Deployment and Management
+This section covers deploying and managing systems with this configuration.
+1. Initial Setup on a New Machine
+To bootstrap a new NixOS system:
 
-Use these commands from within `/etc/nixos` to manage your system.
+Install NixOS: Perform a minimal NixOS installation from an ISO.
+Enable Flakes: Add the following to /etc/nixos/configuration.nix:nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
--   **Apply Changes**:
-    ```bash
-    sudo nixos-rebuild switch --flake .#$(hostname)
-    ```
 
--   **Test Changes (without making them permanent)**:
-    ```bash
-    sudo nixos-rebuild test --flake .#$(hostname)
-    ```
+Clone the Repository:# Back up the default configuration
+sudo mv /etc/nixos /etc/nixos.backup
+# Clone your configuration
+sudo git clone https://github.com/emeraldocean123/nixos-config.git /etc/nixos
+cd /etc/nixos
 
--   **Update All Dependencies (Flakes)**:
-    ```bash
-    sudo nix flake update
-    # Then apply the changes
-    sudo nixos-rebuild switch --flake .#$(hostname)
-    ```
 
--   **Clean Up Old Generations**:
-    ```bash
-    sudo nix-collect-garbage --delete-older-than 7d
-    ```
+Deploy the System: Apply the configuration for the target host:# For HP Pavilion
+sudo nixos-rebuild switch --flake .#hp-dv9500-pavilion-nixos
 
-### 3. Remote Management (SSH)
+# For MSI Raider
+sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
 
-SSH is enabled on both hosts for remote management.
 
--   **Connect to a Host**:
-    ```bash
-    ssh <user>@<hostname-or-ip>
-    ```
 
--   **Helper Script**: A convenience script is provided to connect to the HP laptop.
-    ```bash
-    # From the repository root
-    ./support/scripts/connection/connect-hp.sh
-    ```
+2. Daily Management Commands
+Run these commands from /etc/nixos to manage your system:
 
----
+Apply Changes: sudo nixos-rebuild switch --flake .#$(hostname)
+Test Changes: sudo nixos-rebuild test --flake .#$(hostname)
+Update Dependencies: sudo nix flake update followed by a rebuild
+Clean Up Old Generations: sudo nix-collect-garbage --delete-older-than 7d
 
-## ✨ Features & Customizations
+3. Remote Management (SSH)
+SSH is enabled on both hosts. Connect using:
+ssh <user>@<hostname-or-ip>
 
-### Unified Dotfiles
-- **50+ shell aliases** for productivity.
-- **Custom functions** for file management and system monitoring.
-- **Oh My Posh** integration with a custom theme.
-- **Git integration** with shortcuts and automation.
 
-### Host-Specific Optimizations
-- **HP dv9500 (Legacy)**: LXQt desktop, Nouveau drivers, and conservative power management.
-- **MSI GE75 (Gaming)**: KDE Plasma, NVIDIA drivers, GameMode, and performance-tuned settings.
+🔧 Troubleshooting
 
----
+Build Fails: Check for syntax errors with:sudo nixos-rebuild dry-build --flake .#$(hostname)
 
-## 🔧 Troubleshooting
 
--   **Build Fails**: Run `sudo nixos-rebuild dry-build --flake .#$(hostname)` to check for syntax errors.
--   **SSH Issues**: Check the service with `sudo systemctl status sshd` and find the IP with `ip addr`.
--   **Rollback**: If a build fails or causes issues, roll back to the previous working generation:
-    ```bash
-    sudo nixos-rebuild switch --rollback
-    ```
+Rollback: Revert to a previous generation if a build fails:sudo nixos-rebuild switch --rollback
 
----
 
-## 🏗️ Repository Structure
 
-The repository is organized into four main Nix directories:
 
--   `hosts/`: Contains the entry-point `configuration.nix` for each machine.
--   `home/`: Contains user-specific Home Manager configurations.
--   `modules/`: Contains modular NixOS system configurations, broken down by function.
--   `support/`: Contains non-Nix helper scripts and documentation.
+📝 Notes
+
+Regularly update flake.lock to keep dependencies current.
+For advanced Home Manager configurations, refer to the home/ directory for each host.
