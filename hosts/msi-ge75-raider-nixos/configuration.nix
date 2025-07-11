@@ -34,7 +34,4 @@
     "splash"
     "nvidia-drm.modeset=1"
   ];
-
-  # Gaming performance optimizations
-  powerManagement.cpuFreqGovernor = "performance";
 }

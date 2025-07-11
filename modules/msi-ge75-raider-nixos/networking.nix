@@ -11,19 +11,14 @@
   # Enable the NetworkManager applet in the system tray
   programs.nm-applet.enable = true;
 
-  # Gaming-specific networking optimizations
-  networking = {
-    # Increase network buffer sizes for gaming
-    kernel.sysctl = {
-      "net.core.rmem_max" = 16777216;
-      "net.core.wmem_max" = 16777216;
-      "net.ipv4.tcp_rmem" = "4096 87380 16777216";
-      "net.ipv4.tcp_wmem" = "4096 65536 16777216";
-      "net.core.netdev_max_backlog" = 5000;
-    };
-
-    # Enable BBR congestion control for better network performance
-    kernel.sysctl."net.ipv4.tcp_congestion_control" = "bbr";
+  # Gaming-specific networking optimizations (kernel sysctl settings)
+  boot.kernel.sysctl = {
+    "net.core.rmem_max" = 16777216;
+    "net.core.wmem_max" = 16777216;
+    "net.ipv4.tcp_rmem" = "4096 87380 16777216";
+    "net.ipv4.tcp_wmem" = "4096 65536 16777216";
+    "net.core.netdev_max_backlog" = 5000;
+    "net.ipv4.tcp_congestion_control" = "bbr";  # Enable BBR for better network performance
   };
 
   # Firewall configuration for gaming

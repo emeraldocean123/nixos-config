@@ -28,7 +28,6 @@
   # Performance and monitoring services
   services.thermald.enable = true; # Thermal management
   services.auto-cpufreq.enable = true; # Automatic CPU frequency scaling
-  powerManagement.cpuFreqGovernor = "ondemand"; # Balanced performance
 
   # Enable location services (for automatic time zone, etc.)
   services.geoclue2.enable = true;
@@ -55,7 +54,7 @@
   services.fwupd.enable = true;
 
   # Gaming performance optimizations
-  services.gamemode.enable = true;
+  programs.gamemode.enable = true;
 
   # Enable udev rules for gaming controllers
   services.udev.packages = with pkgs; [

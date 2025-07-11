@@ -18,7 +18,6 @@
       "disk"           # Disk management
       "storage"        # Storage management
     ];
-    shell = pkgs.bash;
   };
 
   # Add 'follett' user to match the HP host
@@ -26,7 +25,7 @@
     isNormalUser = true;
     description = "Follett";
     extraGroups = [ "networkmanager" "wheel" ];
-    shell = pkgs.bash;
+    shell = pkgs.bashInteractive;
   };
 
   # Gaming-specific user configurations
