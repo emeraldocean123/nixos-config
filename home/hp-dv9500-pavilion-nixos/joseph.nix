@@ -77,10 +77,18 @@
     iconTheme.name = "Papirus";
   };
 
-  # HP-specific home files and configurations
+  # Manages all user-specific dotfiles
   home.file = {
     # Oh My Posh theme configuration
     ".config/oh-my-posh/jandedobbeleer.omp.json".source = ../../modules/shared/jandedobbeleer.omp.json;
+
+    # Kitty terminal configuration to use Nerd Fonts
+    ".config/kitty/kitty.conf".text = ''
+      font_family MesloLGS Nerd Font
+      font_size 12
+      background_opacity 0.95
+      scrollback_lines 10000
+    '';
 
     # Create HP-specific dotfiles or overrides if needed
     ".hp-laptop-config".text = ''

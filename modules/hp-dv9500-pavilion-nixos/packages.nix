@@ -15,8 +15,10 @@
     papirus-icon-theme
     arc-theme
     qgnomeplatform
-    # Terminals
-    kitty  # Modern terminal emulator for better prompt rendering
-    xorg.xhost  # For X11 authorization management (fixes xscreensaver display access)
+    # Terminals and session tools
+    kitty
+    xorg.xhost
+    lxqt.lxqt-session # Makes the LXQt session discoverable by the login manager
+    xorg.xset       # Provides the screen blanking tool for our workaround
   ];
 }

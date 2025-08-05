@@ -6,12 +6,12 @@
   system.stateVersion = "25.05";
   # Host-specific configuration is handled by flake.nix module imports
   # No additional imports needed here to avoid conflicts
-  # Enable dconf system-wide for xscreensaver and GTK/GNOME apps
+  # Enable dconf system-wide for GTK/GNOME apps
   services.dbus.packages = [ pkgs.dconf ];
-  # Ensure PAM configuration exists for xscreensaver password authentication
-  security.pam.services.xscreensaver.text = ''
-    auth include login
-  '';
+
+  # All manual PAM blocks for display managers and screensavers are removed.
+  # NixOS will use its defaults, which are now known to work.
+
   # --- Remote SSH and VS Code Support ---
   # Enable the OpenSSH server for remote access (required for VS Code Remote SSH)
   services.openssh.enable = true;
