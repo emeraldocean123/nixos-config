@@ -1,8 +1,6 @@
 # /etc/nixos/modules/hp-dv9500-pavilion-nixos/desktop.nix
 # LXQt desktop, LightDM greeter, and xscreensaver for HP dv9500 Pavilion (2007, AMD Turion 64 X2, NVIDIA GeForce 7150M)
-
 { config, pkgs, ... }:
-
 {
   # Enable the X server (required for graphical desktop and LightDM)
   services.xserver.enable = true;
@@ -24,12 +22,31 @@
     };
   };
 
-  # Enable the LXQt desktop environment for lightweight performance
-  services.xserver.desktopManager.lxqt.enable = true;
+  # Fonts configuration for better terminal rendering (e.g., Nerd Fonts for Oh My Posh)
+  fonts = {
+    enableDefaultPackages = true;
+    packages = with pkgs; [
+      nerd-fonts.meslo-lg # MesloLGS Nerd Font for glyphs and icons
+    ];
+    fontconfig = {
+      enable = true;
+      defaultFonts = {
+        monospace = [ "Meslo LG S Nerd Font" ];
+      };
+    };
+  };
 
-  # Declaratively link the NixOS wallpaper for LightDM (robust against upgrades)
-  environment.etc."lightdm/background.png".source =
-    "${pkgs.nixos-artwork.wallpapers.simple-blue}/share/backgrounds/nixos/nix-wallpaper-simple-blue.png";
+  # Exclude unwanted terminals
+  environment.lxqt.excludePackages = with pkgs.lxqt; [
+    qterminal # Exclude QTerminal (LXQt's default)
+  ];
+
+  services.xserver.excludePackages = [
+    pkgs.xterm # Exclude XTerm (system fallback)
+  ];
+
+  # Set Kitty as default terminal system-wide
+  environment.variables.TERMINAL = "kitty";
 
   # Enable xscreensaver for LXQt session (locks after 10 minutes)
   services.xserver.xautolock = {
@@ -43,4 +60,3 @@
     xscreensaver
   ];
 }
-
