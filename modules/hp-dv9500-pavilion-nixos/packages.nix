@@ -15,6 +15,8 @@
     papirus-icon-theme
     arc-theme
     qgnomeplatform
-    kitty
+    # Terminals
+    kitty  # Modern terminal emulator for better prompt rendering
+    xorg.xhost  # For X11 authorization management (fixes xscreensaver display access)
   ];
 }

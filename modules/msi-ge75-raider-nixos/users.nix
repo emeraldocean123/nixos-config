@@ -1,15 +1,12 @@
-# /etc/nixos/modules/msi-ge75-raider-nixos/users.nix
+# /modules/msi-ge75-raider-nixos/users.nix
 # User configuration for MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)
-
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
-  # User account configuration
+  # Base user 'joseph' is defined in common.nix.
+  # This module extends the user with groups and settings specific to the MSI host.
   users.users.joseph = {
-    isNormalUser = true;
-    description = "Joseph";
-    extraGroups = [ 
-      "wheel"          # Enable sudo
+    extraGroups = lib.mkForce [
       "networkmanager" # Network management
       "audio"          # Audio access
       "video"          # Video devices
@@ -21,27 +18,14 @@
       "disk"           # Disk management
       "storage"        # Storage management
     ];
-    shell = pkgs.bash;
-    
-    # Home directory permissions for gaming
-    createHome = true;
-    home = "/home/joseph";
-    
-    # Allow Joseph to manage gaming-related services
-    packages = with pkgs; [
-      # User-specific gaming tools
-      steam-run
-      protonup-qt
-      
-      # Development tools for user
-      git
-      vim
-      code-cursor
-      
-      # Gaming utilities
-      mangohud
-      goverlay
-    ];
+  };
+
+  # Add 'follett' user to match the HP host
+  users.users.follett = {
+    isNormalUser = true;
+    description = "Follett";
+    extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.bashInteractive;
   };
 
   # Gaming-specific user configurations
@@ -83,23 +67,17 @@
     }
   ];
 
-  # Enable automatic login for convenience (optional, comment out for security)
-  # services.xserver.displayManager.autoLogin = {
-  #   enable = true;
-  #   user = "joseph";
-  # };
-
   # User shell configuration
   programs.bash.shellInit = ''
     # Gaming-specific environment variables
     export GAMING_MODE=1
     export __GL_SHADER_DISK_CACHE=1
     export __GL_SHADER_DISK_CACHE_PATH="$HOME/.cache/nv"
-    
+
     # Gaming performance tweaks
     export __GL_THREADED_OPTIMIZATIONS=1
     export __GL_SYNC_TO_VBLANK=0
-    
+
     # Steam specific
     export STEAM_RUNTIME_PREFER_HOST_LIBRARIES=0
     export STEAM_RUNTIME=1

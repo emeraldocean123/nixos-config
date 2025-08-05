@@ -1,6 +1,5 @@
-# /etc/nixos/modules/msi-ge75-raider-nixos/hardware.nix
+# /modules/msi-ge75-raider-nixos/hardware.nix
 # Hardware-specific configuration for MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)
-
 { config, pkgs, ... }:
 
 {
@@ -47,7 +46,10 @@
 
   # Enable performance monitoring
   hardware.sensor = {
-    hddtemp.enable = true;
+    hddtemp = {
+      enable = true;
+      drives = [ "/dev/nvme0n1" ];  # Adjust based on actual drive (e.g., use `lsblk` to confirm)
+    };
   };
 
   # Enable USB devices (gaming peripherals)

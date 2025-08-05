@@ -1,6 +1,5 @@
-# /etc/nixos/modules/hp-dv9500-pavilion-nixos/services.nix
+# /modules/hp-dv9500-pavilion-nixos/services.nix
 # Services configuration for HP dv9500 Pavilion (2007, AMD Turion 64 X2, NVIDIA GeForce 7150M)
-
 { config, pkgs, ... }:
 
 {
@@ -37,12 +36,12 @@
       # Conservative power settings for 2007 hardware
       CPU_SCALING_GOVERNOR_ON_AC = "ondemand";
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-      
+
       # Aggressive power saving for old battery
       USB_AUTOSUSPEND = 1;
       WIFI_PWR_ON_AC = "on";
       WIFI_PWR_ON_BAT = "on";
-      
+
       # Conservative PCI Express settings
       PCIE_ASPM_ON_AC = "powersave";
       PCIE_ASPM_ON_BAT = "powersave";
@@ -69,8 +68,8 @@
   # Enable firmware updates (if supported)
   services.fwupd.enable = true;
 
-  # Thermald for thermal management
-  services.thermald.enable = true;
+  # Thermald for thermal management (disabled to avoid conflicts with tlp)
+  services.thermald.enable = false;
 
   # USB automounting
   services.udisks2.enable = true;

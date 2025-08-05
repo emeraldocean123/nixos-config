@@ -1,4 +1,4 @@
-# /etc/nixos/flake.nix
+# /flake.nix
 # NixOS and Home Manager configuration for multiple hosts and users using Nix flakes
 {
   description = "NixOS and Home Manager configuration for multiple hosts and users";
@@ -42,7 +42,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.users.joseph = import ./home/hp-dv9500-pavilion-nixos/joseph.nix;
               home-manager.users.follett = import ./home/hp-dv9500-pavilion-nixos/follett.nix;
-              home-manager.backupFileExtension = "backup";  # Automatically backup conflicting files during activation
+              home-manager.backupFileExtension = "backup"; # Automatically backup conflicting files during activation
             }
           ];
         };
@@ -69,8 +69,8 @@
               home-manager.useUserPackages = true;
               home-manager.useGlobalPkgs = true;
               home-manager.users.joseph = import ./home/msi-ge75-raider-nixos/joseph.nix;
-              # Add more users for MSI here as needed
-              home-manager.backupFileExtension = "backup";  # Automatically backup conflicting files during activation
+              home-manager.users.follett = import ./home/msi-ge75-raider-nixos/follett.nix;
+              home-manager.backupFileExtension = "backup"; # Automatically backup conflicting files during activation
             }
           ];
         };

@@ -22,6 +22,9 @@
     };
   };
 
+  # Enable LXQt desktop manager (required for session configuration)
+  services.xserver.desktopManager.lxqt.enable = true;
+
   # Fonts configuration for better terminal rendering (e.g., Nerd Fonts for Oh My Posh)
   fonts = {
     enableDefaultPackages = true;

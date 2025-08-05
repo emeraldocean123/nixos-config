@@ -1,5 +1,5 @@
-# /home/hp-dv9500-pavilion-nixos/follett.nix
-# Home Manager configuration for user 'follett' on HP dv9500 Pavilion (2007, AMD Turion 64 X2, NVIDIA GeForce 7150M)
+# /home/msi-ge75-raider-nixos/follett.nix
+# Home Manager configuration for user 'follett' on MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)
 { config, pkgs, ... }:
 
 {
@@ -20,19 +20,19 @@
     fastfetch
   ];
 
-  # GTK theming for user applications (matches system theming)
+  # KDE Plasma theming for user applications (matches system theming)
   gtk = {
     enable = true;
-    theme.name = "Arc-Dark";
-    iconTheme.name = "Papirus";
+    theme.name = "Breeze-Dark";
+    iconTheme.name = "Breeze";
   };
 
-  # Follett-specific configurations can be added here
+  # Follett-specific configurations
   programs.bash.bashrcExtra = ''
     # Follett user specific bash configuration
     echo "Welcome, Follett!"
 
-    # User-specific aliases if needed
+    # User-specific aliases
     alias notes="cd ~/Documents/Notes"
   '';
 }

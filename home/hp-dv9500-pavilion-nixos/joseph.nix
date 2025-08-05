@@ -1,6 +1,4 @@
-# /etc/nixos/home/hp-dv9500-pavilion-nixos/joseph.nix
-# Home Manager configuration for user 'joseph' on HP dv9500 Pavilion (2007, AMD Turion 64 X2, NVIDIA GeForce 7150M)
-
+# /home/hp-dv9500-pavilion-nixos/joseph.nix
 { config, pkgs, ... }:
 
 {
@@ -17,59 +15,55 @@
   home.packages = with pkgs; [
     # System packages
     dconf
-    
+
     # Development tools
     git
     curl
     wget
     unzip
     nano
-    
+
     # Shell enhancement
     oh-my-posh
     fzf
-    
+
     # Additional HP-specific packages
     htop
     fastfetch
   ];
 
   # Host-specific bash configuration (extends shared dotfiles)
-  programs.bash.bashrcExtra = ''
-    # HP-specific bash configuration
-    
-    # Oh My Posh prompt (using custom theme)
-    if command -v oh-my-posh &> /dev/null; then
-      eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/jandedobbeleer.omp.json)"
-    fi
-    
-    # HP laptop specific aliases
-    alias battery="cat /sys/class/power_supply/BAT*/capacity"
-    alias temp="sensors | grep 'Core\|temp'"
-    alias brightness="xrandr --verbose | grep -i brightness"
-    
-    # Legacy hardware specific functions
-    legacy_mode() {
-      echo "Setting legacy compatibility mode for 2007 hardware..."
-      # Add any legacy-specific configurations here
-    }
-    
-    # HP system monitoring
-    show_hp_status() {
-      echo "=== HP dv9500 Pavilion Status ==="
-      echo "Battery: $(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null || echo 'N/A')%"
-      echo "Temperature: $(sensors 2>/dev/null | grep 'Core\|temp' | head -1 || echo 'N/A')"
-      echo "Memory Usage: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
-      echo "Load Average: $(cat /proc/loadavg | awk '{print $1, $2, $3}')"
-    }
-    
-    alias hpstatus="show_hp_status"
-  '';
+  programs.bash = {
+    enable = true;
+    # Host-specific aliases. Common aliases are inherited from modules/shared/dotfiles.nix
+    shellAliases = {
+      battery = "cat /sys/class/power_supply/BAT*/capacity";
+      temp = "sensors | grep 'Core\\|temp'";
+      brightness = "xrandr --verbose | grep -i brightness";
+      hpstatus = "show_hp_status";
+    };
+
+    bashrcExtra = ''
+      # HP-specific bash configuration
+
+      # Oh My Posh prompt (using custom theme)
+      if command -v oh-my-posh &> /dev/null; then
+        if [ -f ~/.config/oh-my-posh/jandedobbeleer.omp.json ]; then
+          eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/jandedobbeleer.omp.json)"
+        else
+          eval "$(oh-my-posh init bash --config $(oh-my-posh config list | grep jandedobbeleer | head -1))"
+        fi
+      fi
+
+      # Source HP-specific config
+      [ -f ~/.hp-laptop-config ] && source ~/.hp-laptop-config
+    '';
+  };
 
   # Enable other CLI programs
   programs.htop.enable = true;
   programs.fastfetch.enable = true;
-  
+
   # Enable fzf for fuzzy finding
   programs.fzf = {
     enable = true;
@@ -87,18 +81,18 @@
   home.file = {
     # Oh My Posh theme configuration
     ".config/oh-my-posh/jandedobbeleer.omp.json".source = ../../modules/shared/jandedobbeleer.omp.json;
-    
+
     # Create HP-specific dotfiles or overrides if needed
     ".hp-laptop-config".text = ''
       # HP dv9500 Pavilion specific configuration
       # 2007 laptop with AMD Turion 64 X2, NVIDIA GeForce 7150M
-      
+
       # Hardware info
       export HP_MODEL="dv9500"
       export HP_YEAR="2007"
       export HP_CPU="AMD_Turion_64_X2"
       export HP_GPU="NVIDIA_GeForce_7150M"
-      
+
       # Power management helpers
       function show_battery() {
         if [ -f /sys/class/power_supply/BAT*/capacity ]; then
@@ -107,7 +101,7 @@
           echo "No battery found"
         fi
       }
-      
+
       function show_temps() {
         if command -v sensors &> /dev/null; then
           sensors | grep -E '(Core|temp|Package)'
@@ -115,10 +109,25 @@
           echo "lm-sensors not installed"
         fi
       }
-      
+
       function legacy_compat() {
         echo "HP dv9500 Legacy Compatibility Mode"
         echo "This is a 2007 laptop - some modern features may not work"
+      }
+
+      # Legacy hardware specific functions
+      legacy_mode() {
+        echo "Setting legacy compatibility mode for 2007 hardware..."
+        # Add any legacy-specific configurations here
+      }
+
+      # HP system monitoring
+      show_hp_status() {
+        echo "=== HP dv9500 Pavilion Status ==="
+        echo "Battery: $(show_battery)%"
+        echo "Temperature: $(show_temps | head -1 || echo 'N/A')"
+        echo "Memory Usage: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
+        echo "Load Average: $(cat /proc/loadavg | awk '{print $1, $2, $3}')"
       }
     '';
   };
