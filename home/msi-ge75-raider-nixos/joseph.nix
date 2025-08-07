@@ -64,6 +64,11 @@
     };
 
     bashrcExtra = ''
+      # Show fastfetch automatically on SSH login
+      if [[ -n "$SSH_CONNECTION" && $- == *i* ]]; then
+          fastfetch
+      fi
+
       # MSI Gaming Laptop specific configuration
 
       # Oh My Posh prompt (using custom theme)
