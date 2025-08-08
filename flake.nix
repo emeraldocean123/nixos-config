@@ -11,13 +11,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Add other inputs here as needed
-    # e.g., nix-flatpak.url = "github:gmodena/nix-flatpak";
   };
   outputs = { self, nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
+      pkgs = import nixpkgs { inherit system; };
     in
     {
+      devShells.default = pkgs.mkShell {
+        buildInputs = with pkgs; [ nixpkgs-fmt statix ];
+      };
       nixosConfigurations = {
         # HP dv9500 Pavilion host
         hp-dv9500-pavilion-nixos = nixpkgs.lib.nixosSystem {
@@ -42,7 +45,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.users.joseph = import ./home/hp-dv9500-pavilion-nixos/joseph.nix;
               home-manager.users.follett = import ./home/hp-dv9500-pavilion-nixos/follett.nix;
-              home-manager.backupFileExtension = "backup"; # Automatically backup conflicting files during activation
+              home-manager.backupFileExtension = "backup";
             }
           ];
         };
@@ -70,15 +73,10 @@
               home-manager.useGlobalPkgs = true;
               home-manager.users.joseph = import ./home/msi-ge75-raider-nixos/joseph.nix;
               home-manager.users.follett = import ./home/msi-ge75-raider-nixos/follett.nix;
-              home-manager.backupFileExtension = "backup"; # Automatically backup conflicting files during activation
+              home-manager.backupFileExtension = "backup";
             }
           ];
         };
       };
     };
 }
-devShells.default = pkgs.mkShell {
-  buildInputs = with pkgs; [ nixpkgs-fmt ];
-};
-
-
