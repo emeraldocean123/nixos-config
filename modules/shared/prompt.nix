@@ -1,13 +1,9 @@
 { config, lib, pkgs, ... }:
-let
-  themePath = "/home/joseph/Documents/dotfiles/posh-themes/jandedobbeleer.omp.json";  # Adjust if path differs
-in
 {
   home.packages = with pkgs; [
     oh-my-posh
     fastfetch
   ];
-  home.file.".config/oh-my-posh/jandedobbeleer.omp.json".source = themePath;
   programs.bash = {
     enable = true;
     bashrcExtra = ''
