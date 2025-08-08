@@ -23,7 +23,6 @@
       temp = "sensors | grep 'Core\\|temp'";
     };
     bashrcExtra = ''
-      [ -f ~/.bash_aliases ] && . ~/.bash_aliases  # Source aliases from dotfiles
       [ -f ~/.msi-gaming-config ] && . ~/.msi-gaming-config
     '';
   };
@@ -33,11 +32,6 @@
     enable = true;
     enableBashIntegration = true;
   };
-  home.file = {
-    ".config/oh-my-posh/jandedobbeleer.omp.json".source = "/home/joseph/Documents/dotfiles/posh-themes/jandedobbeleer.omp.json";
-    ".bash_aliases".source = "/home/joseph/Documents/dotfiles/bash_aliases";
-    ".msi-gaming-config".text = ''  # Your existing config here
-      # ... (keep as-is)
-    '';
-  };
+  home.file.".config/oh-my-posh/jandedobbeleer.omp.json".source =
+    ../../modules/shared/jandedobbeleer.omp.json;
 }
