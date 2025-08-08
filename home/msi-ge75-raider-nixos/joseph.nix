@@ -5,6 +5,7 @@
   # Import shared dotfiles configuration
   imports = [
     ../../modules/shared/prompt.nix
+    ../../modules/shared/path-localbin.nix
     ../../modules/shared/dotfiles.nix
   ];
 
@@ -53,6 +54,7 @@
     };
 
     # OMP is initialized in modules/shared/prompt.nix
+    ../../modules/shared/path-localbin.nix
     bashrcExtra = ''
       # Show fastfetch automatically on SSH login (interactive shells only)
       if [[ -n "$SSH_CONNECTION" && $- == *i* ]]; then

@@ -4,6 +4,7 @@
 {
   imports = [
     ../../modules/shared/prompt.nix
+    ../../modules/shared/path-localbin.nix
     ../../modules/shared/dotfiles.nix
   ];
 
