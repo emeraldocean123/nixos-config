@@ -4,7 +4,7 @@
 
 {
   # Import shared dotfiles configuration
-  imports = [
+  imports = [ ../../modules/shared/prompt.nix 
     ../../modules/shared/dotfiles.nix
   ];
 

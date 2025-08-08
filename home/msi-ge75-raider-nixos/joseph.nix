@@ -3,7 +3,7 @@
 
 {
   # Import shared dotfiles configuration
-  imports = [
+  imports = [ ../../modules/shared/prompt.nix 
     ../../modules/shared/dotfiles.nix
   ];
 
@@ -64,16 +64,9 @@
     };
 
     bashrcExtra = ''
-      # Show fastfetch automatically on SSH login
-      if [[ -n "$SSH_CONNECTION" && $- == *i* ]]; then
-          fastfetch
-      fi
 
       # MSI Gaming Laptop specific configuration
 
-      # Oh My Posh prompt (using custom theme)
-      if command -v oh-my-posh &> /dev/null; then
-        if [ -f ~/.config/oh-my-posh/jandedobbeleer.omp.json ]; then
           eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/jandedobbeleer.omp.json)"
         else
           eval "$(oh-my-posh init bash --config $(oh-my-posh config list | grep jandedobbeleer | head -1))"
