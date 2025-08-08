@@ -3,9 +3,11 @@
 
 {
   # Import shared dotfiles configuration
-  imports = [ ../../modules/shared/prompt.nix 
+  imports = [
+    ../../modules/shared/prompt.nix
     ../../modules/shared/dotfiles.nix
   ];
+
   # Set the username and home directory for this Home Manager profile
   home.username = "joseph";
   home.homeDirectory = "/home/joseph";
@@ -43,18 +45,15 @@
       hpstatus = "show_hp_status";
     };
 
+    # Keep this minimal – OMP is initialized in modules/shared/prompt.nix
     bashrcExtra = ''
-
-      # HP-specific bash configuration
-
-          eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/jandedobbeleer.omp.json)"
-        else
-          eval "$(oh-my-posh init bash --config $(oh-my-posh config list | grep jandedobbeleer | head -1))"
-        fi
+      # Show fastfetch automatically on SSH login (interactive shells only)
+      if [[ -n "$SSH_CONNECTION" && $- == *i* ]]; then
+        command -v fastfetch >/dev/null 2>&1 && fastfetch || true
       fi
 
       # Source HP-specific config
-      [ -f ~/.hp-laptop-config ] && source ~/.hp-laptop-config
+      [ -f ~/.hp-laptop-config ] && . ~/.hp-laptop-config
     '';
   };
 
