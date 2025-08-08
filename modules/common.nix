@@ -30,4 +30,10 @@
 
   # Enable NetworkManager service globally (can be overridden per host)
   networking.networkmanager.enable = true;
+}{ config, lib, pkgs, ... }:
+{
+  environment.systemPackages = with pkgs; [
+    nixpkgs-fmt
+    statix
+  ] ++ config.environment.systemPackages;
 }
