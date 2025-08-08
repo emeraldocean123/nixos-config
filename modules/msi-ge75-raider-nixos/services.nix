@@ -21,13 +21,37 @@
     jack.enable = true;
   };
 
+  # ---- Power management: choose ONE. We keep TLP and disable others. ----
+  services.power-profiles-daemon.enable = false;  # conflicts with TLP/auto-cpufreq
+  services.auto-cpufreq.enable = false;           # disable; TLP is our choice below
+
+  services.tlp = {
+    enable = true;
+    settings = {
+      # Gaming optimizations
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+      # Disable USB autosuspend for gaming peripherals
+      USB_AUTOSUSPEND = 0;
+
+      # Keep WiFi power management disabled for stable gaming
+      WIFI_PWR_ON_AC = "off";
+      WIFI_PWR_ON_BAT = "on";
+
+      # PCI Express power management
+      PCIE_ASPM_ON_AC = "default";
+      PCIE_ASPM_ON_BAT = "powersave";
+    };
+  };
+  # ----------------------------------------------------------------------
+
   # Gaming-specific services
-  services.ratbagd.enable = true; # Gaming mouse configuration
-  hardware.openrazer.enable = true; # Razer peripherals support
+  services.ratbagd.enable = true;       # Gaming mouse configuration
+  hardware.openrazer.enable = true;     # Razer peripherals support
 
   # Performance and monitoring services
-  services.thermald.enable = true; # Thermal management
-  services.auto-cpufreq.enable = true; # Automatic CPU frequency scaling
+  services.thermald.enable = true;      # Thermal management
 
   # Enable location services (for automatic time zone, etc.)
   services.geoclue2.enable = true;
@@ -67,28 +91,8 @@
   # Enable NTFS support for Windows game drives
   boot.supportedFilesystems = [ "ntfs" ];
 
-  # Power management for gaming laptop
-  services.tlp = {
-    enable = true;
-    settings = {
-      # Gaming optimizations
-      CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-
-      # Disable USB autosuspend for gaming peripherals
-      USB_AUTOSUSPEND = 0;
-
-      # Keep WiFi power management disabled for stable gaming
-      WIFI_PWR_ON_AC = "off";
-      WIFI_PWR_ON_BAT = "on";
-
-      # PCI Express power management
-      PCIE_ASPM_ON_AC = "default";
-      PCIE_ASPM_ON_BAT = "powersave";
-    };
-  };
-
-  # Enable container support for development
+  # Power management for gaming laptop: (TLP already enabled above)
+  # Container support for development
   virtualisation.docker.enable = true;
   virtualisation.podman.enable = true;
 }
