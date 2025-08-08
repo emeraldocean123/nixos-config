@@ -26,6 +26,7 @@
       hpstatus = "show_hp_status";
     };
     bashrcExtra = ''
+      [ -f ~/.bash_aliases ] && . ~/.bash_aliases
       [ -f ~/.hp-laptop-config ] && . ~/.hp-laptop-config
     '';
   };
@@ -42,6 +43,7 @@
   };
   home.file = {
     ".config/oh-my-posh/jandedobbeleer.omp.json".source = ../../modules/shared/jandedobbeleer.omp.json;
+    ".bash_aliases".source = ../../modules/shared/bash_aliases;
     ".config/kitty/kitty.conf".text = ''
       font_family MesloLGS Nerd Font
       font_size 12
@@ -53,13 +55,10 @@
       export HP_YEAR="2007"
       export HP_CPU="AMD_Turion_64_X2"
       export HP_GPU="NVIDIA_GeForce_7150M"
-
       show_battery() { if [ -f /sys/class/power_supply/BAT*/capacity ]; then cat /sys/class/power_supply/BAT*/capacity; else echo "No battery found"; fi; }
       show_temps()   { if command -v sensors &>/dev/null; then sensors | grep -E '(Core|temp|Package)'; else echo "lm-sensors not installed"; fi; }
-
       legacy_compat() { echo "HP dv9500 Legacy Compatibility Mode"; echo "This is a 2007 laptop - some modern features may not work"; }
       legacy_mode()   { echo "Setting legacy compatibility mode for 2007 hardware..."; }
-
       show_hp_status() {
         echo "=== HP dv9500 Pavilion Status ==="
         echo "Battery: $(show_battery)%"

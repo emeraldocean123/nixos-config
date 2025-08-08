@@ -17,9 +17,6 @@
       notes = "cd ~/Documents/Notes";
     };
     bashrcExtra = ''
-      if [[ -n "$SSH_CONNECTION" && $- == *i* ]]; then
-          fastfetch
-      fi
       echo "Welcome, Follett!"
     '';
   };
