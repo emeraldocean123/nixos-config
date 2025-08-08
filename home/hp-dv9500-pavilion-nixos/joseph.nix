@@ -1,69 +1,53 @@
 # /home/hp-dv9500-pavilion-nixos/joseph.nix
 { config, pkgs, ... }:
-
 {
   imports = [
     ../../modules/shared/prompt.nix
     ../../modules/shared/path-localbin.nix
     ../../modules/shared/dotfiles.nix
   ];
-
   home.username = "joseph";
-  home.homeDirectory = "/home/joseph";
   home.stateVersion = "25.05";
-
   home.packages = with pkgs; [
     dconf
     git curl wget unzip nano
     oh-my-posh fzf
     htop fastfetch
   ];
-
   programs.bash = {
     enable = true;
-
-    # Make login shells read ~/.bashrc (so OMP + fastfetch run there too)
     profileExtra = ''
       [ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
     '';
-
     shellAliases = {
-      battery    = "cat /sys/class/power_supply/BAT*/capacity";
-      temp       = "sensors | grep 'Core\\|temp'";
+      battery = "cat /sys/class/power_supply/BAT*/capacity";
+      temp = "sensors | grep 'Core\\|temp'";
       brightness = "xrandr --verbose | grep -i brightness";
-      hpstatus   = "show_hp_status";
+      hpstatus = "show_hp_status";
     };
-
-    # Minimal — prompt/fastfetch handled centrally in prompt.nix
     bashrcExtra = ''
       [ -f ~/.hp-laptop-config ] && . ~/.hp-laptop-config
     '';
   };
-
   programs.htop.enable = true;
   programs.fastfetch.enable = true;
-
   programs.fzf = {
     enable = true;
     enableBashIntegration = true;
   };
-
   gtk = {
     enable = true;
     theme.name = "Arc-Dark";
     iconTheme.name = "Papirus";
   };
-
   home.file = {
     ".config/oh-my-posh/jandedobbeleer.omp.json".source = ../../modules/shared/jandedobbeleer.omp.json;
-
     ".config/kitty/kitty.conf".text = ''
       font_family MesloLGS Nerd Font
       font_size 12
       background_opacity 0.95
       scrollback_lines 10000
     '';
-
     ".hp-laptop-config".text = ''
       export HP_MODEL="dv9500"
       export HP_YEAR="2007"
