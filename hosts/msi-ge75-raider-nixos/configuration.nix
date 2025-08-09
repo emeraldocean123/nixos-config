@@ -1,37 +1,38 @@
-# /hosts/msi-ge75-raider-nixos/configuration.nix
-# Host-specific configuration for MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)
 { config, pkgs, ... }:
-
 {
-  # NixOS system state version (do not change after install)
-  system.stateVersion = "25.05";
-
-  # Host-specific configuration is handled by flake.nix module imports.
-  # Service configurations like OpenSSH are managed in the corresponding modules.
-
-  # Enable dconf system-wide for KDE Plasma and GTK apps
-  services.dbus.packages = [ pkgs.dconf ];
-
-  # Enable nix-ld for dynamic linker compatibility (required for VS Code Remote SSH server on NixOS)
-  programs.nix-ld.enable = true;
-
-  # Optional: Open port 22 for SSH in the firewall (NixOS default is open, but explicit here)
-  networking.firewall.allowedTCPPorts = [ 22 ];
-
-  # Gaming-specific system settings
-  programs.gamemode.enable = true;
-
-  # Enable Steam and gaming support
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-  };
-
-  # MSI-specific boot optimizations
-  boot.kernelParams = [
-    "quiet"
-    "splash"
-    "nvidia-drm.modeset=1"
+  imports = [
+    ../../modules/common.nix
+    ../../modules/msi-ge75-raider-nixos/hardware.nix
+    ../../modules/msi-ge75-raider-nixos/desktop.nix
+    ../../modules/msi-ge75-raider-nixos/nvidia.nix
+    ../../modules/msi-ge75-raider-nixos/networking.nix
+    ../../modules/msi-ge75-raider-nixos/packages.nix
+    ../../modules/msi-ge75-raider-nixos/services.nix
+    ../../modules/msi-ge75-raider-nixos/users.nix
+    ../../modules/users.nix  # New users module
+    ./hardware-configuration.nix
   ];
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
+  networking.hostName = "msi-ge75-raider-nixos";
+  time.timeZone = "America/Los_Angeles";
+  i18n.defaultLocale = "en_US.UTF-8";
+  services.xserver.enable = true;
+  services.xserver.desktopManager.plasma6.enable = true;
+  services.xserver.displayManager.sddm.enable = true;
+  services.xserver.displayManager.sddm.wayland.enable = true;
+  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.user = "joseph";
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+  system.stateVersion = "25.05";
 }
