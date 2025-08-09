@@ -1,4 +1,4 @@
-# /modules/msi-ge75-raider-nixos/services.nix
+# MSI GE75 Raider services (gaming/performance oriented)
 { config, pkgs, ... }:
 
 {

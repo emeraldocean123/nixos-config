@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "[pre-commit] Running Nix formatting and lint checks..."
+
+if command -v nix >/dev/null 2>&1; then
+  echo "[pre-commit] nix fmt"
+  nix fmt
+  if ! git diff --quiet --exit-code; then
+    echo "[pre-commit] Formatting changed files; please review and re-stage:" >&2
+    git --no-pager diff --name-only >&2
+    exit 1
+  fi
+
+  echo "[pre-commit] statix check"
+  if ! nix run nixpkgs#statix -- check; then
+    echo "[pre-commit] Statix reported issues" >&2
+    exit 1
+  fi
+else
+  echo "[pre-commit] nix not found; skipping fmt/statix" >&2
+fi
+
+exit 0
