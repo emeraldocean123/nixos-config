@@ -48,7 +48,7 @@
   hardware.sensor = {
     hddtemp = {
       enable = true;
-      drives = [ "/dev/nvme0n1" ];  # Adjust based on actual drive (e.g., use `lsblk` to confirm)
+      drives = [ "/dev/nvme0n1" ]; # Adjust based on actual drive (e.g., use `lsblk` to confirm)
     };
   };
 

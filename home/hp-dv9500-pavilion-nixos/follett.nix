@@ -1,7 +1,8 @@
 # /home/hp-dv9500-pavilion-nixos/follett.nix
 { config, pkgs, ... }:
 {
-  imports = [ ../../modules/shared/prompt.nix
+  imports = [
+    ../../modules/shared/prompt.nix
     ../../modules/shared/dotfiles.nix
   ];
   home.username = "follett";

@@ -10,9 +10,15 @@
   home.stateVersion = "25.05";
   home.packages = with pkgs; [
     dconf
-    git curl wget unzip nano
-    oh-my-posh fzf
-    htop fastfetch
+    git
+    curl
+    wget
+    unzip
+    nano
+    oh-my-posh
+    fzf
+    htop
+    fastfetch
   ];
   programs.bash = {
     enable = true;

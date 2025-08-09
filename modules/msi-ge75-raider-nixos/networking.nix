@@ -18,7 +18,7 @@
     "net.ipv4.tcp_rmem" = "4096 87380 16777216";
     "net.ipv4.tcp_wmem" = "4096 65536 16777216";
     "net.core.netdev_max_backlog" = 5000;
-    "net.ipv4.tcp_congestion_control" = "bbr";  # Enable BBR for better network performance
+    "net.ipv4.tcp_congestion_control" = "bbr"; # Enable BBR for better network performance
   };
 
   # Firewall configuration for gaming
@@ -26,10 +26,10 @@
     enable = true;
     # Common gaming ports (Steam, Discord, etc.)
     allowedTCPPorts = [
-      22    # SSH
+      22 # SSH
       27015 # Steam
       27036 # Steam
-      3478  # Discord voice
+      3478 # Discord voice
     ];
     allowedUDPPorts = [
       27015 # Steam

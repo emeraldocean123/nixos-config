@@ -19,6 +19,6 @@
     kitty
     xorg.xhost
     lxqt.lxqt-session # Makes the LXQt session discoverable by the login manager
-    xorg.xset       # Provides the screen blanking tool for our workaround
+    xorg.xset # Provides the screen blanking tool for our workaround
   ];
 }

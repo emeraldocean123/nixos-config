@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "ahci" "usb_storage" "sd_mod" ];
@@ -15,11 +16,12 @@
 
   # Temporary placeholder for bootloader (uncomment and adjust after generating real config)
   boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/nvme0n1";  # Placeholder: Replace with your actual boot device (e.g., from lsblk)
+  boot.loader.grub.device = "/dev/nvme0n1"; # Placeholder: Replace with your actual boot device (e.g., from lsblk)
 
   # Temporary placeholder for root filesystem (replace UUID and device after install)
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/00000000-0000-0000-0000-000000000000";  # Placeholder UUID - replace with real from blkid
+    {
+      device = "/dev/disk/by-uuid/00000000-0000-0000-0000-000000000000"; # Placeholder UUID - replace with real from blkid
       fsType = "ext4";
     };
 

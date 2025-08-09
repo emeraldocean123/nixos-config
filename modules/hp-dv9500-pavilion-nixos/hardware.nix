@@ -23,7 +23,7 @@
     enable = true;
     touchpad = {
       tapping = true;
-      naturalScrolling = false;  # Traditional scrolling for older users
+      naturalScrolling = false; # Traditional scrolling for older users
       disableWhileTyping = true;
     };
   };
@@ -31,13 +31,13 @@
   # Enable Bluetooth (if present on this model)
   hardware.bluetooth = {
     enable = true;
-    powerOnBoot = false;  # Save battery on old laptop
+    powerOnBoot = false; # Save battery on old laptop
   };
 
   # Legacy hardware optimizations
   boot.kernel.sysctl = {
     # Optimize for older hardware
-    "vm.swappiness" = 60;  # Higher swap usage for limited RAM
+    "vm.swappiness" = 60; # Higher swap usage for limited RAM
     "vm.dirty_background_ratio" = 15;
     "vm.dirty_ratio" = 20;
   };
@@ -46,7 +46,7 @@
   hardware.sensor = {
     hddtemp = {
       enable = true;
-      drives = [ "/dev/sda" ];  # Monitor the main drive temperature
+      drives = [ "/dev/sda" ]; # Monitor the main drive temperature
     };
   };
 

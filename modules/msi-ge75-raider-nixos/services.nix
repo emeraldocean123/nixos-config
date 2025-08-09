@@ -22,8 +22,8 @@
   };
 
   # ---- Power management: choose ONE. We keep TLP and disable others. ----
-  services.power-profiles-daemon.enable = false;  # conflicts with TLP/auto-cpufreq
-  services.auto-cpufreq.enable = false;           # disable; TLP is our choice below
+  services.power-profiles-daemon.enable = false; # conflicts with TLP/auto-cpufreq
+  services.auto-cpufreq.enable = false; # disable; TLP is our choice below
 
   services.tlp = {
     enable = true;
@@ -47,11 +47,11 @@
   # ----------------------------------------------------------------------
 
   # Gaming-specific services
-  services.ratbagd.enable = true;       # Gaming mouse configuration
-  hardware.openrazer.enable = true;     # Razer peripherals support
+  services.ratbagd.enable = true; # Gaming mouse configuration
+  hardware.openrazer.enable = true; # Razer peripherals support
 
   # Performance and monitoring services
-  services.thermald.enable = true;      # Thermal management
+  services.thermald.enable = true; # Thermal management
 
   # Enable location services (for automatic time zone, etc.)
   services.geoclue2.enable = true;

@@ -10,7 +10,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    jack.enable = false;  # Disable Jack for simplicity on legacy hardware
+    jack.enable = false; # Disable Jack for simplicity on legacy hardware
   };
   security.rtkit.enable = true;
 
@@ -59,10 +59,10 @@
 
   # Lid switch behavior (useful for older laptops)
   services.logind = {
-    lidSwitch = "ignore";  # Don't suspend on lid close
+    lidSwitch = "ignore"; # Don't suspend on lid close
     lidSwitchDocked = "ignore";
     lidSwitchExternalPower = "ignore";
-    powerKey = "poweroff";  # Power button shuts down
+    powerKey = "poweroff"; # Power button shuts down
   };
 
   # Enable firmware updates (if supported)
