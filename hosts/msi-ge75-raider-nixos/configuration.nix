@@ -8,8 +8,8 @@
     ../../modules/msi-ge75-raider-nixos/networking.nix
     ../../modules/msi-ge75-raider-nixos/packages.nix
     ../../modules/msi-ge75-raider-nixos/services.nix
-    ../../modules/msi-ge75-raider-nixos/users.nix
-    ../../modules/users.nix  # New users module
+    # ../../modules/msi-ge75-raider-nixos/users.nix  # Removed - use shared users.nix
+    ../../modules/users.nix
     ./hardware-configuration.nix
   ];
   boot.loader = {

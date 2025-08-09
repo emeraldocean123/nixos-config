@@ -7,8 +7,8 @@
     ../../modules/hp-dv9500-pavilion-nixos/networking.nix
     ../../modules/hp-dv9500-pavilion-nixos/packages.nix
     ../../modules/hp-dv9500-pavilion-nixos/services.nix
-    ../../modules/hp-dv9500-pavilion-nixos/users.nix
-    ../../modules/users.nix  # New users module
+    # ../../modules/hp-dv9500-pavilion-nixos/users.nix  # Removed - use shared users.nix
+    ../../modules/users.nix
     ./hardware-configuration.nix
   ];
   boot.loader = {
