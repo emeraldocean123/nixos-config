@@ -1,5 +1,4 @@
-# /home/msi-ge75-raider-nixos/follett.nix
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   imports = [
     ../../modules/shared/prompt.nix

@@ -1,5 +1,4 @@
-# /home/hp-dv9500-pavilion-nixos/follett.nix
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   imports = [
     ../../modules/shared/prompt.nix

@@ -10,5 +10,5 @@
   environment.systemPackages = with pkgs; [
     nixpkgs-fmt
     statix
-  ] ++ config.environment.systemPackages;
+  ];
 }
