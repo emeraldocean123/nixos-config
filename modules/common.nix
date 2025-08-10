@@ -2,7 +2,7 @@
 # Common, host-agnostic settings shared by all machines
 { config, lib, pkgs, ... }:
 let
-	inherit (lib) mkForce elem;
+	inherit (lib) mkForce elem mkAfter;
 in
 {
 	# Locale and timezone
@@ -54,6 +54,40 @@ in
 		ExecStart = "${pkgs.bash}/bin/bash -lc 'command -v rfkill >/dev/null 2>&1 && rfkill unblock all || true'";
 		};
 	};
+
+	# Sudo quality-of-life: allow joseph/follett to update /etc/nixos and rebuild without a password,
+	# and keep sudo tokens warm a bit longer to reduce re-prompts. Scope is tightly limited.
+	security.sudo = {
+		# Extend how long the sudo timestamp stays valid (minutes)
+		extraConfig = ''
+			Defaults:joseph timestamp_timeout=30
+			Defaults:follett timestamp_timeout=30
+		'';
+		# Restrict NOPASSWD to exact commands only
+		extraRules = [
+			{
+				users = [ "joseph" "follett" ];
+				commands = [
+					# Only allow git pulling the system repo at /etc/nixos as root, no other git actions
+					{ command = "/run/current-system/sw/bin/git -C /etc/nixos pull"; options = [ "NOPASSWD" ]; }
+					# Common nixos-rebuild invocations
+					{ command = "/run/current-system/sw/bin/nixos-rebuild switch"; options = [ "NOPASSWD" ]; }
+					{ command = "/run/current-system/sw/bin/nixos-rebuild test"; options = [ "NOPASSWD" ]; }
+					{ command = "/run/current-system/sw/bin/nixos-rebuild build"; options = [ "NOPASSWD" ]; }
+				];
+			}
+		];
+	};
+
+	# Small helper to update and switch in one go; uses the above sudo rules.
+	environment.systemPackages = mkAfter [
+		(pkgs.writeShellScriptBin "nixos-up" ''
+			set -euo pipefail
+			# Pull the system config and switch to it
+			sudo /run/current-system/sw/bin/git -C /etc/nixos pull --ff-only
+			sudo /run/current-system/sw/bin/nixos-rebuild switch
+		'')
+	];
 
 	# Sanity checks to prevent foot-guns during rebuilds.
 	assertions = [
