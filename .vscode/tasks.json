@@ -78,6 +78,14 @@
       "group": "test",
       "problemMatcher": []
     }
+    ,
+    {
+      "label": "Nix: Flake Check (WSL)",
+      "type": "shell",
+      "command": "wsl.exe bash -lc \"cd $(wslpath -a '${workspaceFolder}') && nix flake check\"",
+      "group": "test",
+      "problemMatcher": []
+    }
   ],
   "inputs": [
     {
