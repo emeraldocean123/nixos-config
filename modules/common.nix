@@ -108,7 +108,6 @@ in
 		systemd.services."lid-inhibit-at-greeter" = mkIf (cfg.enable) (let
 			mainScript = pkgs.writeShellScript "lid-inhibit-at-greeter" ''
 				#!/usr/bin/env bash
-				set -eu
 				pidfile=/run/lid-greeter-inhibit/pid
 				cleanup() {
 				  if [ -f "$pidfile" ]; then
@@ -126,6 +125,7 @@ in
 				  else
 				    count=$(echo "$sessions" | ${pkgs.gawk}/bin/awk 'BEGIN{c=0} { if ($3 !~ /^(sddm|lightdm|gdm|greeter)$/) c++ } END{ print c }')
 				  fi
+				  echo "[lid-inhibit] non-greeter sessions: $count" >&2
 				  if [ "$count" -eq 0 ]; then
 				    if [ ! -f "$pidfile" ] || ! kill -0 "$(cat "$pidfile")" 2>/dev/null; then
 				      ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' ${pkgs.coreutils}/bin/tail -f /dev/null &
