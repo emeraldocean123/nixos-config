@@ -17,5 +17,13 @@
   networking.hostName = "hp-dv9500-pavilion-nixos";
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "joseph";
+
+  # Guard: ensure the host hardware config file exists and is non-empty
+  assertions = [
+    {
+      assertion = (builtins.pathExists ./hardware-configuration.nix) && ((builtins.stringLength (builtins.readFile ./hardware-configuration.nix)) > 0);
+      message = "hosts/hp-dv9500-pavilion-nixos/hardware-configuration.nix is missing or empty.";
+    }
+  ];
   system.stateVersion = "25.05";
 }

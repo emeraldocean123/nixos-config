@@ -22,5 +22,15 @@
     # Desktop and display manager are configured in modules/msi-ge75-raider-nixos/desktop.nix
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "joseph";
+
+  # Guard: prevent deploying with placeholder hardware UUIDs
+  assertions = [
+    {
+      assertion = builtins.elem false [
+        (builtins.match ".*0000-0000-0000-000000000000.*" (builtins.readFile ./hardware-configuration.nix) == null)
+      ];
+      message = "Replace placeholder UUIDs in hosts/msi-ge75-raider-nixos/hardware-configuration.nix before deploying.";
+    }
+  ];
   system.stateVersion = "25.05";
 }
