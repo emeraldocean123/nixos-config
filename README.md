@@ -179,3 +179,4 @@ This flake exposes:
 - GUI-first: We do not override lid behavior globally. Desktop environments (LXQt/Plasma) control lid actions once a user session exists.
 - Greeter safety: A small systemd service runs only alongside the display manager and uses systemd-inhibit to ignore the lid at the greeter. As soon as a non-greeter session appears, the inhibitor falls away and GUI settings take over.
 - Implication: If troubleshooting GUI power settings, there are no global logind HandleLidSwitch overrides to interfere.
+ - Toggle: You can disable the greeter inhibitor with `custom.lid.greeterInhibit.enable = false;` if your display manager gains native handling.

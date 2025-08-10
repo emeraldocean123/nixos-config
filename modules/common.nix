@@ -111,15 +111,46 @@ in
 			Type = "simple";
 			ExecStart = ''
 				${pkgs.bash}/bin/bash -lc "
+				set -euo pipefail
+				pidfile=/run/lid-greeter-inhibit.pid
+				cleanup() {
+				  if [ -f \"$pidfile\" ]; then
+				    if kill -0 \"$(cat \"$pidfile\")\" 2>/dev/null; then
+				      kill \"$(cat \"$pidfile\")\" 2>/dev/null || true
+				    fi
+				    rm -f \"$pidfile\"
+				  fi
+				}
+				trap cleanup EXIT
 				while true; do
 				  count=$(${pkgs.systemd}/bin/loginctl --no-legend list-sessions | awk '{print $3}' | grep -Ev '^(sddm|lightdm|gdm|greeter)$' | wc -l)
 				  if [ \"$count\" -eq 0 ]; then
-				    ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' sleep 15
+				    if [ ! -f \"$pidfile\" ] || ! kill -0 \"$(cat \"$pidfile\")\" 2>/dev/null; then
+				      ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' sleep infinity &
+				      echo $! > \"$pidfile\"
+				    fi
+				    sleep 5
 				  else
-				    sleep 30
+				    if [ -f \"$pidfile\" ]; then
+				      if kill -0 \"$(cat \"$pidfile\")\" 2>/dev/null; then
+				        kill \"$(cat \"$pidfile\")\" 2>/dev/null || true
+				      fi
+				      rm -f \"$pidfile\"
+				    fi
+				    sleep 10
 				  fi
 				done"
 				'';
+			ExecStopPost = ''
+				${pkgs.bash}/bin/bash -lc '
+				pidfile=/run/lid-greeter-inhibit.pid
+				if [ -f "$pidfile" ]; then
+				  if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
+				    kill "$(cat "$pidfile")" 2>/dev/null || true
+				  fi
+				  rm -f "$pidfile"
+				fi'
+			'';
 			Restart = "always";
 			RestartSec = "5s";
 		};
