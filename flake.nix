@@ -37,6 +37,8 @@
         # HP dv9500 Pavilion host
   hp-dv9500-pavilion-nixos = nixpkgs.lib.nixosSystem {
           inherit system;
+          # Make flake inputs available to modules
+          specialArgs = { inherit dotfiles; };
           modules = [
             ./modules/hp-dv9500-pavilion-nixos/hardware.nix
             ./modules/hp-dv9500-pavilion-nixos/desktop.nix
@@ -50,6 +52,8 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
+              # Also expose flake inputs to Home Manager modules
+              home-manager.extraSpecialArgs = { inherit dotfiles; };
               home-manager.users.joseph = import ./home/hp-dv9500-pavilion-nixos/joseph.nix;
               home-manager.users.follett = import ./home/hp-dv9500-pavilion-nixos/follett.nix;
             }
@@ -59,6 +63,7 @@
         # MSI GE75 Raider host
   msi-ge75-raider-nixos = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit dotfiles; };
           modules = [
             ./modules/msi-ge75-raider-nixos/hardware.nix
             ./modules/msi-ge75-raider-nixos/desktop.nix
@@ -72,6 +77,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
+              home-manager.extraSpecialArgs = { inherit dotfiles; };
               home-manager.users.joseph = import ./home/msi-ge75-raider-nixos/joseph.nix;
               home-manager.users.follett = import ./home/msi-ge75-raider-nixos/follett.nix;
             }
