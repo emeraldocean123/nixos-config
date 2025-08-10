@@ -11,14 +11,14 @@
     {
       "label": "Nix: Statix Check",
       "type": "shell",
-      "command": "statix check",
+      "command": "nix run nixpkgs#statix -- check",
       "group": "test",
       "problemMatcher": []
     },
     {
       "label": "Nix: Statix Fix",
       "type": "shell",
-      "command": "statix fix -y",
+      "command": "nix run nixpkgs#statix -- fix -y",
       "group": "build",
       "problemMatcher": []
     },
