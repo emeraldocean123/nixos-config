@@ -39,4 +39,4 @@ This checklist helps you deploy the MSI host safely and replace placeholder hard
 Notes
 - You can override the dotfiles input during local tests:
   - nix build --override-input dotfiles path:../dotfiles
-- To avoid CI costs, use manual workflows only (flake-check.yml).
+- To avoid CI costs, no GitHub Actions are used in this repo; run local checks with `nix fmt`, `nix run nixpkgs#statix -- check`, and `nix flake check`.

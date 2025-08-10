@@ -1,6 +1,6 @@
 # Contributing
 
-This repo uses Nix flakes and GitHub Actions to keep code clean and consistent.
+This repo uses Nix flakes with local checks to keep code clean and consistent. GitHub Actions is not used to avoid costs.
 
 ## Formatting & linting
 
@@ -11,7 +11,8 @@ This repo uses Nix flakes and GitHub Actions to keep code clean and consistent.
   - `statix check`
   - Optional: `statix fix` (review changes before committing)
 
-CI will run `nix fmt` and `statix check` on pushes/PRs and fail if formatting or lints are needed.
+Run locally before pushing:
+`nix fmt`, `nix run nixpkgs#statix -- check`, and optionally `nix flake check`.
 
 ## Local Git hooks (optional)
 

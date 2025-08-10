@@ -253,4 +253,4 @@ Optional host tweaks
 - HP: In `modules/hp-dv9500-pavilion-nixos/services.nix`, optional commented TLP settings can improve battery life on legacy hardware.
 
 CI
-- Manual-only workflows to avoid costs. Use “Flake Check (Manual)” in GitHub Actions for format/lint/flake checks.
+- No GitHub Actions. Run checks locally (nix fmt, statix, nix flake check) or via the provided Remote SSH tasks.
