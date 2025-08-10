@@ -31,7 +31,7 @@
         else
           RUNTIME_DIR="/run/user/$UID_NUM"
         fi
-        MARKER="$RUNTIME_DIR/fastfetch-shown.${TTY_NAME:-unknown}"
+  MARKER="$RUNTIME_DIR/fastfetch-shown.''${TTY_NAME:-unknown}"
         if [ $skip_ff -eq 0 ] && [ -n "$TTY_NAME" ] && [ ! -f "$MARKER" ]; then
           if command -v fastfetch >/dev/null 2>&1; then
             fastfetch
