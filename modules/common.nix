@@ -107,10 +107,12 @@ in
 		partOf = [ "display-manager.service" ];
 		wants = [ "display-manager.service" ];
 		after = [ "display-manager.service" ];
+		unitConfig = {
+			ConditionPathExistsGlob = "/proc/acpi/button/lid/*/state";
+		};
 		serviceConfig = {
 			Type = "simple";
 			RuntimeDirectory = "lid-greeter-inhibit";
-			ConditionPathExistsGlob = "/proc/acpi/button/lid/*/state";
 			ExecStart = ''
 				${pkgs.bash}/bin/bash -lc "
 				set -euo pipefail
