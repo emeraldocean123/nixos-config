@@ -3,13 +3,10 @@
 { pkgs, ... }:
 {
   programs.bash = {
-    # Run fastfetch on login shells too (e.g., SSH)
+    # Ensure login shells source interactive config
     profileExtra = ''
-      if command -v fastfetch >/dev/null 2>&1; then
-        if [ -z "${FASTFETCH_RAN:-}" ]; then
-          fastfetch
-          export FASTFETCH_RAN=1
-        fi
+      if [ -r "$HOME/.bashrc" ]; then
+        . "$HOME/.bashrc"
       fi
     '';
   # Interactive shells: show fastfetch and set prompt
