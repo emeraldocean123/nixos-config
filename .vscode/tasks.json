@@ -63,6 +63,13 @@
       "command": "sudo nix-collect-garbage --delete-older-than 7d",
       "problemMatcher": [],
       "group": "none"
+    },
+    {
+      "label": "Nix: Flake Check",
+      "type": "shell",
+      "command": "nix flake check",
+      "group": "test",
+      "problemMatcher": []
     }
   ],
   "inputs": [
