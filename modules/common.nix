@@ -43,6 +43,14 @@ in
 			sudo /run/current-system/sw/bin/git -C /etc/nixos pull --ff-only
 			sudo /run/current-system/sw/bin/nixos-rebuild switch
 		'')
+		(writeShellScriptBin "nixos-up-clean" ''
+			set -euo pipefail
+			# Reset any local changes, clean untracked, then pull and switch
+			sudo /run/current-system/sw/bin/git -C /etc/nixos reset --hard HEAD
+			sudo /run/current-system/sw/bin/git -C /etc/nixos clean -fd
+			sudo /run/current-system/sw/bin/git -C /etc/nixos pull --ff-only
+			sudo /run/current-system/sw/bin/nixos-rebuild switch
+		'')
 	];
 
 	# Wait for networking to be online when requested and make sshd start after network-online
@@ -76,6 +84,9 @@ in
 				commands = [
 					# Only allow git pulling the system repo at /etc/nixos as root, no other git actions
 					{ command = "/run/current-system/sw/bin/git -C /etc/nixos pull"; options = [ "NOPASSWD" ]; }
+					# Allow safe tree cleanup operations in /etc/nixos
+					{ command = "/run/current-system/sw/bin/git -C /etc/nixos reset --hard HEAD"; options = [ "NOPASSWD" ]; }
+					{ command = "/run/current-system/sw/bin/git -C /etc/nixos clean -fd"; options = [ "NOPASSWD" ]; }
 					# Common nixos-rebuild invocations
 					{ command = "/run/current-system/sw/bin/nixos-rebuild switch"; options = [ "NOPASSWD" ]; }
 					{ command = "/run/current-system/sw/bin/nixos-rebuild test"; options = [ "NOPASSWD" ]; }
@@ -83,6 +94,14 @@ in
 				];
 			}
 		];
+	};
+
+	# Ensure user lingering so user systemd timers continue when logged out
+	system.activationScripts.enableLinger = {
+		text = ''
+			/run/current-system/sw/bin/loginctl enable-linger joseph || true
+			/run/current-system/sw/bin/loginctl enable-linger follett || true
+		'';
 	};
 
 	# nixos-up helper included above in environment.systemPackages
