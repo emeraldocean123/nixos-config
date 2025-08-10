@@ -7,11 +7,17 @@
   # where login shells already source it via global profile.
   profileExtra = ''
   '';
-  # Interactive shells: show fastfetch once per TTY and set prompt
+  # Interactive shells: show fastfetch once per TTY (non-login shells only) and set prompt
   bashrcExtra = ''
       # Only in interactive shells
       case $- in *i*) interactive=1 ;; *) interactive=0 ;; esac
       if [ "$interactive" = 1 ]; then
+        # Skip on login shells to avoid clashing with system login banners/MOTD
+        if shopt -q login_shell; then
+          skip_ff=1
+        else
+          skip_ff=0
+        fi
         # Determine a per-TTY marker path to avoid duplicate banners
         TTY_PATH="$(tty 2>/dev/null)" || TTY_PATH=""
         if printf '%s' "$TTY_PATH" | grep -q '^/'; then
@@ -26,7 +32,7 @@
           RUNTIME_DIR="/run/user/$UID_NUM"
         fi
         MARKER="$RUNTIME_DIR/fastfetch-shown.${TTY_NAME:-unknown}"
-        if [ -n "$TTY_NAME" ] && [ ! -f "$MARKER" ]; then
+        if [ $skip_ff -eq 0 ] && [ -n "$TTY_NAME" ] && [ ! -f "$MARKER" ]; then
           if command -v fastfetch >/dev/null 2>&1; then
             fastfetch
           fi
