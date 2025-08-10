@@ -190,6 +190,8 @@ VS Code tasks
 	- NixOS: Test (pick host)
 	- NixOS: Dry-build (pick host)
 	- Nix: Flake Update
+	- NixOS: List Generations
+	- Nix: GC (delete older than 7d)
 
 3. Remote Management (SSH)
 SSH is enabled on both hosts. Connect using:

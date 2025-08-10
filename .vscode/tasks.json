@@ -49,6 +49,20 @@
       "command": "nix flake update",
       "problemMatcher": [],
       "group": "build"
+    },
+    {
+      "label": "NixOS: List Generations",
+      "type": "shell",
+      "command": "sudo nix-env -p /nix/var/nix/profiles/system --list-generations",
+      "problemMatcher": [],
+      "group": "none"
+    },
+    {
+      "label": "Nix: GC (delete older than 7d)",
+      "type": "shell",
+      "command": "sudo nix-collect-garbage --delete-older-than 7d",
+      "problemMatcher": [],
+      "group": "none"
     }
   ],
   "inputs": [
