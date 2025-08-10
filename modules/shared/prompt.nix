@@ -3,15 +3,15 @@
 { pkgs, ... }:
 {
   programs.bash = {
-    # Ensure login shells source interactive config
-    profileExtra = ''
-      if [ -r "$HOME/.bashrc" ]; then
-        . "$HOME/.bashrc"
-      fi
-    '';
+  # Leave profileExtra empty to avoid double-sourcing .bashrc on systems
+  # where login shells already source it via global profile.
+  profileExtra = ''
+  '';
   # Interactive shells: show fastfetch and set prompt
   bashrcExtra = ''
-      if command -v fastfetch >/dev/null 2>&1; then
+  # Only in interactive shells
+  case $- in *i*) interactive=1 ;; *) interactive=0 ;; esac
+  if [ "$interactive" = 1 ] && command -v fastfetch >/dev/null 2>&1; then
         if [ -z "${FASTFETCH_RAN:-}" ]; then
           fastfetch
           export FASTFETCH_RAN=1
