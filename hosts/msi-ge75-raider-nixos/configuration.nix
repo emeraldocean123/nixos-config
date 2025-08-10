@@ -3,6 +3,7 @@
 { config, pkgs, ... }:
 {
   imports = [
+  ../../modules/common.nix
     ../../modules/msi-ge75-raider-nixos/hardware.nix
     ../../modules/msi-ge75-raider-nixos/desktop.nix
     ../../modules/msi-ge75-raider-nixos/nvidia.nix

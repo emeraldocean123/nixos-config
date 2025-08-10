@@ -4,6 +4,7 @@
 {
   imports = [
   # Common settings are applied via the modules imported below
+  ../../modules/common.nix
     ../../modules/hp-dv9500-pavilion-nixos/hardware.nix
     ../../modules/hp-dv9500-pavilion-nixos/desktop.nix
     ../../modules/hp-dv9500-pavilion-nixos/networking.nix
