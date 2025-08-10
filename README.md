@@ -192,6 +192,8 @@ VS Code tasks
 	- Nix: Flake Update
 	- NixOS: List Generations
 	- Nix: GC (delete older than 7d)
+	- Nix: Statix Check
+	- Nix: Statix Fix
 
 3. Remote Management (SSH)
 SSH is enabled on both hosts. Connect using:

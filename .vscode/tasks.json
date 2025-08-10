@@ -16,6 +16,13 @@
       "problemMatcher": []
     },
     {
+      "label": "Nix: Statix Fix",
+      "type": "shell",
+      "command": "statix fix -y",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
       "label": "Nix: Flake Info",
       "type": "shell",
       "command": "nix flake show",
