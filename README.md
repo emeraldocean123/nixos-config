@@ -132,6 +132,50 @@ sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
 
 Note: For the MSI host, ensure hosts/msi-ge75-raider-nixos/hardware-configuration.nix is generated using nixos-generate-config before deployment.
 
+## ⚡ Quick start: Install on MSI GE75 Raider and migrate configs
+
+Follow these steps after a minimal NixOS install and first boot on the MSI:
+
+1) Enable flakes on the temporary base system
+
+```bash
+sudo sed -i 's/^\s*#\?\s*nix\.settings\.experimental-features.*/nix.settings.experimental-features = [ "nix-command" "flakes" ];/' /etc/nixos/configuration.nix
+sudo nixos-rebuild switch
+```
+
+2) Generate hardware config and place it under this repo for MSI
+
+```bash
+sudo nixos-generate-config
+# Back up and replace /etc/nixos with this repo
+sudo mv /etc/nixos /etc/nixos.backup.$(date +%Y%m%d-%H%M%S)
+sudo git clone https://github.com/emeraldocean123/nixos-config.git /etc/nixos
+cd /etc/nixos
+
+# Copy the generated hardware config into the MSI host path in the repo
+sudo cp /etc/nixos.backup*/hardware-configuration.nix hosts/msi-ge75-raider-nixos/hardware-configuration.nix
+```
+
+3) Deploy the MSI configuration (includes NVIDIA + Plasma + greeter-only lid policy)
+
+```bash
+sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
+```
+
+4) Home Manager users joseph/follett are created and configured by the flake modules. Log out/in after the first switch for all user services to settle.
+
+Notes
+- Dotfiles: On NixOS, your prompt/theme/fastfetch are managed by Home Manager. You do not need to run the dotfiles bootstrap scripts here. If you want to edit the Oh My Posh theme locally and test it live, you can clone your dotfiles to ~/Documents/dotfiles and temporarily override the flake input during a build:
+
+	```bash
+	# from /etc/nixos with your local dotfiles repo at ../dotfiles
+	sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos --override-input dotfiles path:../dotfiles
+	```
+
+- Networking/SSH are enabled and hardened by default. If you’re on Wi‑Fi during the first boot, use the Plasma network applet to join; the system also guards against rfkill blocks and waits for network correctly.
+
+- If the machine won’t suspend at the greeter but obeys GUI settings after login, that’s expected: the greeter-only lid inhibitor is active only before login. You can toggle it with `custom.lid.greeterInhibit.enable = false;` if desired.
+
 2. Daily Management Commands
 Run these commands from /etc/nixos to manage your system:
 
@@ -173,6 +217,12 @@ Unified Oh My Posh theme
 This flake exposes:
 - formatter.${system} = nixpkgs-fmt → run `nix fmt` to format Nix files.
 - A devShell with nixpkgs-fmt and statix → run `nix develop`, then `nixpkgs-fmt .` and `statix check`.
+
+VS Code integration
+- Tasks (Command Palette → Tasks: Run Task):
+	- Nix: Format (nix fmt)
+	- Nix: Statix Check
+	- Nix: Flake Info
 
 🛡️ Lid and power policy
 

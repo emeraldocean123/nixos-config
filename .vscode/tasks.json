@@ -1,0 +1,26 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Nix: Format (nix fmt)",
+      "type": "shell",
+      "command": "nix fmt",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Nix: Statix Check",
+      "type": "shell",
+      "command": "statix check",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Nix: Flake Info",
+      "type": "shell",
+      "command": "nix flake show",
+      "group": "none",
+      "problemMatcher": []
+    }
+  ]
+}
