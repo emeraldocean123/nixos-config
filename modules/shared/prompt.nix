@@ -9,8 +9,8 @@
         fastfetch
       fi
     '';
-    # Interactive shells: show fastfetch and set prompt
-    promptInit = ''
+  # Interactive shells: show fastfetch and set prompt
+  bashrcExtra = ''
       if command -v fastfetch >/dev/null 2>&1; then
         fastfetch
       fi
