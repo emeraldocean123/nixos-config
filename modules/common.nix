@@ -11,6 +11,9 @@ in
 
 	# Hard-require NetworkManager. If any other module tries to disable it, we force it on.
 	networking.networkmanager.enable = mkForce true;
+		# Forbid legacy wireless and systemd-networkd while using NetworkManager.
+		networking.wireless.enable = mkForce false;
+		systemd.network.enable = mkForce false;
 
 	# Basic firewall; we don't force the whole list to avoid clobbering host-specific ports.
 	# Instead, assert that SSH is reachable when enabled.
