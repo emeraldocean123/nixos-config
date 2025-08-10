@@ -28,4 +28,16 @@
   };
   programs.htop.enable = true;
   programs.fastfetch.enable = true;
+
+  # Disable LXQt Power Management to avoid conflicting lid actions;
+  # we rely on logind (set to ignore) and xautolock for screen blank.
+  xdg.enable = true;
+  xdg.configFile."autostart/lxqt-powermanagement.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=LXQt Power Management (disabled)
+    Exec=lxqt-powermanagement
+    OnlyShowIn=LXQt;
+    Hidden=true
+  '';
 }
