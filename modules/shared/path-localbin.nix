@@ -1,5 +1,10 @@
-{ config, pkgs, ... }:
+## modules/shared/path-localbin.nix
+# Ensure ~/.local/bin is on PATH via bash init
+{ ... }:
 {
-  # Add ~/.local/bin to PATH for any HM user importing this
-  home.sessionPath = [ "$HOME/.local/bin" ];
+  programs.bash.initExtra = ''
+    if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+      export PATH="$HOME/.local/bin:$PATH"
+    fi
+  '';
 }

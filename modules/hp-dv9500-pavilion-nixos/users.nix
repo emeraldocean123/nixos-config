@@ -1,12 +1,12 @@
-# /etc/nixos/modules/hp-dv9500-pavilion-nixos/users.nix
-# Defines host-specific users for the HP Pavilion.
+## modules/hp-dv9500-pavilion-nixos/users.nix
+# Host-specific users for the HP Pavilion dv9500
 { config, pkgs, ... }:
 {
-  # The 'joseph' user is defined in modules/common.nix.
-  # This file is for users specific to this machine.
+  # Define additional host-specific users; 'joseph' is defined via Home Manager
   users.users.follett = {
     isNormalUser = true;
     description = "Follett";
     extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.bashInteractive;
   };
 }

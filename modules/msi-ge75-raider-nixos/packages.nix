@@ -1,3 +1,5 @@
+# modules/msi-ge75-raider-nixos/packages.nix
+# System packages for MSI GE75 Raider (aligned with HP where possible)
 { pkgs, ... }:
 {
   # Align with HP's package set (minus LXQt-specific packages not used on KDE)

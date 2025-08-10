@@ -36,7 +36,6 @@ hardware-configuration.nix – Hardware-specific settings (placeholder, requires
 
 
 modules/ – Reusable NixOS modules
-common.nix – Shared settings across hosts
 hp-dv9500-pavilion-nixos/
 desktop.nix – LXQt desktop configuration
 hardware.nix – Hardware-specific settings
@@ -57,7 +56,6 @@ services.nix – System services
 
 shared/
 dotfiles.nix – Shared Git, Bash, and editor configurations
-jandedobbeleer.omp.json – Oh My Posh theme for user prompts
 
 
 
@@ -162,6 +160,13 @@ Rollback: Revert to a previous generation if a build fails:sudo nixos-rebuild sw
 Regularly update flake.lock to keep dependencies current.
 For advanced Home Manager configurations, refer to the home/ directory for each host.
 Both hosts support joseph and follett users with tailored configurations.
+
+Unified Oh My Posh theme
+
+- The theme is a single source of truth in the dotfiles repo at `posh-themes/jandedobbeleer.omp.json`.
+- This flake references it via a flake input:
+	- Add input: `dotfiles.url = "path:../dotfiles";`
+	- In Home Manager, link using: `inputs.dotfiles.outPath + "/posh-themes/jandedobbeleer.omp.json"`.
 
 🧰 Formatting & linting
 

@@ -1,7 +1,8 @@
-# /etc/nixos/modules/hp-dv9500-pavilion-nixos/desktop.nix
-# Final working configuration: LightDM greeter with the LXQt desktop.
+# modules/hp-dv9500-pavilion-nixos/desktop.nix
+# LXQt desktop and LightDM configuration for HP dv9500 Pavilion
 { config, pkgs, ... }:
 {
+  # Final working configuration: LightDM greeter with the LXQt desktop.
   services.xserver.enable = true;
 
   services.xserver.xkb = {

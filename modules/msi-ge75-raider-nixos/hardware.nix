@@ -1,5 +1,5 @@
-# /modules/msi-ge75-raider-nixos/hardware.nix
-# Hardware-specific configuration for MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)
+# modules/msi-ge75-raider-nixos/hardware.nix
+# MSI GE75 Raider hardware (2018, i7-9750H, RTX 2070)
 { config, pkgs, ... }:
 
 {
@@ -44,11 +44,7 @@
     "vm.dirty_ratio" = 10;
   };
 
-  # Enable performance monitoring
-  services.hddtemp = {
-    enable = true;
-    drives = [ "/dev/nvme0n1" ]; # Adjust based on actual drive (e.g., use `lsblk` to confirm)
-  };
+  # Performance monitoring: add sensors/SMART in host config if needed
 
   # Enable USB devices (gaming peripherals)
   services.udev.extraRules = ''

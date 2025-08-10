@@ -42,11 +42,7 @@
     "vm.dirty_ratio" = 20;
   };
 
-  # Hardware monitoring
-  services.hddtemp = {
-    enable = true;
-    drives = [ "/dev/sda" ]; # Monitor the main drive temperature
-  };
+  # Hardware monitoring (hddtemp removed; not available on 25.05)
 
   # Power management optimizations for 2007 hardware
   powerManagement = {

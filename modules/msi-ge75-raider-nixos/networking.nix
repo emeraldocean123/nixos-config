@@ -1,12 +1,12 @@
-# /modules/msi-ge75-raider-nixos/networking.nix
-# Networking configuration for MSI GE75 Raider 9SF (2018, Intel Core i7-9750H, RTX 2070)
+# modules/msi-ge75-raider-nixos/networking.nix
+# MSI GE75 Raider networking (2018, i7-9750H, RTX 2070)
 { config, pkgs, ... }:
 
 {
   # Set system hostname
   networking.hostName = "msi-ge75-raider-nixos";
 
-  # NetworkManager is enabled globally in modules/common.nix
+  # NetworkManager is enabled globally (see host configuration)
 
   # KDE Plasma provides its own network applet; disable nm-applet
   programs.nm-applet.enable = false;

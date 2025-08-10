@@ -1,3 +1,5 @@
+# modules/msi-ge75-raider-nixos/desktop.nix
+# KDE Plasma 6 desktop with SDDM for MSI GE75 Raider
 { config, pkgs, ... }:
 {
   # Enable X and Plasma 6 with SDDM (default Wayland session is fine; X11 also works)

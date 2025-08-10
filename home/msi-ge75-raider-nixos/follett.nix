@@ -1,29 +1,26 @@
+## home/msi-ge75-raider-nixos/follett.nix
+# Home Manager configuration for user follett on MSI GE75 Raider
 { pkgs, ... }:
 {
   imports = [
     ../../modules/shared/prompt.nix
     ../../modules/shared/dotfiles.nix
+  ../../modules/shared/path-localbin.nix
   ];
   home.username = "follett";
   home.stateVersion = "25.05";
   home.packages = with pkgs; [
-    dconf
-    htop
-    fastfetch
+    dconf git curl wget unzip nano
+    oh-my-posh fzf htop fastfetch
   ];
   programs.bash = {
     enable = true;
-    shellAliases = {
-      notes = "cd ~/Documents/Notes";
-    };
-    bashrcExtra = ''
-      echo "Welcome, Follett!"
-    '';
   };
-  programs.fastfetch.enable = true;
-  gtk = {
+  programs.fzf = {
     enable = true;
-    theme.name = "Breeze-Dark";
-    iconTheme.name = "Breeze";
+    enableBashIntegration = true;
   };
+  programs.htop.enable = true;
+  programs.fastfetch.enable = true;
+  # No host-specific GTK settings here to keep users identical; set per-host system-wide if needed
 }

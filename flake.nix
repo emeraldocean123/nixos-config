@@ -1,3 +1,5 @@
+## flake.nix (nixos-config)
+# NixOS and Home Manager configurations for multiple hosts and users
 {
   description = "NixOS and Home Manager configuration for multiple hosts and users";
 
@@ -7,9 +9,11 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Bring in dotfiles repo to source the single theme JSON
+    dotfiles.url = "path:../dotfiles";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, dotfiles, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -29,10 +33,9 @@
 
       nixosConfigurations = {
         # HP dv9500 Pavilion host
-        hp-dv9500-pavilion-nixos = nixpkgs.lib.nixosSystem {
+  hp-dv9500-pavilion-nixos = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ./modules/common.nix
             ./modules/hp-dv9500-pavilion-nixos/hardware.nix
             ./modules/hp-dv9500-pavilion-nixos/desktop.nix
             ./modules/hp-dv9500-pavilion-nixos/networking.nix
@@ -52,10 +55,9 @@
         };
 
         # MSI GE75 Raider host
-        msi-ge75-raider-nixos = nixpkgs.lib.nixosSystem {
+  msi-ge75-raider-nixos = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ./modules/common.nix
             ./modules/msi-ge75-raider-nixos/hardware.nix
             ./modules/msi-ge75-raider-nixos/desktop.nix
             ./modules/msi-ge75-raider-nixos/nvidia.nix

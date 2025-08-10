@@ -1,8 +1,19 @@
-# /etc/nixos/hosts/hp-dv9500-pavilion-nixos/configuration.nix
-# This file is the entry point for host-specific options that don't belong
-# in a more specific module. All module imports are now handled by flake.nix.
+## hosts/hp-dv9500-pavilion-nixos/configuration.nix
+# Main host configuration for HP dv9500 Pavilion
 { config, pkgs, ... }:
 {
-  # This ensures that NixOS knows which version of the configuration you're running.
+  imports = [
+  # Common settings are applied via the modules imported below
+    ../../modules/hp-dv9500-pavilion-nixos/hardware.nix
+    ../../modules/hp-dv9500-pavilion-nixos/desktop.nix
+    ../../modules/hp-dv9500-pavilion-nixos/networking.nix
+    ../../modules/hp-dv9500-pavilion-nixos/packages.nix
+    ../../modules/hp-dv9500-pavilion-nixos/services.nix
+    ../../modules/hp-dv9500-pavilion-nixos/users.nix
+    ./hardware-configuration.nix
+  ];
+  networking.hostName = "hp-dv9500-pavilion-nixos";
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "joseph";
   system.stateVersion = "25.05";
 }
