@@ -6,7 +6,7 @@ let
   # Path to the cleanup script from the dotfiles flake input
   cleanupScript = dotfiles.outPath + "/cleanup-dotfiles.sh";
   # Build the command: scan common targets, dry-run by default
-  cmd = ''${bash}/bin/bash -lc '\''"${cleanupScript}" --targets /etc/nixos "$HOME/dotfiles" "$HOME/Documents/dotfiles"'\'''';
+  cmd = "${bash}/bin/bash -lc '${cleanupScript} --targets /etc/nixos \"$HOME/dotfiles\" \"$HOME/Documents/dotfiles\"'";
 in
 {
   # Ensure systemd user is enabled by HM
