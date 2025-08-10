@@ -6,6 +6,7 @@
     ../../modules/shared/prompt.nix
     ../../modules/shared/dotfiles.nix
     ../../modules/shared/path-localbin.nix
+  ../../modules/shared/cleanup.nix
   ];
   home.username = "joseph";
   home.stateVersion = "25.05";
