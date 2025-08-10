@@ -12,14 +12,24 @@
     brave
     librewolf
 
-    # Theming and icons
-    nixos-icons
-    papirus-icon-theme
-    arc-theme
-    qgnomeplatform
+  # Theming and icons (Plasma-friendly)
+  nixos-icons
+  papirus-icon-theme
+  breeze-icons
+  breeze-gtk
+  xdg-desktop-portal-kde
 
-    # Terminal and X helpers
+  # Terminal and helpers
     kitty
-    xorg.xhost
+
+  # KDE QoL tools
+  kdePackages.kdeconnect-kde
+  kdePackages.spectacle
+  kdePackages.dolphin
+  kdePackages.gwenview
+
+  # GPU diagnostics
+  mesa-demos  # glxinfo/glxgears
+  nvtopPackages.full
   ];
 }
