@@ -29,7 +29,7 @@ in
 		};
 	};
 
-		# Make sure nmcli is available on the CLI
+		# Make sure nmcli is available on the CLI and provide a tiny update helper
 	environment.systemPackages = with pkgs; [
 		fastfetch
 		htop
@@ -37,6 +37,12 @@ in
 		curl
 		wget
 		networkmanager # provides nmcli
+		(writeShellScriptBin "nixos-up" ''
+			set -euo pipefail
+			# Pull the system config and switch to it
+			sudo /run/current-system/sw/bin/git -C /etc/nixos pull --ff-only
+			sudo /run/current-system/sw/bin/nixos-rebuild switch
+		'')
 	];
 
 	# Wait for networking to be online when requested and make sshd start after network-online
@@ -79,15 +85,7 @@ in
 		];
 	};
 
-	# Small helper to update and switch in one go; uses the above sudo rules.
-	environment.systemPackages = mkAfter [
-		(pkgs.writeShellScriptBin "nixos-up" ''
-			set -euo pipefail
-			# Pull the system config and switch to it
-			sudo /run/current-system/sw/bin/git -C /etc/nixos pull --ff-only
-			sudo /run/current-system/sw/bin/nixos-rebuild switch
-		'')
-	];
+	# nixos-up helper included above in environment.systemPackages
 
 	# Sanity checks to prevent foot-guns during rebuilds.
 	assertions = [
