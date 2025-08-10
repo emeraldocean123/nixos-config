@@ -109,10 +109,12 @@ in
 		after = [ "display-manager.service" ];
 		serviceConfig = {
 			Type = "simple";
+			RuntimeDirectory = "lid-greeter-inhibit";
+			ConditionPathExistsGlob = "/proc/acpi/button/lid/*/state";
 			ExecStart = ''
 				${pkgs.bash}/bin/bash -lc "
 				set -euo pipefail
-				pidfile=/run/lid-greeter-inhibit.pid
+				pidfile=/run/lid-greeter-inhibit/pid
 				cleanup() {
 				  if [ -f \"$pidfile\" ]; then
 				    if kill -0 \"$(cat \"$pidfile\")\" 2>/dev/null; then
@@ -143,7 +145,7 @@ in
 				'';
 			ExecStopPost = ''
 				${pkgs.bash}/bin/bash -lc '
-				pidfile=/run/lid-greeter-inhibit.pid
+				pidfile=/run/lid-greeter-inhibit/pid
 				if [ -f "$pidfile" ]; then
 				  if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
 				    kill "$(cat "$pidfile")" 2>/dev/null || true
