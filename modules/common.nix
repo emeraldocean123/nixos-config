@@ -29,7 +29,7 @@ in
 		};
 	};
 
-	# Make sure nmcli and rfkill are available on the CLI
+		# Make sure nmcli is available on the CLI
 	environment.systemPackages = with pkgs; [
 		fastfetch
 		htop
@@ -37,7 +37,6 @@ in
 		curl
 		wget
 		networkmanager # provides nmcli
-		rfkill
 	];
 
 	# Wait for networking to be online when requested and make sshd start after network-online
@@ -52,7 +51,7 @@ in
 		before = [ "NetworkManager.service" ];
 		serviceConfig = {
 			Type = "oneshot";
-			ExecStart = "${pkgs.rfkill}/bin/rfkill unblock all";
+		ExecStart = "${pkgs.bash}/bin/bash -lc 'command -v rfkill >/dev/null 2>&1 && rfkill unblock all || true'";
 		};
 	};
 
