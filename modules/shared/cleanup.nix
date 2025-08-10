@@ -9,6 +9,9 @@ let
   cmd = "${bash}/bin/bash -lc '${cleanupScript} --targets /etc/nixos \"$HOME/dotfiles\" \"$HOME/Documents/dotfiles\"'";
 in
 {
+  # Start/stop user services using systemd's sd-switch method during activation
+  systemd.user.startServices = "sd-switch";
+
   # Ensure systemd user is enabled by HM
   systemd.user.services."dotfiles-cleanup" = {
     Unit = {
