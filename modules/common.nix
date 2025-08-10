@@ -120,7 +120,7 @@ in
 				}
 				trap cleanup EXIT
 				while true; do
-				  count=$(${pkgs.systemd}/bin/loginctl --no-legend list-sessions | awk '{print $3}' | ${pkgs.gnugrep}/bin/grep -Ev '^(sddm|lightdm|gdm|greeter)$' | ${pkgs.coreutils}/bin/wc -l)
+				  count=$(${pkgs.systemd}/bin/loginctl --no-legend list-sessions | ${pkgs.gawk}/bin/awk 'BEGIN{c=0} { if ($3 !~ /^(sddm|lightdm|gdm|greeter)$/) c++ } END{ print c }')
 				  if [ "$count" -eq 0 ]; then
 				    if [ ! -f "$pidfile" ] || ! kill -0 "$(cat "$pidfile")" 2>/dev/null; then
 				      ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' sleep infinity &
