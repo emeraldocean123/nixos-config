@@ -128,7 +128,7 @@ in
 				  fi
 				  if [ "$count" -eq 0 ]; then
 				    if [ ! -f "$pidfile" ] || ! kill -0 "$(cat "$pidfile")" 2>/dev/null; then
-				      ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' ${pkgs.coreutils}/bin/sleep infinity &
+				      ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' ${pkgs.coreutils}/bin/tail -f /dev/null &
 				      echo $! > "$pidfile"
 				    fi
 				    ${pkgs.coreutils}/bin/sleep 5
