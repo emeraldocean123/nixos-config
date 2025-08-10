@@ -201,6 +201,20 @@ VS Code tasks
 SSH is enabled on both hosts. Connect using:
 ssh <user>@<hostname-or-ip>
 
+Windows → NixOS via VS Code tasks
+- Use the Remote SSH tasks in Tasks: Run Task
+	- Provide `sshTarget` (e.g., joseph@hp-dv9500-pavilion-nixos), optional `sshOptions` (e.g., -p 2222 -i C:/Users/you/.ssh/id_ed25519), and `remotePath` (/etc/nixos)
+	- Tasks available: Flake Check, Flake Update, Switch/Test/Dry-build, List Generations, GC
+
+SSH key quick setup (from Windows PowerShell)
+```powershell
+# Generate a key if you don't have one
+ssh-keygen -t ed25519 -C "joseph@windows"
+
+# Copy the public key to the NixOS host (requires password once)
+type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh joseph@hp-dv9500-pavilion-nixos "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
+```
+
 
 🔧 Troubleshooting
 

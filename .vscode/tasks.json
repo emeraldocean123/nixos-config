@@ -91,7 +91,7 @@
     {
       "label": "Nix: Flake Check (Remote SSH)",
       "type": "shell",
-      "command": "ssh ${input:sshTarget} \"cd ${input:remotePath} && nix flake check\"",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'cd ${input:remotePath} && nix flake check'",
       "group": "test",
       "problemMatcher": []
     }
@@ -99,7 +99,7 @@
     {
       "label": "NixOS: Switch (remote)",
       "type": "shell",
-      "command": "ssh ${input:sshTarget} \"sudo nixos-rebuild switch --flake ${input:remotePath}#${input:host}\"",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild switch --flake ${input:remotePath}#${input:host}'",
       "group": "build",
       "problemMatcher": []
     }
@@ -107,8 +107,40 @@
     {
       "label": "NixOS: Test (remote)",
       "type": "shell",
-      "command": "ssh ${input:sshTarget} \"sudo nixos-rebuild test --flake ${input:remotePath}#${input:host}\"",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild test --flake ${input:remotePath}#${input:host}'",
       "group": "test",
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "NixOS: Dry-build (remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild dry-build --flake ${input:remotePath}#${input:host}'",
+      "group": "test",
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "Nix: Flake Update (remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'cd ${input:remotePath} && nix flake update'",
+      "group": "build",
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "NixOS: List Generations (remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nix-env -p /nix/var/nix/profiles/system --list-generations'",
+      "group": "none",
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "Nix: GC (remote, delete older than 7d)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nix-collect-garbage --delete-older-than 7d'",
+      "group": "none",
       "problemMatcher": []
     }
   ],
@@ -128,6 +160,12 @@
       "type": "promptString",
       "description": "SSH target (user@host)",
       "default": "joseph@hp-dv9500-pavilion-nixos"
+    },
+    {
+      "id": "sshOptions",
+      "type": "promptString",
+      "description": "Optional SSH options (e.g., -p 2222 -i C:/Users/<you>/.ssh/id_ed25519)",
+      "default": ""
     },
     {
       "id": "remotePath",
