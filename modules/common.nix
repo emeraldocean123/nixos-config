@@ -79,16 +79,16 @@ in
 		serviceConfig = {
 			Type = "simple";
 			ExecStart = ''
-				${pkgs.bash}/bin/bash -lc '
+				${pkgs.bash}/bin/bash -lc "
 				while true; do
-				  count=$(${pkgs.systemd}/bin/loginctl --no-legend list-sessions | awk '{print $3}' | grep -Ev "^(sddm|lightdm|gdm|greeter)$" | wc -l)
-				  if [ "$count" -eq 0 ]; then
-				    ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why="Ignore lid at greeter" sleep 15
+				  count=$(${pkgs.systemd}/bin/loginctl --no-legend list-sessions | awk '{print $3}' | grep -Ev '^(sddm|lightdm|gdm|greeter)$' | wc -l)
+				  if [ \"$count\" -eq 0 ]; then
+				    ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' sleep 15
 				  else
 				    sleep 30
 				  fi
-				done'
-			'';
+				done"
+				'';
 			Restart = "always";
 			RestartSec = "5s";
 		};
