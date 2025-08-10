@@ -3,21 +3,38 @@
 { pkgs, ... }:
 {
   programs.bash = {
-  # Leave profileExtra empty to avoid double-sourcing .bashrc on systems
-  # where login shells already source it via global profile.
+  # Show fastfetch on login shells once per TTY (guarded by a marker)
   profileExtra = ''
+      # Only in interactive bash login shells
+      case $- in *i*) interactive=1 ;; *) interactive=0 ;; esac
+      if [ "$interactive" = 1 ] && shopt -q login_shell; then
+        TTY_PATH="$(tty 2>/dev/null)" || TTY_PATH=""
+        if printf '%s' "$TTY_PATH" | grep -q '^/'; then
+          TTY_NAME="$(printf '%s' "$TTY_PATH" | sed 's:.*/::')"
+        else
+          TTY_NAME=""
+        fi
+        UID_NUM="$(id -u 2>/dev/null)"
+        if [ -n "$XDG_RUNTIME_DIR" ]; then
+          RUNTIME_DIR="$XDG_RUNTIME_DIR"
+        else
+          RUNTIME_DIR="/run/user/$UID_NUM"
+        fi
+        MARKER="$RUNTIME_DIR/fastfetch-shown.''${TTY_NAME:-unknown}"
+        if [ -n "$TTY_NAME" ] && [ ! -f "$MARKER" ]; then
+          if command -v fastfetch >/dev/null 2>&1; then
+            fastfetch
+          fi
+          mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
+          : > "$MARKER" 2>/dev/null || true
+        fi
+      fi
   '';
-  # Interactive shells: show fastfetch once per TTY (non-login shells only) and set prompt
+  # Interactive shells: show fastfetch once per TTY and set prompt
   bashrcExtra = ''
       # Only in interactive shells
       case $- in *i*) interactive=1 ;; *) interactive=0 ;; esac
       if [ "$interactive" = 1 ]; then
-        # Skip on login shells to avoid clashing with system login banners/MOTD
-        if shopt -q login_shell; then
-          skip_ff=1
-        else
-          skip_ff=0
-        fi
         # Determine a per-TTY marker path to avoid duplicate banners
         TTY_PATH="$(tty 2>/dev/null)" || TTY_PATH=""
         if printf '%s' "$TTY_PATH" | grep -q '^/'; then
@@ -31,8 +48,8 @@
         else
           RUNTIME_DIR="/run/user/$UID_NUM"
         fi
-  MARKER="$RUNTIME_DIR/fastfetch-shown.''${TTY_NAME:-unknown}"
-        if [ $skip_ff -eq 0 ] && [ -n "$TTY_NAME" ] && [ ! -f "$MARKER" ]; then
+        MARKER="$RUNTIME_DIR/fastfetch-shown.''${TTY_NAME:-unknown}"
+        if [ -n "$TTY_NAME" ] && [ ! -f "$MARKER" ]; then
           if command -v fastfetch >/dev/null 2>&1; then
             fastfetch
           fi
