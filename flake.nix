@@ -9,8 +9,10 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Bring in dotfiles repo to source the single theme JSON
-    dotfiles.url = "path:../dotfiles";
+  # Bring in dotfiles repo to source the single theme JSON
+  # Use GitHub by default so /etc/nixos can evaluate purely; override locally with:
+  #   nix build --override-input dotfiles path:../dotfiles
+  dotfiles.url = "github:emeraldocean123/dotfiles";
   };
 
   outputs = { self, nixpkgs, home-manager, dotfiles, ... }:
