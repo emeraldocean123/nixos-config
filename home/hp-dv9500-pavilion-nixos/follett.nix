@@ -23,14 +23,6 @@
   };
   programs.htop.enable = true;
   programs.fastfetch.enable = true;
-  xdg.enable = true;
-  xdg.configFile."autostart/lxqt-powermanagement.desktop".text = ''
-    [Desktop Entry]
-    Type=Application
-    Name=LXQt Power Management (disabled)
-    Exec=lxqt-powermanagement
-    OnlyShowIn=LXQt;
-    Hidden=true
-  '';
+  # LXQt power management enabled; GUI controls lid when logged in.
   # No host-specific GTK settings here to keep users identical; set per-host system-wide if needed
 }

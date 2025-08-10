@@ -69,6 +69,32 @@ in
 		};
 	};
 
+	# Inhibit lid handling only at the greeter (LightDM/SDDM). When a real user session exists,
+	# release the inhibitor so the GUI (LXQt/Plasma) can control lid behavior.
+	systemd.services."lid-inhibit-at-greeter" = {
+		description = "Ignore lid switch at display manager greeter";
+		partOf = [ "display-manager.service" ];
+		wants = [ "display-manager.service" ];
+		after = [ "display-manager.service" ];
+		serviceConfig = {
+			Type = "simple";
+			ExecStart = ''
+				${pkgs.bash}/bin/bash -lc '
+				while true; do
+				  count=$(${pkgs.systemd}/bin/loginctl --no-legend list-sessions | awk '{print $3}' | grep -Ev "^(sddm|lightdm|gdm|greeter)$" | wc -l)
+				  if [ "$count" -eq 0 ]; then
+				    ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why="Ignore lid at greeter" sleep 15
+				  else
+				    sleep 30
+				  fi
+				done'
+			'';
+			Restart = "always";
+			RestartSec = "5s";
+		};
+		wantedBy = [ "display-manager.service" ];
+	};
+
 	# Sudo quality-of-life: allow joseph/follett to update /etc/nixos and rebuild without a password,
 	# and keep sudo tokens warm a bit longer to reduce re-prompts. Scope is tightly limited.
 	security.sudo = {

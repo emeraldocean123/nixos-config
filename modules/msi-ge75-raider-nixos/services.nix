@@ -92,12 +92,7 @@
   # Enable NTFS support for Windows game drives
   boot.supportedFilesystems = [ "ntfs" ];
 
-  # Never sleep on lid close (use logind; Plasma powerdevil still handles brightness, etc.)
-  services.logind = {
-    lidSwitch = "ignore";
-    lidSwitchDocked = "ignore";
-    lidSwitchExternalPower = "ignore";
-  };
+  # Plasma controls lid when logged in; greeter-only inhibitor handles SDDM.
 
   # Power management for gaming laptop: (TLP already enabled above)
   # No containers on this machine
