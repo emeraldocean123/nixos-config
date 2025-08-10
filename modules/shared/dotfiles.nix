@@ -11,5 +11,10 @@
     # Source the single theme JSON from the injected dotfiles flake input
     ".config/oh-my-posh/jandedobbeleer.omp.json".source =
       dotfiles.outPath + "/posh-themes/jandedobbeleer.omp.json";
+
+  # Future shared symlinks (uncomment if/when added to dotfiles repo):
+  # ".gitconfig".source = dotfiles.outPath + "/gitconfig";
+  # ".editorconfig".source = dotfiles.outPath + "/.editorconfig";
+  # ".config/fastfetch/config.jsonc".source = dotfiles.outPath + "/fastfetch/config.jsonc";
   };
 }
