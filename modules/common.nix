@@ -105,7 +105,51 @@ in
 
 		# Inhibit lid handling only at the greeter (LightDM/SDDM). When a real user session exists,
 		# release the inhibitor so the GUI (LXQt/Plasma) can control lid behavior.
-		systemd.services."lid-inhibit-at-greeter" = mkIf (cfg.enable) {
+		systemd.services."lid-inhibit-at-greeter" = mkIf (cfg.enable) (let
+			mainScript = pkgs.writeShellScript "lid-inhibit-at-greeter" ''
+				#!/usr/bin/env bash
+				set -euo pipefail
+				pidfile=/run/lid-greeter-inhibit/pid
+				cleanup() {
+				  if [ -f "$pidfile" ]; then
+				    if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
+				      kill "$(cat "$pidfile")" 2>/dev/null || true
+				    fi
+				    rm -f "$pidfile"
+				  fi
+				}
+				trap cleanup EXIT
+				while true; do
+				  count=$(${pkgs.systemd}/bin/loginctl --no-legend list-sessions | awk '{print $3}' | ${pkgs.gnugrep}/bin/grep -Ev '^(sddm|lightdm|gdm|greeter)$' | ${pkgs.coreutils}/bin/wc -l)
+				  if [ "$count" -eq 0 ]; then
+				    if [ ! -f "$pidfile" ] || ! kill -0 "$(cat "$pidfile")" 2>/dev/null; then
+				      ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' sleep infinity &
+				      echo $! > "$pidfile"
+				    fi
+				    sleep 5
+				  else
+				    if [ -f "$pidfile" ]; then
+				      if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
+				        kill "$(cat "$pidfile")" 2>/dev/null || true
+				      fi
+				      rm -f "$pidfile"
+				    fi
+				    sleep 10
+				  fi
+				done
+			'';
+			cleanupScript = pkgs.writeShellScript "lid-inhibit-at-greeter-cleanup" ''
+				#!/usr/bin/env bash
+				set -euo pipefail
+				pidfile=/run/lid-greeter-inhibit/pid
+				if [ -f "$pidfile" ]; then
+				  if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
+				    kill "$(cat "$pidfile")" 2>/dev/null || true
+				  fi
+				  rm -f "$pidfile"
+				fi
+			'';
+		in {
 			description = "Ignore lid switch at display manager greeter";
 			partOf = [ "display-manager.service" ];
 			wants = [ "display-manager.service" ];
@@ -116,53 +160,13 @@ in
 			serviceConfig = {
 				Type = "simple";
 				RuntimeDirectory = "lid-greeter-inhibit";
-				ExecStart = ''
-					${pkgs.bash}/bin/bash -lc "
-					set -euo pipefail
-					pidfile=/run/lid-greeter-inhibit/pid
-					cleanup() {
-					  if [ -f \"$pidfile\" ]; then
-					    if kill -0 \"$(cat \"$pidfile\")\" 2>/dev/null; then
-					      kill \"$(cat \"$pidfile\")\" 2>/dev/null || true
-					    fi
-					    rm -f \"$pidfile\"
-					  fi
-					}
-					trap cleanup EXIT
-					while true; do
-					  count=$(${pkgs.systemd}/bin/loginctl --no-legend list-sessions | awk '{print $3}' | grep -Ev '^(sddm|lightdm|gdm|greeter)$' | wc -l)
-					  if [ \"$count\" -eq 0 ]; then
-					    if [ ! -f \"$pidfile\" ] || ! kill -0 \"$(cat \"$pidfile\")\" 2>/dev/null; then
-					      ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' sleep infinity &
-					      echo $! > \"$pidfile\"
-					    fi
-					    sleep 5
-					  else
-					    if [ -f \"$pidfile\" ]; then
-					      if kill -0 \"$(cat \"$pidfile\")\" 2>/dev/null; then
-					        kill \"$(cat \"$pidfile\")\" 2>/dev/null || true
-					      fi
-					      rm -f \"$pidfile\"
-					    fi
-					    sleep 10
-					  fi
-					done"
-					'';
-				ExecStopPost = ''
-					${pkgs.bash}/bin/bash -lc '
-					pidfile=/run/lid-greeter-inhibit/pid
-					if [ -f "$pidfile" ]; then
-					  if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
-					    kill "$(cat "$pidfile")" 2>/dev/null || true
-					  fi
-					  rm -f "$pidfile"
-					fi'
-				'';
+				ExecStart = mainScript;
+				ExecStopPost = cleanupScript;
 				Restart = "always";
 				RestartSec = "5s";
 			};
 			wantedBy = [ "display-manager.service" ];
-		};
+		});
 
 		# Sudo quality-of-life: allow joseph/follett to update /etc/nixos and rebuild without a password,
 		# and keep sudo tokens warm a bit longer to reduce re-prompts. Scope is tightly limited.
