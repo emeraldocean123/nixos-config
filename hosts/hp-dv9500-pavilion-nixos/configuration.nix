@@ -11,6 +11,7 @@
     ../../modules/hp-dv9500-pavilion-nixos/services.nix
     ../../modules/hp-dv9500-pavilion-nixos/users.nix
     ./hardware-configuration.nix
+  ./bootloader.nix
   ];
   networking.hostName = "hp-dv9500-pavilion-nixos";
   services.displayManager.autoLogin.enable = true;
