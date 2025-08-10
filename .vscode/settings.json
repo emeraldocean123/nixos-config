@@ -1,0 +1,7 @@
+{
+  "nix.serverPath": "nil",
+  "[nix]": {
+    "editor.defaultFormatter": "kamadorueda.alejandra"
+  },
+  "editor.formatOnSave": true
+}

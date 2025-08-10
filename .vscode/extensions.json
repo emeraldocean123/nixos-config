@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "jnoortheen.nix-ide",
+  "kamadorueda.alejandra",
     "EditorConfig.EditorConfig",
     "redhat.vscode-yaml"
   ]
