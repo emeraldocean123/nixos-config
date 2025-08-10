@@ -63,14 +63,14 @@ in
 			message = "NetworkManager must be enabled (guarding against accidental Wi‑Fi loss on rebuild).";
 		}
 		{
-			assertion = !(config.networking ? wireless && config.networking.wireless.enable or false);
+				assertion = !(config.networking.wireless.enable or false);
 			message = "Do not enable networking.wireless.* alongside NetworkManager; it conflicts and can break Wi‑Fi.";
 		}
 		{
-			assertion = !(config.systemd ? network and config.systemd.network.enable or false);
+				assertion = !(config.systemd.network.enable or false);
 			message = "Do not enable systemd-networkd with NetworkManager; choose one network stack (we use NetworkManager).";
 		}
-		# No explicit TCP 22 assertion needed; services.openssh.openFirewall handles it.
+			# No explicit TCP 22 assertion needed; services.openssh.openFirewall handles it.
 	];
 }
 
