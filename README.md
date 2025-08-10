@@ -134,6 +134,8 @@ Note: For the MSI host, ensure hosts/msi-ge75-raider-nixos/hardware-configuratio
 
 ## ⚡ Quick start: Install on MSI GE75 Raider and migrate configs
 
+For a step-by-step guide, see INSTALL-CHECKLIST.md.
+
 Follow these steps after a minimal NixOS install and first boot on the MSI:
 
 1) Enable flakes on the temporary base system
@@ -227,7 +229,7 @@ Unified Oh My Posh theme
 
 This flake exposes:
 - formatter.${system} = nixpkgs-fmt → run `nix fmt` to format Nix files.
-- A devShell with nixpkgs-fmt and statix → run `nix develop`, then `nixpkgs-fmt .` and `statix check`.
+- A devShell with nixpkgs-fmt, statix, and nil (Nix language server) → run `nix develop`, then `nixpkgs-fmt .` and `statix check`. Configure your editor to use the `nil` LSP.
 
 VS Code integration
 - Tasks (Command Palette → Tasks: Run Task):
@@ -241,3 +243,14 @@ VS Code integration
 - Greeter safety: A small systemd service runs only alongside the display manager and uses systemd-inhibit to ignore the lid at the greeter. As soon as a non-greeter session appears, the inhibitor falls away and GUI settings take over.
 - Implication: If troubleshooting GUI power settings, there are no global logind HandleLidSwitch overrides to interfere.
  - Toggle: You can disable the greeter inhibitor with `custom.lid.greeterInhibit.enable = false;` if your display manager gains native handling.
+
+Assertions
+- Network safety: Assertions ensure NetworkManager is enabled and conflicting stacks are off.
+- Display manager: When `custom.lid.greeterInhibit.enable = true` (default), an assertion requires a display manager (e.g., SDDM/GDM/LightDM) to be enabled.
+
+Optional host tweaks
+- MSI: In `modules/msi-ge75-raider-nixos/packages.nix`, uncomment Steam options to enable gaming stack.
+- HP: In `modules/hp-dv9500-pavilion-nixos/services.nix`, optional commented TLP settings can improve battery life on legacy hardware.
+
+CI
+- Manual-only workflows to avoid costs. Use “Flake Check (Manual)” in GitHub Actions for format/lint/flake checks.

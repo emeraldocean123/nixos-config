@@ -42,4 +42,6 @@
     locker = "${pkgs.xorg.xset}/bin/xset dpms force off";
     time = 10;
   };
+  # Alternative: if you prefer the screensaver instead of full blanking, try:
+  # services.xserver.xautolock.locker = "${pkgs.xorg.xset}/bin/xset s activate";
 }

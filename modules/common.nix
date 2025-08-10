@@ -4,6 +4,14 @@
 let
 	inherit (lib) mkForce elem mkAfter types mkOption mkIf;
 	cfg = config.custom.lid.greeterInhibit;
+	# Detect if any common display manager is enabled. Use `or false` to avoid referencing missing attrs.
+	dmEnabled =
+		(config.services.displayManager.sddm.enable or false)
+		|| (config.services.displayManager.gdm.enable or false)
+		|| (config.services.displayManager.lightdm.enable or false)
+		|| (config.services.xserver.displayManager.sddm.enable or false)
+		|| (config.services.xserver.displayManager.gdm.enable or false)
+		|| (config.services.xserver.displayManager.lightdm.enable or false);
 in
 {
 	# Module options
@@ -233,6 +241,11 @@ in
 			{
 					assertion = !(config.systemd.network.enable or false);
 				message = "Do not enable systemd-networkd with NetworkManager; choose one network stack (we use NetworkManager).";
+			}
+			{
+				# Only require a display manager when the greeter lid inhibitor is enabled
+				assertion = (!cfg.enable) || dmEnabled;
+				message = "custom.lid.greeterInhibit requires a display manager (e.g., SDDM/GDM/LightDM).";
 			}
 				# No explicit TCP 22 assertion needed; services.openssh.openFirewall handles it.
 		];

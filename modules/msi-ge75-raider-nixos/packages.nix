@@ -32,4 +32,8 @@
   mesa-demos  # glxinfo/glxgears
   nvtopPackages.full
   ];
+
+  # Optional gaming stack (uncomment to enable)
+  # programs.steam.enable = true;
+  # hardware.steam-hardware.enable = true;
 }

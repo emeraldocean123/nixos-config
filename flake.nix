@@ -30,6 +30,7 @@
         buildInputs = with pkgs; [
           nixpkgs-fmt
           statix
+          nil
         ];
       };
 
