@@ -184,6 +184,13 @@ Test Changes: sudo nixos-rebuild test --flake .#$(hostname)
 Update Dependencies: sudo nix flake update followed by a rebuild
 Clean Up Old Generations: sudo nix-collect-garbage --delete-older-than 7d
 
+VS Code tasks
+- From Command Palette → Tasks: Run Task:
+	- NixOS: Switch (pick host)
+	- NixOS: Test (pick host)
+	- NixOS: Dry-build (pick host)
+	- Nix: Flake Update
+
 3. Remote Management (SSH)
 SSH is enabled on both hosts. Connect using:
 ssh <user>@<hostname-or-ip>

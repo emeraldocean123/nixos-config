@@ -21,6 +21,46 @@
       "command": "nix flake show",
       "group": "none",
       "problemMatcher": []
+    },
+    {
+      "label": "NixOS: Switch (pick host)",
+      "type": "shell",
+      "command": "sudo nixos-rebuild switch --flake .#${input:host}",
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "NixOS: Test (pick host)",
+      "type": "shell",
+      "command": "sudo nixos-rebuild test --flake .#${input:host}",
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "NixOS: Dry-build (pick host)",
+      "type": "shell",
+      "command": "sudo nixos-rebuild dry-build --flake .#${input:host}",
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Nix: Flake Update",
+      "type": "shell",
+      "command": "nix flake update",
+      "problemMatcher": [],
+      "group": "build"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "host",
+      "type": "pickString",
+      "description": "Select target host",
+      "options": [
+        "hp-dv9500-pavilion-nixos",
+        "msi-ge75-raider-nixos"
+      ],
+      "default": "msi-ge75-raider-nixos"
     }
   ]
 }
