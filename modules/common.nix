@@ -108,7 +108,7 @@ in
 		systemd.services."lid-inhibit-at-greeter" = mkIf (cfg.enable) (let
 			mainScript = pkgs.writeShellScript "lid-inhibit-at-greeter" ''
 				#!/usr/bin/env bash
-				set -euo pipefail
+				set -eu
 				pidfile=/run/lid-greeter-inhibit/pid
 				cleanup() {
 				  if [ -f "$pidfile" ]; then
@@ -120,13 +120,18 @@ in
 				}
 				trap cleanup EXIT
 				while true; do
-				  count=$(${pkgs.systemd}/bin/loginctl --no-legend list-sessions | ${pkgs.gawk}/bin/awk 'BEGIN{c=0} { if ($3 !~ /^(sddm|lightdm|gdm|greeter)$/) c++ } END{ print c }')
+				  sessions="$(${pkgs.systemd}/bin/loginctl --no-legend list-sessions 2>/dev/null || true)"
+				  if [ -z "$sessions" ]; then
+				    count=0
+				  else
+				    count=$(echo "$sessions" | ${pkgs.gawk}/bin/awk 'BEGIN{c=0} { if ($3 !~ /^(sddm|lightdm|gdm|greeter)$/) c++ } END{ print c }')
+				  fi
 				  if [ "$count" -eq 0 ]; then
 				    if [ ! -f "$pidfile" ] || ! kill -0 "$(cat "$pidfile")" 2>/dev/null; then
-				      ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' sleep infinity &
+				      ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' ${pkgs.coreutils}/bin/sleep infinity &
 				      echo $! > "$pidfile"
 				    fi
-				    sleep 5
+				    ${pkgs.coreutils}/bin/sleep 5
 				  else
 				    if [ -f "$pidfile" ]; then
 				      if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
@@ -134,7 +139,7 @@ in
 				      fi
 				      rm -f "$pidfile"
 				    fi
-				    sleep 10
+				    ${pkgs.coreutils}/bin/sleep 10
 				  fi
 				done
 			'';
