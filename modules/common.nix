@@ -2,9 +2,21 @@
 # Common, host-agnostic settings shared by all machines
 { config, lib, pkgs, ... }:
 let
-	inherit (lib) mkForce elem mkAfter;
+	inherit (lib) mkForce elem mkAfter types mkOption mkIf;
+	cfg = config.custom.lid.greeterInhibit;
 in
 {
+	# Module options
+	options.custom.lid.greeterInhibit.enable = mkOption {
+		type = types.bool;
+		default = true;
+		description = ''
+			When true (default), run a small systemd service alongside the display manager
+			to ignore the lid switch only at the greeter. Once a non-greeter session exists,
+			the inhibitor is released so the desktop environment fully controls lid behavior.
+			Set to false if your display manager handles this natively in the future.
+		'';
+	};
 	# Locale and timezone
 	time.timeZone = "America/Chicago";
 	i18n.defaultLocale = "en_US.UTF-8";
@@ -90,7 +102,7 @@ in
 
 	# Inhibit lid handling only at the greeter (LightDM/SDDM). When a real user session exists,
 	# release the inhibitor so the GUI (LXQt/Plasma) can control lid behavior.
-	systemd.services."lid-inhibit-at-greeter" = {
+	systemd.services."lid-inhibit-at-greeter" = mkIf (cfg.enable) {
 		description = "Ignore lid switch at display manager greeter";
 		partOf = [ "display-manager.service" ];
 		wants = [ "display-manager.service" ];
