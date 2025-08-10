@@ -71,6 +71,7 @@
             ./modules/msi-ge75-raider-nixos/networking.nix
             ./modules/msi-ge75-raider-nixos/packages.nix
             ./modules/msi-ge75-raider-nixos/services.nix
+            ./modules/msi-ge75-raider-nixos/users.nix
             ./hosts/msi-ge75-raider-nixos/configuration.nix
             ./hosts/msi-ge75-raider-nixos/hardware-configuration.nix
             home-manager.nixosModules.home-manager {
