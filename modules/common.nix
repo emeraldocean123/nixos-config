@@ -51,6 +51,25 @@ in
 			sudo /run/current-system/sw/bin/git -C /etc/nixos pull --ff-only
 			sudo /run/current-system/sw/bin/nixos-rebuild switch
 		'')
+		# Helper to check lid-related state at a glance
+		(writeShellScriptBin "lid-status" ''
+			set -euo pipefail
+			echo "== Sessions (loginctl) =="
+			${pkgs.systemd}/bin/loginctl --no-legend list-sessions || true
+			echo
+			echo "== Inhibitors (systemd-inhibit --list) =="
+			${pkgs.systemd}/bin/systemd-inhibit --list || true
+			echo
+			echo "== Greeter inhibitor service status =="
+			${pkgs.systemd}/bin/systemctl status lid-inhibit-at-greeter.service --no-pager -l || true
+			echo
+			echo "== logind.conf (lid-related keys) =="
+			if [ -f /etc/systemd/logind.conf ]; then
+				${pkgs.coreutils}/bin/cat /etc/systemd/logind.conf | sed -n '/^#\?HandleLid/p;/^#\?LidSwitch/p' || true
+			else
+				echo "(no /etc/systemd/logind.conf present)"
+			fi
+		'')
 	];
 
 	# Wait for networking to be online when requested and make sshd start after network-online
