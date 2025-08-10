@@ -111,6 +111,8 @@ in
 				# Ensure required tools are on PATH even in minimal systemd environments
 				export PATH="${pkgs.coreutils}/bin:${pkgs.gawk}/bin:${pkgs.systemd}/bin:/run/current-system/sw/bin:$PATH"
 				pidfile=/run/lid-greeter-inhibit/pid
+					last_count=-1
+					last_log_ts=0
 				cleanup() {
 				  if [ -f "$pidfile" ]; then
 				    if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
@@ -127,7 +129,12 @@ in
 				  else
 				    count=$(echo "$sessions" | ${pkgs.gawk}/bin/awk 'BEGIN{c=0} { if ($3 !~ /^(sddm|lightdm|gdm|greeter)$/) c++ } END{ print c }')
 				  fi
-				  echo "[lid-inhibit] non-greeter sessions: $count" >&2
+					  now=$(${pkgs.coreutils}/bin/date +%s)
+					  if [ "$count" -ne "$last_count" ] || [ $((now - last_log_ts)) -ge 300 ]; then
+					    echo "[lid-inhibit] non-greeter sessions: $count" >&2
+					    last_count=$count
+					    last_log_ts=$now
+					  fi
 				  if [ "$count" -eq 0 ]; then
 				    if [ ! -f "$pidfile" ] || ! kill -0 "$(cat "$pidfile")" 2>/dev/null; then
 				      ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' ${pkgs.coreutils}/bin/tail -f /dev/null &
@@ -190,6 +197,7 @@ in
 					commands = [
 						# Only allow git pulling the system repo at /etc/nixos as root, no other git actions
 						{ command = "/run/current-system/sw/bin/git -C /etc/nixos pull"; options = [ "NOPASSWD" ]; }
+						{ command = "/run/current-system/sw/bin/git -C /etc/nixos pull --ff-only"; options = [ "NOPASSWD" ]; }
 						# Allow safe tree cleanup operations in /etc/nixos
 						{ command = "/run/current-system/sw/bin/git -C /etc/nixos reset --hard HEAD"; options = [ "NOPASSWD" ]; }
 						{ command = "/run/current-system/sw/bin/git -C /etc/nixos clean -fd"; options = [ "NOPASSWD" ]; }
