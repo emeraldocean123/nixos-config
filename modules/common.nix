@@ -108,6 +108,8 @@ in
 		systemd.services."lid-inhibit-at-greeter" = mkIf (cfg.enable) (let
 			mainScript = pkgs.writeShellScript "lid-inhibit-at-greeter" ''
 				#!/usr/bin/env bash
+				# Ensure required tools are on PATH even in minimal systemd environments
+				export PATH="${pkgs.coreutils}/bin:${pkgs.gawk}/bin:${pkgs.systemd}/bin:/run/current-system/sw/bin:$PATH"
 				pidfile=/run/lid-greeter-inhibit/pid
 				cleanup() {
 				  if [ -f "$pidfile" ]; then
