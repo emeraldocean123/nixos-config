@@ -19,6 +19,7 @@ in
 	# Ensure SSH is available for remote management and force it on.
 	services.openssh = {
 		enable = mkForce true;
+		openFirewall = true;
 		settings = {
 			PermitRootLogin = "no";
 			PasswordAuthentication = true;
@@ -66,12 +67,7 @@ in
 			assertion = !(config.systemd ? network and config.systemd.network.enable or false);
 			message = "Do not enable systemd-networkd with NetworkManager; choose one network stack (we use NetworkManager).";
 		}
-		{
-			# If SSH is enabled and the firewall is on, ensure port 22 is open.
-			assertion = (!config.services.openssh.enable) || (!config.networking.firewall.enable)
-				|| (elem 22 (config.networking.firewall.allowedTCPPorts or []));
-			message = "Firewall is enabled; open TCP 22 or disable firewall, since OpenSSH is enabled.";
-		}
+		# No explicit TCP 22 assertion needed; services.openssh.openFirewall handles it.
 	];
 }
 
