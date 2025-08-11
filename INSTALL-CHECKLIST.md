@@ -1,10 +1,10 @@
-# MSI GE75 Raider – Install Checklist
+# Generic NixOS Install Checklist
 
-This checklist helps you deploy the MSI host safely and replace placeholder hardware values.
+This checklist provides a quick reference for deploying NixOS hosts. For host-specific details, see the individual host directories (e.g., `hosts/msi-ge75-raider-nixos/INSTALL-CHECKLIST.md`).
 
 1) Prep media
 - Create a NixOS 25.05 USB installer.
-- Boot the MSI (UEFI), disable Secure Boot if necessary.
+- Boot the target system (UEFI), disable Secure Boot if necessary.
 
 2) Partition and install (recommend GPT + systemd-boot)
 - Use `lsblk` to identify disk (e.g., /dev/nvme0n1).
@@ -14,22 +14,18 @@ This checklist helps you deploy the MSI host safely and replace placeholder hard
 3) Generate hardware config
 - Run:
   - nixos-generate-config --root /mnt
-- Copy /mnt/etc/nixos/hardware-configuration.nix → hosts/msi-ge75-raider-nixos/hardware-configuration.nix
-- Replace the placeholder UUIDs in that file.
+- Copy /mnt/etc/nixos/hardware-configuration.nix → hosts/[hostname]/hardware-configuration.nix
+- Replace any placeholder UUIDs in that file.
 
 4) First switch
 - From repo root on the machine:
-  - sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
-- Verify networking, SSH, display manager (SDDM), and Plasma session.
+  - sudo nixos-rebuild switch --flake .#[hostname]
+- Verify networking, SSH, display manager, and desktop session.
 
-5) NVIDIA
-- Confirm proprietary driver loads (nvidia-smi works).
-- If issues: ensure kernel matches driver; consider switching to latest production driver.
-
-6) Optional gaming
-- Uncomment in modules/msi-ge75-raider-nixos/packages.nix:
-  - programs.steam.enable = true;
-  - hardware.steam-hardware.enable = true;
+5) Hardware-specific checks
+- For NVIDIA systems: Confirm driver loads (nvidia-smi works)
+- For laptops: Test lid behavior, battery management
+- For gaming systems: Enable Steam in packages.nix if desired
 
 7) Post-install sanity
 - Run `nix flake check` in this repo.
