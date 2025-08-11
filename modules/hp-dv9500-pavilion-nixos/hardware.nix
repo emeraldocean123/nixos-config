@@ -38,8 +38,15 @@
   boot.kernel.sysctl = {
     # Optimize for older hardware
     "vm.swappiness" = 60; # Higher swap usage for limited RAM
-    "vm.dirty_background_ratio" = 15;
-    "vm.dirty_ratio" = 20;
+    "vm.dirty_background_ratio" = 10; # More conservative for old hardware
+    "vm.dirty_ratio" = 15; # Reduce dirty page ratio for stability
+    # Filesystem stability improvements
+    "fs.file-max" = 65536;
+  };
+
+  # Filesystem mount options for stability
+  fileSystems."/" = {
+    options = [ "relatime" "errors=remount-ro" ];
   };
 
   # Hardware monitoring (hddtemp removed; not available on 25.05)
