@@ -178,7 +178,7 @@
       "id": "sshTarget",
       "type": "promptString",
       "description": "SSH target (user@host)",
-      "default": "joseph@hp-dv9500-pavilion-nixos"
+    "default": "joseph@192.168.1.104"
     },
     {
       "id": "sshOptions",

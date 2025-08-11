@@ -14,7 +14,9 @@
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 ];
 
-  # If you prefer to be explicit, you can bind sshd to both LAN and Wi‑Fi addresses.
-  # With AddressFamily=inet globally, this is usually unnecessary; leaving as a comment reference:
-  # services.openssh.settings.ListenAddress = [ "192.168.1.103" "192.168.1.104" ];
+  # Bind sshd to both LAN and Wi‑Fi addresses so either interface works.
+  services.openssh.settings.ListenAddress = [
+    "192.168.1.103" # LAN
+    "192.168.1.104" # Wi‑Fi
+  ];
 }
