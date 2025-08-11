@@ -1,11 +1,13 @@
 #!/usr/bin/env pwsh
 # Check which system is currently running and overall dual boot status
 param(
-    [switch]$Detailed
+    [switch]$Detailed,
+    [string]$IpAddress = "192.168.1.104",  # Default IP, can be overridden
+    [string]$Username = "joseph"
 )
 
 $ErrorActionPreference = 'SilentlyContinue'
-$SshTarget = "joseph@192.168.1.104"
+$SshTarget = "$Username@$IpAddress"
 $SshOptions = @("-o", "ConnectTimeout=5", "-o", "StrictHostKeyChecking=accept-new")
 
 Write-Host "🔍 Checking Dual Boot Status..." -ForegroundColor Magenta

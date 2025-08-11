@@ -54,7 +54,9 @@ in
 				AddressFamily = "inet";
 				PermitRootLogin = "no";
 				# Password authentication enabled for convenience on private home network
-				# Consider disabling if exposing to internet or using key-based auth only
+				# TODO: Consider disabling and using key-only auth for better security:
+				# PasswordAuthentication = false;
+				# Requires setup-ssh-key.ps1 to be run on all client machines first
 				PasswordAuthentication = true;
 			};
 		};
