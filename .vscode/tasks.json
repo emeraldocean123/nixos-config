@@ -95,21 +95,21 @@
     {
       "label": "NixOS: Switch (remote)",
       "type": "shell",
-      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild switch --flake ${input:remotePath}#${input:host}'",
+      "command": "ssh -t ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild switch --flake ${input:remotePath}#${input:host}'",
       "group": "build",
       "problemMatcher": []
     },
     {
       "label": "NixOS: Test (remote)",
       "type": "shell",
-      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild test --flake ${input:remotePath}#${input:host}'",
+      "command": "ssh -t ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild test --flake ${input:remotePath}#${input:host}'",
       "group": "test",
       "problemMatcher": []
     },
     {
       "label": "NixOS: Dry-build (remote)",
       "type": "shell",
-      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild dry-build --flake ${input:remotePath}#${input:host}'",
+  "command": "ssh ${input:sshOptions} ${input:sshTarget} 'nixos-rebuild dry-build --flake ${input:remotePath}#${input:host}'",
       "group": "test",
       "problemMatcher": []
     },
@@ -123,14 +123,14 @@
     {
       "label": "NixOS: List Generations (remote)",
       "type": "shell",
-      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nix-env -p /nix/var/nix/profiles/system --list-generations'",
+      "command": "ssh -t ${input:sshOptions} ${input:sshTarget} 'sudo nix-env -p /nix/var/nix/profiles/system --list-generations'",
       "group": "none",
       "problemMatcher": []
     },
     {
       "label": "Nix: GC (remote, delete older than 7d)",
       "type": "shell",
-      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nix-collect-garbage --delete-older-than 7d'",
+      "command": "ssh -t ${input:sshOptions} ${input:sshTarget} 'sudo nix-collect-garbage --delete-older-than 7d'",
       "group": "none",
       "problemMatcher": []
     },
@@ -175,6 +175,82 @@
       "type": "shell",
       "command": "pwsh -NoProfile -File scripts/ssh-quick-test.ps1 -SshTarget joseph@192.168.1.103 -SshOptions \"${input:sshOptions}\"",
       "group": "none",
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "HP (.104): Dry-build (remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} joseph@192.168.1.104 'nixos-rebuild dry-build --flake /etc/nixos#hp-dv9500-pavilion-nixos'",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "HP (.104): Pull + Dry-build (remote)",
+      "type": "shell",
+      "command": "ssh -t ${input:sshOptions} joseph@192.168.1.104 'sudo git -C /etc/nixos pull --ff-only && nixos-rebuild dry-build --flake /etc/nixos#hp-dv9500-pavilion-nixos'",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "HP (.104): Update & Switch (remote)",
+      "type": "shell",
+      "command": "ssh -t ${input:sshOptions} joseph@192.168.1.104 'sudo git -C /etc/nixos pull --ff-only && sudo nixos-rebuild switch --flake /etc/nixos#hp-dv9500-pavilion-nixos'",
+      "group": "build",
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "HP (.104): Test (remote)",
+      "type": "shell",
+      "command": "ssh -t ${input:sshOptions} joseph@192.168.1.104 'sudo nixos-rebuild test --flake /etc/nixos#hp-dv9500-pavilion-nixos'",
+      "group": "test",
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "HP (.104): Pull + Test (remote)",
+      "type": "shell",
+      "command": "ssh -t ${input:sshOptions} joseph@192.168.1.104 'sudo git -C /etc/nixos pull --ff-only && sudo nixos-rebuild test --flake /etc/nixos#hp-dv9500-pavilion-nixos'",
+      "group": "test",
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "HP (.103): Dry-build (remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} joseph@192.168.1.103 'nixos-rebuild dry-build --flake /etc/nixos#hp-dv9500-pavilion-nixos'",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "HP (.103): Pull + Dry-build (remote)",
+      "type": "shell",
+      "command": "ssh -t ${input:sshOptions} joseph@192.168.1.103 'sudo git -C /etc/nixos pull --ff-only && nixos-rebuild dry-build --flake /etc/nixos#hp-dv9500-pavilion-nixos'",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "HP (.103): Update & Switch (remote)",
+      "type": "shell",
+      "command": "ssh -t ${input:sshOptions} joseph@192.168.1.103 'sudo git -C /etc/nixos pull --ff-only && sudo nixos-rebuild switch --flake /etc/nixos#hp-dv9500-pavilion-nixos'",
+      "group": "build",
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "HP (.103): Test (remote)",
+      "type": "shell",
+      "command": "ssh -t ${input:sshOptions} joseph@192.168.1.103 'sudo nixos-rebuild test --flake /etc/nixos#hp-dv9500-pavilion-nixos'",
+      "group": "test",
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "HP (.103): Pull + Test (remote)",
+      "type": "shell",
+      "command": "ssh -t ${input:sshOptions} joseph@192.168.1.103 'sudo git -C /etc/nixos pull --ff-only && sudo nixos-rebuild test --flake /etc/nixos#hp-dv9500-pavilion-nixos'",
+      "group": "test",
       "problemMatcher": []
     }
   ],
