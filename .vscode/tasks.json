@@ -10,7 +10,7 @@
     },
     {
       "label": "Nix: Statix Check",
-      "type": "shell",
+  "command": "ssh ${input:sshOptions} ${input:sshTarget} bash -lc '[ -d ~/.ssh ] && ls -la ~/.ssh || echo \"~/.ssh missing\"; for f in id_ed25519 id_rsa id_ed25519.pub id_rsa.pub; do [ -f ~/.ssh/$f ] && echo \"exists: ~/.ssh/$f\" || true; done; if [ -f ~/.ssh/authorized_keys ]; then echo -n \"authorized_keys wc: \"; wc -l ~/.ssh/authorized_keys; else echo \"no authorized_keys\"; fi]'",
       "command": "nix run nixpkgs#statix -- check",
       "group": "test",
       "problemMatcher": []
@@ -116,6 +116,22 @@
       "label": "SSH: Setup Key (Windows)",
       "type": "shell",
       "command": "pwsh -NoProfile -File scripts/setup-ssh-key.ps1 -SshTarget ${input:sshTarget} -SshOptions \"${input:sshOptions}\"",
+      "group": "none",
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "SSH: Check Keys (Local)",
+      "type": "shell",
+      "command": "pwsh -NoProfile -Command \"$sshDir = Join-Path $env:USERPROFILE '.ssh'; if (Test-Path $sshDir) { Write-Host 'Local SSH dir:' $sshDir; Get-ChildItem -Force $sshDir | Where-Object { $_.Name -match '^id_(ed25519|rsa)(\\.pub)?$' } | Select-Object Name,Length,LastWriteTime | Format-Table -AutoSize } else { Write-Host 'No local ~/.ssh directory found' }\"",
+      "group": "none",
+      "problemMatcher": []
+    }
+    ,
+    {
+      "label": "SSH: Check Keys (Remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sh -lc '\\''[ -d ~/.ssh ] && ls -la ~/.ssh || echo \"~/.ssh missing\"; for f in id_ed25519 id_rsa id_ed25519.pub id_rsa.pub; do [ -f ~/.ssh/$f ] && printf \"%s %s bytes\\n\" ~/.ssh/$f $(stat -c %s ~/.ssh/$f) || true; done; if [ -f ~/.ssh/authorized_keys ]; then printf \"authorized_keys lines: \"; wc -l ~/.ssh/authorized_keys | awk '\''{print $1}'\''; else echo \"no authorized_keys\"; fi'\\''",
       "group": "none",
       "problemMatcher": []
     }
