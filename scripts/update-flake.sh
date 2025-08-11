@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Update flake dependencies for NixOS configuration
 set -euo pipefail
 
