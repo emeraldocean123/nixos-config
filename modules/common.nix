@@ -55,6 +55,9 @@ in
 			};
 		};
 
+		# Enable modern Nix features system-wide so remote flake commands work without extra flags
+		nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
 			# Make sure nmcli is available on the CLI and provide a tiny update helper
 		environment.systemPackages = with pkgs; [
 			fastfetch
