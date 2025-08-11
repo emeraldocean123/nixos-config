@@ -1,36 +1,196 @@
 {
   "version": "2.0.0",
   "tasks": [
-    { "label": "Nix: Format (nix fmt)", "type": "shell", "command": "nix fmt", "group": "build", "problemMatcher": [] },
-    { "label": "Nix: Statix Check", "type": "shell", "command": "nix run nixpkgs#statix -- check", "group": "test", "problemMatcher": [] },
-    { "label": "Nix: Statix Fix", "type": "shell", "command": "nix run nixpkgs#statix -- fix -y", "group": "build", "problemMatcher": [] },
-    { "label": "Nix: Flake Info", "type": "shell", "command": "nix flake show", "group": "none", "problemMatcher": [] },
-
-    { "label": "NixOS: Switch (pick host)", "type": "shell", "command": "sudo nixos-rebuild switch --flake .#${input:host}", "group": "build", "problemMatcher": [] },
-    { "label": "NixOS: Test (pick host)", "type": "shell", "command": "sudo nixos-rebuild test --flake .#${input:host}", "group": "test", "problemMatcher": [] },
-    { "label": "NixOS: Dry-build (pick host)", "type": "shell", "command": "sudo nixos-rebuild dry-build --flake .#${input:host}", "group": "test", "problemMatcher": [] },
-    { "label": "Nix: Flake Update", "type": "shell", "command": "nix flake update", "group": "build", "problemMatcher": [] },
-    { "label": "NixOS: List Generations", "type": "shell", "command": "sudo nix-env -p /nix/var/nix/profiles/system --list-generations", "group": "none", "problemMatcher": [] },
-    { "label": "Nix: GC (delete older than 7d)", "type": "shell", "command": "sudo nix-collect-garbage --delete-older-than 7d", "group": "none", "problemMatcher": [] },
-    { "label": "Nix: Flake Check", "type": "shell", "command": "nix flake check", "group": "test", "problemMatcher": [] },
-    { "label": "Nix: Flake Check (WSL)", "type": "shell", "command": "wsl.exe bash -lc \"cd $(wslpath -a '${workspaceFolder}') && nix flake check\"", "group": "test", "problemMatcher": [] },
-
-    { "label": "Nix: Flake Check (Remote SSH)", "type": "shell", "command": "ssh ${input:sshOptions} ${input:sshTarget} 'cd ${input:remotePath} && nix flake check'", "group": "test", "problemMatcher": [] },
-    { "label": "NixOS: Switch (remote)", "type": "shell", "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild switch --flake ${input:remotePath}#${input:host}'", "group": "build", "problemMatcher": [] },
-    { "label": "NixOS: Test (remote)", "type": "shell", "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild test --flake ${input:remotePath}#${input:host}'", "group": "test", "problemMatcher": [] },
-    { "label": "NixOS: Dry-build (remote)", "type": "shell", "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild dry-build --flake ${input:remotePath}#${input:host}'", "group": "test", "problemMatcher": [] },
-    { "label": "Nix: Flake Update (remote)", "type": "shell", "command": "ssh ${input:sshOptions} ${input:sshTarget} 'cd ${input:remotePath} && nix flake update'", "group": "build", "problemMatcher": [] },
-    { "label": "NixOS: List Generations (remote)", "type": "shell", "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nix-env -p /nix/var/nix/profiles/system --list-generations'", "group": "none", "problemMatcher": [] },
-    { "label": "Nix: GC (remote, delete older than 7d)", "type": "shell", "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nix-collect-garbage --delete-older-than 7d'", "group": "none", "problemMatcher": [] },
-
-    { "label": "SSH: Setup Key (Windows)", "type": "shell", "command": "pwsh -NoProfile -File scripts/setup-ssh-key.ps1 -SshTarget ${input:sshTarget} -SshOptions \"${input:sshOptions}\"", "group": "none", "problemMatcher": [] },
-  { "label": "SSH: Check Keys (Local)", "type": "shell", "command": "pwsh -NoProfile -File scripts/check-ssh-keys-local.ps1", "group": "none", "problemMatcher": [] },
-    { "label": "SSH: Check Keys (Remote)", "type": "shell", "command": "ssh ${input:sshOptions} ${input:sshTarget} bash -lc '[ -d ~/.ssh ] && ls -la ~/.ssh || echo \"~/.ssh missing\"; for f in id_ed25519 id_rsa id_ed25519.pub id_rsa.pub; do [ -f ~/.ssh/$f ] && echo \"exists: ~/.ssh/$f\" || true; done; if [ -f ~/.ssh/authorized_keys ]; then echo -n \"authorized_keys wc: \"; wc -l ~/.ssh/authorized_keys; else echo \"no authorized_keys\"; fi]'", "group": "none", "problemMatcher": [] }
+    {
+      "label": "Nix: Format (nix fmt)",
+      "type": "shell",
+      "command": "nix fmt",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Nix: Statix Check",
+      "type": "shell",
+      "command": "nix run nixpkgs#statix -- check",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Nix: Statix Fix",
+      "type": "shell",
+      "command": "nix run nixpkgs#statix -- fix -y",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Nix: Flake Info",
+      "type": "shell",
+      "command": "nix flake show",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "NixOS: Switch (pick host)",
+      "type": "shell",
+      "command": "sudo nixos-rebuild switch --flake .#${input:host}",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "NixOS: Test (pick host)",
+      "type": "shell",
+      "command": "sudo nixos-rebuild test --flake .#${input:host}",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "NixOS: Dry-build (pick host)",
+      "type": "shell",
+      "command": "sudo nixos-rebuild dry-build --flake .#${input:host}",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Nix: Flake Update",
+      "type": "shell",
+      "command": "nix flake update",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "NixOS: List Generations",
+      "type": "shell",
+      "command": "sudo nix-env -p /nix/var/nix/profiles/system --list-generations",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Nix: GC (delete older than 7d)",
+      "type": "shell",
+      "command": "sudo nix-collect-garbage --delete-older-than 7d",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Nix: Flake Check",
+      "type": "shell",
+      "command": "nix flake check",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Nix: Flake Check (WSL)",
+      "type": "shell",
+      "command": "wsl.exe bash -lc \"cd $(wslpath -a '${workspaceFolder}') && nix flake check\"",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Nix: Flake Check (Remote SSH)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'cd ${input:remotePath} && nix flake check'",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "NixOS: Switch (remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild switch --flake ${input:remotePath}#${input:host}'",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "NixOS: Test (remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild test --flake ${input:remotePath}#${input:host}'",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "NixOS: Dry-build (remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild dry-build --flake ${input:remotePath}#${input:host}'",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Nix: Flake Update (remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'cd ${input:remotePath} && nix flake update'",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "NixOS: List Generations (remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nix-env -p /nix/var/nix/profiles/system --list-generations'",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Nix: GC (remote, delete older than 7d)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nix-collect-garbage --delete-older-than 7d'",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "SSH: Setup Key (Windows)",
+      "type": "shell",
+      "command": "pwsh -NoProfile -File scripts/setup-ssh-key.ps1 -SshTarget ${input:sshTarget} -SshOptions \"${input:sshOptions}\"",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "SSH: Check Keys (Local)",
+      "type": "shell",
+      "command": "pwsh -NoProfile -File scripts/check-ssh-keys-local.ps1",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "SSH: Check Keys (Remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} ${input:sshTarget} bash -lc '[ -d ~/.ssh ] && ls -la ~/.ssh || echo \"~/.ssh missing\"; for f in id_ed25519 id_rsa id_ed25519.pub id_rsa.pub; do [ -f ~/.ssh/$f ] && echo \"exists: ~/.ssh/$f\" || true; done; if [ -f ~/.ssh/authorized_keys ]; then echo -n \"authorized_keys lines: \"; wc -l ~/.ssh/authorized_keys; else echo \"no authorized_keys\"; fi]'",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "SSH: Quick Test",
+      "type": "shell",
+      "command": "pwsh -NoProfile -File scripts/ssh-quick-test.ps1 -SshTarget ${input:sshTarget} -SshOptions \"${input:sshOptions}\"",
+      "group": "none",
+      "problemMatcher": []
+    }
   ],
   "inputs": [
-    { "id": "host", "type": "pickString", "description": "Select target host", "options": ["hp-dv9500-pavilion-nixos", "msi-ge75-raider-nixos"], "default": "msi-ge75-raider-nixos" },
-    { "id": "sshTarget", "type": "promptString", "description": "SSH target (user@host)", "default": "joseph@hp-dv9500-pavilion-nixos" },
-    { "id": "sshOptions", "type": "promptString", "description": "Optional SSH options (e.g., -p 2222 -i C:/Users/<you>/.ssh/id_ed25519)", "default": "-o StrictHostKeyChecking=accept-new" },
-    { "id": "remotePath", "type": "promptString", "description": "Remote flake path on target host", "default": "/etc/nixos" }
+    {
+      "id": "host",
+      "type": "pickString",
+      "description": "Select target host",
+      "options": [
+        "hp-dv9500-pavilion-nixos",
+        "msi-ge75-raider-nixos"
+      ],
+      "default": "msi-ge75-raider-nixos"
+    },
+    {
+      "id": "sshTarget",
+      "type": "promptString",
+      "description": "SSH target (user@host)",
+      "default": "joseph@hp-dv9500-pavilion-nixos"
+    },
+    {
+      "id": "sshOptions",
+      "type": "promptString",
+      "description": "Optional SSH options (e.g., -p 2222 -i C:/Users/<you>/.ssh/id_ed25519)",
+      "default": "-o StrictHostKeyChecking=accept-new"
+    },
+    {
+      "id": "remotePath",
+      "type": "promptString",
+      "description": "Remote flake path on target host",
+      "default": "/etc/nixos"
+    }
   ]
 }

@@ -4,7 +4,8 @@ param(
     [string]$KeyPath = "$env:USERPROFILE/.ssh/id_ed25519",
     [string]$KeyComment = "$env:USERNAME@$(hostname)",
     [string]$SshTarget = "",
-    [string]$SshOptions = "-o StrictHostKeyChecking=accept-new"
+    [string]$SshOptions = "-o StrictHostKeyChecking=accept-new",
+    [int]$ConnectTimeoutSec = 8
 )
 
 $ErrorActionPreference = 'Stop'
@@ -20,9 +21,10 @@ try {
     }
 
     $existing = @()
+    # Build candidate private key paths explicitly to avoid Join-Path receiving an array
     $candidatePriv = @(
-        Join-Path $sshDir "id_ed25519",
-        Join-Path $sshDir "id_rsa"
+        (Join-Path $sshDir 'id_ed25519'),
+        (Join-Path $sshDir 'id_rsa')
     )
     foreach ($p in $candidatePriv) { if (Test-Path $p) { $existing += $p } }
 
@@ -57,8 +59,33 @@ try {
         Write-Info "Installing public key on $SshTarget"
         # Pipe the public key content to the remote authorized_keys safely
         $remoteCmd = "mkdir -p ~/.ssh && chmod 700 ~/.ssh && touch ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys && cat >> ~/.ssh/authorized_keys"
-        Get-Content -LiteralPath $pubPath -Raw -Encoding ascii | & $ssh.Path $SshOptions $SshTarget $remoteCmd
-        Write-Info "Key installed. Test with: ssh $SshOptions $SshTarget"
+
+        # Prepare SSH options as proper argv tokens. If provided as a single string like
+        # "-o StrictHostKeyChecking=accept-new", convert to a compact form accepted as one token
+        # by ssh ("-oStrictHostKeyChecking=accept-new"). For other options, pass through.
+        $opts = @()
+        if ($SshOptions) {
+            if ($SshOptions -match '^-o\s+.+') {
+                $opts += ($SshOptions -replace '^-o\s+', '-o')
+            } elseif ($SshOptions -match '\s' -and -not ($SshOptions.Trim().StartsWith('"') -or $SshOptions.Trim().StartsWith("'"))) {
+                $opts += ($SshOptions -split '\s+')
+            } else {
+                $opts += $SshOptions
+            }
+        }
+        # Ensure a connect timeout is present to avoid hanging in non-interactive runs
+        if (-not ($opts -match '^-o?ConnectTimeout')) { $opts += "-oConnectTimeout=$ConnectTimeoutSec" }
+
+        # First, test if passwordless auth already works to avoid prompts in automation
+        $testArgs = @($opts + @('-oBatchMode=yes', $SshTarget, 'true'))
+        $test = Start-Process -FilePath $ssh.Path -ArgumentList $testArgs -NoNewWindow -PassThru -Wait -RedirectStandardOutput ([System.IO.Path]::GetTempFileName()) -RedirectStandardError ([System.IO.Path]::GetTempFileName())
+        if ($test.ExitCode -ne 0) {
+            Write-Warn "Passwordless SSH not available yet or host unreachable."
+            Write-Info "Attempting interactive install; you may be prompted for your password on $SshTarget."
+        }
+
+        Get-Content -LiteralPath $pubPath -Raw -Encoding ascii | & $ssh.Path @opts $SshTarget $remoteCmd
+        Write-Info "Key installed. Test with: ssh $($opts -join ' ') $SshTarget"
     } else {
         Write-Info "Skip remote install (no -SshTarget provided)."
     }

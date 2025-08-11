@@ -9,4 +9,12 @@
   # Show the tray applet on LXQt to manage Wi‑Fi connections interactively
   programs.nm-applet.enable = true;
   # Add per-host firewall or interface tweaks here if needed.
+
+  # Ensure firewall allows SSH (in addition to global openFirewall)
+  networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [ 22 ];
+
+  # If you prefer to be explicit, you can bind sshd to both LAN and Wi‑Fi addresses.
+  # With AddressFamily=inet globally, this is usually unnecessary; leaving as a comment reference:
+  # services.openssh.settings.ListenAddress = [ "192.168.1.103" "192.168.1.104" ];
 }
