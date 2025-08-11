@@ -6,17 +6,17 @@
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "/dev/sda" ];
   
-  # Enable OS detection for dual boot
-  boot.loader.grub.useOSProber = true;
+  # Temporarily disable OS detection to fix NixOS boot issue
+  # boot.loader.grub.useOSProber = true;
   
-  # Custom GRUB menu entries for CachyOS (Limine chainload) - working version
-  boot.loader.grub.extraEntries = ''
-menuentry "CachyOS Linux" {
-  insmod part_msdos
-  set root='(hd1)'
-  chainloader +1
-}
-  '';
+  # Temporarily disable custom entries to fix NixOS boot
+  # boot.loader.grub.extraEntries = ''
+# menuentry "CachyOS Linux" {
+#   insmod part_msdos
+#   set root='(hd1)'
+#   chainloader +1
+# }
+#   '';
   
   # Increase timeout for boot menu selection
   boot.loader.timeout = 10;
