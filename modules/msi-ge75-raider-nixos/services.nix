@@ -57,15 +57,8 @@
   # Enable location services (for automatic time zone, etc.)
   services.geoclue2.enable = true;
 
-  # Enable the OpenSSH daemon for remote access
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = true;
-    };
-  };
-
+  # SSH configuration is in modules/common.nix to avoid duplication
+  
   # Enable nix-ld for dynamic linker compatibility (required for VS Code Remote SSH)
   programs.nix-ld.enable = true;
 

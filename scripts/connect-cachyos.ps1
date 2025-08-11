@@ -2,10 +2,11 @@
 # Quick SSH connection to CachyOS
 param(
     [string]$Command = "",
-    [switch]$Interactive
+    [switch]$Interactive,
+    [string]$IpAddress = "192.168.1.104"  # Default IP, can be overridden
 )
 
-$SshTarget = "joseph@192.168.1.104"
+$SshTarget = "joseph@$IpAddress"
 $SshOptions = @("-o", "StrictHostKeyChecking=accept-new")
 
 Write-Host "🚀 Connecting to CachyOS..." -ForegroundColor Cyan
@@ -25,5 +26,5 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "✅ CachyOS connection successful" -ForegroundColor Green
 } else {
     Write-Host "❌ CachyOS connection failed - System may not be booted" -ForegroundColor Red
-    Write-Host "💡 Boot CachyOS manually: GRUB → 'c' → 'set root=(hd1)' → 'chainloader +1' → 'boot'" -ForegroundColor Yellow
+    Write-Host "💡 Boot CachyOS from GRUB menu or manually: GRUB → 'c' → 'set root=(hd1)' → 'chainloader +1' → 'boot'" -ForegroundColor Yellow
 }

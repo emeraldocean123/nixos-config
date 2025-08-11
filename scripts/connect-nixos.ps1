@@ -2,10 +2,11 @@
 # Quick SSH connection to NixOS (Build 28)
 param(
     [string]$Command = "",
-    [switch]$Interactive
+    [switch]$Interactive,
+    [string]$IpAddress = "192.168.1.104"  # Default IP, can be overridden
 )
 
-$SshTarget = "joseph@192.168.1.104"
+$SshTarget = "joseph@$IpAddress"
 $SshOptions = @("-o", "StrictHostKeyChecking=accept-new")
 
 Write-Host "🐧 Connecting to NixOS..." -ForegroundColor Blue

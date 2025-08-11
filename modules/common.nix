@@ -53,6 +53,8 @@ in
 				# are accepted without binding to a missing address when one interface is down.
 				AddressFamily = "inet";
 				PermitRootLogin = "no";
+				# Password authentication enabled for convenience on private home network
+				# Consider disabling if exposing to internet or using key-based auth only
 				PasswordAuthentication = true;
 			};
 		};

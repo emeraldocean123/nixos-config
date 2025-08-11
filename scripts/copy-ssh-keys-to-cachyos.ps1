@@ -1,9 +1,12 @@
 #!/usr/bin/env pwsh
 # Copy SSH host keys from NixOS to CachyOS for shared SSH fingerprint
 param(
-    [string]$SshTarget = "joseph@192.168.1.104",
+    [string]$IpAddress = "192.168.1.104",  # Default IP, can be overridden
+    [string]$Username = "joseph",
     [string]$SshOptions = "-o StrictHostKeyChecking=accept-new"
 )
+
+$SshTarget = "$Username@$IpAddress"
 
 $ErrorActionPreference = 'Stop'
 

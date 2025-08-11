@@ -3,13 +3,14 @@
 { config, pkgs, ... }:
 {
   imports = [
-  ../../modules/common.nix
+    ../../modules/common.nix
     ../../modules/msi-ge75-raider-nixos/hardware.nix
     ../../modules/msi-ge75-raider-nixos/desktop.nix
     ../../modules/msi-ge75-raider-nixos/nvidia.nix
     ../../modules/msi-ge75-raider-nixos/networking.nix
     ../../modules/msi-ge75-raider-nixos/packages.nix
     ../../modules/msi-ge75-raider-nixos/services.nix
+    ../../modules/msi-ge75-raider-nixos/users.nix
     ./hardware-configuration.nix
   ];
   boot.loader = {
