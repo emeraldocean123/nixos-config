@@ -261,6 +261,42 @@
       "group": "test",
       "problemMatcher": []
     }
+    ,
+    {
+      "label": "Dual Boot: Connect to NixOS",
+      "type": "shell",
+      "command": "pwsh -NoProfile -File scripts/connect-nixos.ps1 -Interactive",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Dual Boot: Connect to CachyOS", 
+      "type": "shell",
+      "command": "pwsh -NoProfile -File scripts/connect-cachyos.ps1 -Interactive",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Dual Boot: Check System Status",
+      "type": "shell", 
+      "command": "pwsh -NoProfile -File scripts/check-dual-boot-status.ps1 -Detailed",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Dual Boot: NixOS Info",
+      "type": "shell",
+      "command": "pwsh -NoProfile -File scripts/connect-nixos.ps1",
+      "group": "none", 
+      "problemMatcher": []
+    },
+    {
+      "label": "Dual Boot: CachyOS Info",
+      "type": "shell",
+      "command": "pwsh -NoProfile -File scripts/connect-cachyos.ps1", 
+      "group": "none",
+      "problemMatcher": []
+    }
   ],
   "inputs": [
     {
