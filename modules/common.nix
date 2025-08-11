@@ -8,10 +8,7 @@ let
 	dmEnabled =
 		(config.services.displayManager.sddm.enable or false)
 		|| (config.services.displayManager.gdm.enable or false)
-		|| (config.services.displayManager.lightdm.enable or false)
-		|| (config.services.xserver.displayManager.sddm.enable or false)
-		|| (config.services.xserver.displayManager.gdm.enable or false)
-		|| (config.services.xserver.displayManager.lightdm.enable or false);
+		|| (config.services.displayManager.lightdm.enable or false);
 in
 {
 	# Module options

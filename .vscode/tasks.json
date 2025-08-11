@@ -179,6 +179,14 @@
     }
     ,
     {
+      "label": "HP (.104): Check Theme Hash (remote)",
+      "type": "shell",
+      "command": "ssh ${input:sshOptions} joseph@192.168.1.104 'set -e; if [ -e ~/.config/oh-my-posh/jandedobbeleer.omp.json ]; then ls -l ~/.config/oh-my-posh/jandedobbeleer.omp.json; tgt=$(readlink -f ~/.config/oh-my-posh/jandedobbeleer.omp.json 2>/dev/null || realpath ~/.config/oh-my-posh/jandedobbeleer.omp.json 2>/dev/null || echo \"\"); if [ -n \"$tgt\" ]; then echo target: $tgt; sha256sum \"$tgt\" | awk '{print $1}'; fi; sha256sum ~/.config/oh-my-posh/jandedobbeleer.omp.json | awk '{print $1}'; else echo \"no theme file\"; fi'",
+      "group": "none",
+      "problemMatcher": []
+    }
+    ,
+    {
       "label": "HP (.104): Dry-build (remote)",
       "type": "shell",
       "command": "ssh ${input:sshOptions} joseph@192.168.1.104 'nixos-rebuild dry-build --flake /etc/nixos#hp-dv9500-pavilion-nixos'",
