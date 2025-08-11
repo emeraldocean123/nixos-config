@@ -15,8 +15,9 @@
   ./bootloader.nix
   ];
   networking.hostName = "hp-dv9500-pavilion-nixos";
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "joseph";
+  # Disable auto-login to show LightDM login screen
+  services.displayManager.autoLogin.enable = false;
+  # services.displayManager.autoLogin.user = "joseph";
 
   # Guard: ensure the host hardware config file exists and is non-empty
   assertions = [
