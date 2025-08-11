@@ -162,6 +162,21 @@
       "group": "none",
       "problemMatcher": []
     }
+    ,
+    {
+      "label": "SSH: Quick Test (HP Wi‑Fi .104)",
+      "type": "shell",
+      "command": "pwsh -NoProfile -File scripts/ssh-quick-test.ps1 -SshTarget joseph@192.168.1.104 -SshOptions \"${input:sshOptions}\"",
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "SSH: Quick Test (HP LAN .103)",
+      "type": "shell",
+      "command": "pwsh -NoProfile -File scripts/ssh-quick-test.ps1 -SshTarget joseph@192.168.1.103 -SshOptions \"${input:sshOptions}\"",
+      "group": "none",
+      "problemMatcher": []
+    }
   ],
   "inputs": [
     {
