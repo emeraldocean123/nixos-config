@@ -113,6 +113,14 @@
     }
     ,
     {
+      "label": "SSH: Setup Key (Windows)",
+      "type": "shell",
+      "command": "pwsh -NoProfile -File scripts/setup-ssh-key.ps1 -SshTarget ${input:sshTarget} -SshOptions \"${input:sshOptions}\"",
+      "group": "none",
+      "problemMatcher": []
+    }
+    ,
+    {
       "label": "NixOS: Dry-build (remote)",
       "type": "shell",
       "command": "ssh ${input:sshOptions} ${input:sshTarget} 'sudo nixos-rebuild dry-build --flake ${input:remotePath}#${input:host}'",
@@ -165,7 +173,7 @@
       "id": "sshOptions",
       "type": "promptString",
       "description": "Optional SSH options (e.g., -p 2222 -i C:/Users/<you>/.ssh/id_ed25519)",
-      "default": ""
+  "default": "-o StrictHostKeyChecking=accept-new"
     },
     {
       "id": "remotePath",

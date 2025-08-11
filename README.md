@@ -207,6 +207,7 @@ Windows → NixOS via VS Code tasks
 	- Tasks available: Flake Check, Flake Update, Switch/Test/Dry-build, List Generations, GC
 
 SSH key quick setup (from Windows PowerShell)
+Prefer: Tasks: Run Task → "SSH: Setup Key (Windows)" (idempotent; it reuses an existing key if found, otherwise generates a new one, and can install it on the remote host.)
 ```powershell
 # Generate a key if you don't have one
 ssh-keygen -t ed25519 -C "joseph@windows"
