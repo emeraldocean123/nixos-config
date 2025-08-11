@@ -6,7 +6,12 @@ let
 	cfg = config.custom.lid.greeterInhibit;
 	# Detect if any common display manager is enabled. Use `or false` to avoid referencing missing attrs.
 	dmEnabled =
+		# SDDM moved to services.displayManager.sddm in 25.05
 		(config.services.displayManager.sddm.enable or false)
+		# LightDM/GDM are still under services.xserver.displayManager.* on 25.05
+		|| (config.services.xserver.displayManager.lightdm.enable or false)
+		|| (config.services.xserver.displayManager.gdm.enable or false)
+		# Future-proof: also consider new locations if present
 		|| (config.services.displayManager.gdm.enable or false)
 		|| (config.services.displayManager.lightdm.enable or false);
 in

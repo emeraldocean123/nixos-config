@@ -11,7 +11,7 @@
   };
 
   # Use the working LightDM display manager with the keyboard fix.
-  services.displayManager.lightdm = {
+  services.xserver.displayManager.lightdm = {
     enable = true;
     greeters.gtk.enable = true;
     extraConfig = "xkb-layout = us";
