@@ -84,10 +84,11 @@ Access via `Ctrl+Shift+P` → "Tasks: Run Task":
 
 ## ⚠️ Important Notes
 
-### NixOS Limitations
-- **Only Build 28 works** - Newer builds (29-32) have filesystem detection issues
-- **Don't rebuild newer generations** - Stick with Build 28 until GRUB issue is resolved
-- **Emergency backup available** at `/tmp/emergency-backup/` on the system
+### NixOS Status
+- **✅ Build 33 working** - Latest build with auto-login disabled and LightDM login screen
+- **✅ GRUB issue resolved** - Minimal bootloader configuration fixed filesystem detection
+- **✅ Login screen restored** - LightDM now shows password prompt (no auto-login)
+- **Emergency backup available** at `/tmp/emergency-backup/` on the system (no longer needed)
 
 ### CachyOS Setup  
 - **Browsers installed**: Brave, LibreWolf, Firefox
@@ -118,18 +119,19 @@ ssh-keygen -R 192.168.1.104
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| NixOS Boot | ✅ Working | Build 28 only |
+| NixOS Boot | ✅ Working | Build 33 latest, LightDM login screen |
 | CachyOS Boot | ✅ Working | Manual GRUB commands |
 | SSH Access | ✅ Working | Both systems |
 | Dual Boot | ✅ Functional | Manual process |
-| Data Safety | ✅ Backed up | Emergency backup created |
+| Login Screen | ✅ Restored | Password required (auto-login disabled) |
 
 ## 🎯 Future Improvements
 
-- [ ] Fix NixOS GRUB configuration for newer builds
-- [ ] Automate CachyOS boot process
+- [x] ~~Fix NixOS GRUB configuration for newer builds~~ ✅ **COMPLETED**
+- [ ] Automate CachyOS boot process  
 - [ ] Sync SSH host keys between systems
 - [ ] Create GRUB menu entry for CachyOS
+- [x] ~~Restore LightDM login screen~~ ✅ **COMPLETED**
 
 ---
 
