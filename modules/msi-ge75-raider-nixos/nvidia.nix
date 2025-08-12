@@ -1,12 +1,21 @@
-# modules/msi-ge75-raider-nixos/nvidia.nix
-# NVIDIA driver configuration for MSI GE75 Raider (RTX 2070)
-{ config, pkgs, ... }:
-{
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.production;
-  };
-}
+## modules/msi-ge75-raider-nixos/nvidia.nix
+  # NVIDIA configuration for MSI GE75 Raider
+  { config, pkgs, ... }:
+  {
+    # Enable proprietary NVIDIA drivers
+    hardware.graphics.enable = true;
+    hardware.nvidia = {
+      modesetting.enable = true;
+      powerManagement.enable = false;
+      powerManagement.finegrained = false;
+
+      # Use open source kernel modules for RTX series
+      # Set to false for older GPUs (pre-Turing)
+      open = true;  # MSI GE75 Raider typically has RTX 2060/2070
+
+      nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    };
+
+    services.xserver.videoDrivers = [ "nvidia" ];
+  }

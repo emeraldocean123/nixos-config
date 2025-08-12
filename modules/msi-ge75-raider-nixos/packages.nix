@@ -15,9 +15,9 @@
   # Theming and icons (Plasma-friendly)
   nixos-icons
   papirus-icon-theme
-  breeze-icons
-  breeze-gtk
-  xdg-desktop-portal-kde
+  kdePackages.breeze-icons
+  kdePackages.breeze-gtk
+  kdePackages.xdg-desktop-portal-kde
 
   # Terminal and helpers
     kitty

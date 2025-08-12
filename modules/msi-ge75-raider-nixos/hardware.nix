@@ -47,10 +47,10 @@
   # Performance monitoring: add sensors/SMART in host config if needed
 
   # Enable USB devices (gaming peripherals)
-  services.udev.extraRules = ''
-    # Gaming mouse/keyboard permissions
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="046d", MODE="0666"  # Logitech
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="1532", MODE="0666"  # Razer
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="0b05", MODE="0666"  # ASUS
-  '';
+    # services.udev.extraRules = ''
+    #   # Gaming mouse/keyboard permissions
+    #   SUBSYSTEM=="usb", ATTRS{idVendor}=="046d", MODE="0666"  # Logitech
+    #   SUBSYSTEM=="usb", ATTRS{idVendor}=="1532", MODE="0666"  # Razer
+    #   SUBSYSTEM=="usb", ATTRS{idVendor}=="0b05", MODE="0666"  # ASUS
+    # '';
 }

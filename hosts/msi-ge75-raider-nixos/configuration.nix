@@ -13,6 +13,7 @@
     ../../modules/msi-ge75-raider-nixos/users.nix
     ./hardware-configuration.nix
   ];
+  nixpkgs.config.allowUnfree = true;
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
