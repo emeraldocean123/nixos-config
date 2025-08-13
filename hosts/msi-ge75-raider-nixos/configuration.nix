@@ -25,13 +25,28 @@
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "joseph";
 
-  # Guard: prevent deploying with placeholder hardware UUIDs
+  # CRITICAL: Hardware validation to prevent boot failures
+  # These assertions MUST pass or the system will not boot
   assertions = [
     {
+      # Check for placeholder UUIDs
       assertion = (
         builtins.match ".*0000-0000-0000-000000000000.*" (builtins.readFile ./hardware-configuration.nix)
       ) == null;
-      message = "Replace placeholder UUIDs in hosts/msi-ge75-raider-nixos/hardware-configuration.nix before deploying.";
+      message = "FATAL: Placeholder UUIDs detected in hardware-configuration.nix. Generate proper config with nixos-generate-config!";
+    }
+    {
+      # Ensure hardware-configuration.nix exists and is not empty
+      assertion = builtins.pathExists ./hardware-configuration.nix && 
+                 (builtins.stringLength (builtins.readFile ./hardware-configuration.nix)) > 100;
+      message = "FATAL: hardware-configuration.nix is missing or empty. Run nixos-generate-config first!";
+    }
+    {
+      # Check that we're not using the repository's example UUIDs
+      assertion = (
+        builtins.match ".*(6e49b974-32d4-443b-bb4f-c9628106f47a|08DA-79B4|7da81dcb-243d-4949-9fd4-09646fb944fc).*" (builtins.readFile ./hardware-configuration.nix)
+      ) == null;
+      message = "FATAL: Repository's example UUIDs detected! Run 'sudo nixos-generate-config' to create YOUR machine-specific configuration!";
     }
   ];
   system.stateVersion = "25.05";
