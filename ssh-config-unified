@@ -1,0 +1,28 @@
+# Unified SSH Configuration
+# Copy this to ~/.ssh/config
+
+# Default settings for all hosts
+Host *
+    IdentityFile ~/.ssh/id_ed25519_unified
+    AddKeysToAgent yes
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+
+# MSI GE75 Raider NixOS
+Host msi
+    HostName 192.168.1.106
+    User joseph
+    IdentityFile ~/.ssh/id_ed25519_unified
+
+# HP dv9500 Pavilion NixOS  
+Host hp
+    HostName 192.168.1.104
+    User joseph
+    IdentityFile ~/.ssh/id_ed25519_unified
+
+# GitHub
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_unified
+    IdentitiesOnly yes

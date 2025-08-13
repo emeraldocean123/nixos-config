@@ -71,6 +71,8 @@ in
 			git
 			curl
 			wget
+			gnused
+			gnugrep
 			networkmanager # provides nmcli
 			(writeShellScriptBin "nixos-up" ''
 				set -euo pipefail
@@ -88,22 +90,17 @@ in
 			'')
 			# Helper to check lid-related state at a glance
 			(writeShellScriptBin "lid-status" ''
-				set -euo pipefail
 				echo "== Sessions (loginctl) =="
-				${pkgs.systemd}/bin/loginctl --no-legend list-sessions || true
-				echo
+				loginctl --no-legend list-sessions || true
+				echo ""
 				echo "== Inhibitors (systemd-inhibit --list) =="
-				${pkgs.systemd}/bin/systemd-inhibit --list || true
-				echo
+				systemd-inhibit --list || true
+				echo ""
 				echo "== Greeter inhibitor service status =="
-				${pkgs.systemd}/bin/systemctl status lid-inhibit-at-greeter.service --no-pager -l || true
-				echo
+				systemctl status lid-inhibit-at-greeter.service --no-pager -l || true
+				echo ""
 				echo "== logind.conf (lid-related keys) =="
-				if [ -f /etc/systemd/logind.conf ]; then
-					${pkgs.coreutils}/bin/cat /etc/systemd/logind.conf | sed -n '/^#\?HandleLid/p;/^#\?LidSwitch/p' || true
-				else
-					echo "(no /etc/systemd/logind.conf present)"
-				fi
+				test -f /etc/systemd/logind.conf && grep -E "HandleLid|LidSwitch" /etc/systemd/logind.conf || echo "(no lid settings found)"
 			'')
 		];
 
@@ -127,7 +124,6 @@ in
 		# release the inhibitor so the GUI (LXQt/Plasma) can control lid behavior.
 		systemd.services."lid-inhibit-at-greeter" = mkIf (cfg.enable) (let
 			mainScript = pkgs.writeShellScript "lid-inhibit-at-greeter" ''
-				#!/usr/bin/env bash
 				# Ensure required tools are on PATH even in minimal systemd environments
 				export PATH="${pkgs.coreutils}/bin:${pkgs.gawk}/bin:${pkgs.systemd}/bin:/run/current-system/sw/bin:$PATH"
 				pidfile=/run/lid-greeter-inhibit/pid
@@ -173,7 +169,6 @@ in
 				done
 			'';
 			cleanupScript = pkgs.writeShellScript "lid-inhibit-at-greeter-cleanup" ''
-				#!/usr/bin/env bash
 				set -euo pipefail
 				pidfile=/run/lid-greeter-inhibit/pid
 				if [ -f "$pidfile" ]; then

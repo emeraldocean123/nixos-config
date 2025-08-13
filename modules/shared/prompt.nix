@@ -3,8 +3,8 @@
 { pkgs, ... }:
 {
   programs.bash = {
-  # Show fastfetch on login shells once per session (guarded by env var)
-  profileExtra = ''
+    # Show fastfetch on login shells once per session (guarded by env var)
+    profileExtra = ''
       # Only in interactive bash login shells
       case $- in *i*) interactive=1 ;; *) interactive=0 ;; esac
       if [ "$interactive" = 1 ] && shopt -q login_shell; then
@@ -13,9 +13,9 @@
         fi
         export FASTFETCH_SHOWN=1
       fi
-  '';
-  # Interactive shells: show fastfetch once per session and set prompt
-  bashrcExtra = ''
+    '';
+    # Interactive shells: show fastfetch once per session and set prompt
+    bashrcExtra = ''
       # Only in interactive shells
       case $- in *i*) interactive=1 ;; *) interactive=0 ;; esac
       if [ "$interactive" = 1 ]; then
