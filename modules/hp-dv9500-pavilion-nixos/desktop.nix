@@ -1,8 +1,8 @@
 # modules/hp-dv9500-pavilion-nixos/desktop.nix
-# LXQt desktop and LightDM configuration for HP dv9500 Pavilion
+# LXQt desktop and SDDM configuration for HP dv9500 Pavilion
 { config, pkgs, ... }:
 {
-  # Final working configuration: LightDM greeter with the LXQt desktop.
+  # Final working configuration: SDDM display manager with LXQt desktop.
   services.xserver.enable = true;
 
   services.xserver.xkb = {
@@ -10,12 +10,8 @@
     variant = "";
   };
 
-  # Use the working LightDM display manager with the keyboard fix.
-  services.xserver.displayManager.lightdm = {
-    enable = true;
-    greeters.gtk.enable = true;
-    extraConfig = "xkb-layout = us";
-  };
+  # Use SDDM display manager to match MSI laptop configuration
+  services.displayManager.sddm.enable = true;
 
   # Restore the LXQt Desktop Environment
   services.xserver.desktopManager.lxqt.enable = true;
