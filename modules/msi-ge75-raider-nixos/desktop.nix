@@ -7,13 +7,18 @@
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
-  # Configure autolock to use the screen-blanking workaround (same as HP laptop)
-  services.xserver.xautolock = {
-    enable = true;
-    # This command forces the monitor into power-saving mode (DPMS off).
-    locker = "${pkgs.xorg.xset}/bin/xset dpms force off";
-    time = 10;  # 10 minutes, same as HP laptop
-  };
+  # Note: xautolock conflicts with KDE Plasma's PowerDevil
+  # Plasma has its own power management that overrides xautolock
+  # Configure power management through Plasma's System Settings instead
+  
+  # For SDDM login screen (before user login), set DPMS timeouts
+  services.xserver.displayManager.setupCommands = ''
+    ${pkgs.xorg.xset}/bin/xset dpms 600 600 600  # 10 minutes for login screen
+  '';
+  
+  # Configure Plasma's PowerDevil to handle screen timeout when logged in
+  # This can be set in System Settings > Power Management > Energy Saving
+  # Or via command: kwriteconfig5 --group PowerDevil --group AC --key TurnOffDisplayIdleTimeoutSec 600
 
   # Start lean: no extra KDE apps yet
   environment.systemPackages = with pkgs; [
