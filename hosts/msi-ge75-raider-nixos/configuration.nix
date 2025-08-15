@@ -22,8 +22,9 @@
   # Timezone/locale set in modules/common.nix; desktop stack in modules/msi-ge75-raider-nixos/desktop.nix
     # Timezone and locale are defined in modules/common.nix
     # Desktop and display manager are configured in modules/msi-ge75-raider-nixos/desktop.nix
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "joseph";
+  # Auto-login disabled for security
+  # services.displayManager.autoLogin.enable = true;
+  # services.displayManager.autoLogin.user = "joseph";
 
   # CRITICAL: Hardware validation to prevent boot failures
   # These assertions MUST pass or the system will not boot
