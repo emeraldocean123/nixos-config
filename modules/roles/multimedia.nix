@@ -3,7 +3,7 @@
 { config, pkgs, ... }:
 {
   # Modern audio system with PipeWire (better for multimedia and gaming)
-  hardware.pulseaudio.enable = false; # Disable PulseAudio in favor of PipeWire
+  services.pulseaudio.enable = false; # Disable PulseAudio in favor of PipeWire
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
