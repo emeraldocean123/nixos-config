@@ -49,11 +49,16 @@
             ./modules/shared/desktop-base.nix
             ./modules/shared/packages-base.nix
             ./modules/shared/hardware-base.nix
+            ./modules/shared/services-base.nix
             ./modules/shared/users.nix
             # Profile modules
             ./modules/profiles/laptop-base.nix
             ./modules/profiles/legacy-hardware.nix
             ./modules/profiles/lxqt.nix
+            # Role modules (optional - uncomment as needed)
+            ./modules/roles/multimedia.nix
+            # ./modules/roles/development.nix
+            # ./modules/roles/gaming.nix
             # Host-specific overrides (minimal)
             ./modules/hp-dv9500-pavilion-nixos/hardware.nix
             ./modules/hp-dv9500-pavilion-nixos/networking.nix
@@ -81,11 +86,17 @@
             ./modules/shared/desktop-base.nix
             ./modules/shared/packages-base.nix
             ./modules/shared/hardware-base.nix
+            ./modules/shared/services-base.nix
             ./modules/shared/users.nix
             # Profile modules
             ./modules/profiles/laptop-base.nix
             ./modules/profiles/gaming-hardware.nix
             ./modules/profiles/kde-plasma.nix
+            # Role modules (gaming laptop roles)
+            ./modules/roles/multimedia.nix
+            ./modules/roles/gaming.nix
+            ./modules/roles/gaming-performance.nix
+            ./modules/roles/development.nix
             # Host-specific overrides (minimal)
             ./modules/msi-ge75-raider-nixos/hardware.nix
             ./modules/msi-ge75-raider-nixos/nvidia.nix

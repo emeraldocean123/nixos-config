@@ -1,17 +1,10 @@
+# HP dv9500 Pavilion host-specific services
+# (Most services moved to shared/services-base.nix and profiles/laptop-base.nix)
 { config, pkgs, ... }:
-{
-  # Enable SMART monitoring for disks
-  services.smartd.enable = true;
 
-  # Optional: Improve battery life with TLP (conservative defaults)
-  # services.tlp = {
-  #   enable = true;
-  #   settings = {
-  #     CPU_SCALING_GOVERNOR_ON_AC = "ondemand";
-  #     CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-  #     DISK_APM_LEVEL_ON_BAT = "128";
-  #     # If present, target spinning disks only (adjust to your device)
-  #     DISK_DEVICES = "sda";
-  #   };
-  # };
+{
+  # HP-specific service overrides (minimal)
+  # (SMART monitoring is now in profiles/laptop-base.nix)
+  # (All common services are in shared/services-base.nix)
+  # (All multimedia services are in roles/multimedia.nix)
 }

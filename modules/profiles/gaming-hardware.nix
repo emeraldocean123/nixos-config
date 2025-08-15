@@ -11,7 +11,7 @@
     "vm.dirty_ratio" = 10;
   };
 
-  # Gaming-specific packages
+  # Hardware monitoring packages
   environment.systemPackages = with pkgs; [
     # GPU diagnostics and monitoring
     mesa-demos  # glxinfo/glxgears
@@ -31,17 +31,4 @@
 
   # Modern touchpad settings
   services.libinput.touchpad.naturalScrolling = true;
-
-  # Optional gaming stack (commented out by default)
-  # Uncomment these lines to enable gaming features:
-  # programs.steam.enable = true;
-  # hardware.steam-hardware.enable = true;
-
-  # Gaming peripheral permissions (uncomment if needed)
-  # services.udev.extraRules = ''
-  #   # Gaming mouse/keyboard permissions
-  #   SUBSYSTEM=="usb", ATTRS{idVendor}=="046d", MODE="0666"  # Logitech
-  #   SUBSYSTEM=="usb", ATTRS{idVendor}=="1532", MODE="0666"  # Razer
-  #   SUBSYSTEM=="usb", ATTRS{idVendor}=="0b05", MODE="0666"  # ASUS
-  # '';
 }
