@@ -31,7 +31,7 @@ in
 	# All configuration goes under the `config` attribute when defining module options.
 	config = {
 		# Locale and timezone
-		time.timeZone = "America/Chicago";
+		time.timeZone = "America/Los_Angeles";
 		i18n.defaultLocale = "en_US.UTF-8";
 
 		# Hard-require NetworkManager. If any other module tries to disable it, we force it on.
