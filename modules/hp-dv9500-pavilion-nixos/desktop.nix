@@ -13,6 +13,12 @@
   # Use SDDM display manager to match MSI laptop configuration
   services.displayManager.sddm.enable = true;
 
+  # System-wide power management: Turn off screen after 15 minutes of inactivity
+  # This works at login screen, lock screen, and during active use
+  services.xserver.displayManager.sessionCommands = ''
+    ${pkgs.xorg.xset}/bin/xset dpms 900 900 900  # 15 minutes = 900 seconds
+  '';
+
   # Restore the LXQt Desktop Environment
   services.xserver.desktopManager.lxqt.enable = true;
   # And ensure the minimal IceWM is disabled.
