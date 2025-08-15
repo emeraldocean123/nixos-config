@@ -46,6 +46,7 @@
           specialArgs = { inherit dotfiles; };
           modules = [
             ./modules/hp-dv9500-pavilion-nixos/hardware.nix
+            ./modules/hp-dv9500-pavilion-nixos/display.nix
             ./modules/hp-dv9500-pavilion-nixos/desktop.nix
             ./modules/hp-dv9500-pavilion-nixos/networking.nix
             ./modules/hp-dv9500-pavilion-nixos/packages.nix
@@ -71,6 +72,7 @@
           specialArgs = { inherit dotfiles; };
           modules = [
             ./modules/msi-ge75-raider-nixos/hardware.nix
+            ./modules/msi-ge75-raider-nixos/display.nix
             ./modules/msi-ge75-raider-nixos/desktop.nix
             ./modules/msi-ge75-raider-nixos/nvidia.nix
             ./modules/msi-ge75-raider-nixos/networking.nix

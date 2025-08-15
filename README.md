@@ -37,7 +37,8 @@ hardware-configuration.nix – Hardware-specific settings (placeholder, requires
 
 modules/ – Reusable NixOS modules
 hp-dv9500-pavilion-nixos/
-desktop.nix – LXQt desktop configuration
+display.nix – SDDM display manager configuration
+desktop.nix – LXQt desktop environment configuration
 hardware.nix – Hardware-specific settings
 networking.nix – Networking configuration
 packages.nix – System-wide packages
@@ -45,7 +46,8 @@ services.nix – System services
 
 
 msi-ge75-raider-nixos/
-desktop.nix – KDE Plasma 6 desktop configuration
+display.nix – SDDM display manager configuration
+desktop.nix – KDE Plasma 6 desktop environment configuration
 hardware.nix – Hardware-specific settings
 networking.nix – Networking configuration
 nvidia.nix – NVIDIA RTX 2070 configuration
