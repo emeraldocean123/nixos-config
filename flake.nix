@@ -50,12 +50,13 @@
             ./modules/shared/packages-base.nix
             ./modules/shared/hardware-base.nix
             ./modules/shared/users.nix
-            # Host-specific modules
+            # Profile modules
+            ./modules/profiles/laptop-base.nix
+            ./modules/profiles/legacy-hardware.nix
+            ./modules/profiles/lxqt.nix
+            # Host-specific overrides (minimal)
             ./modules/hp-dv9500-pavilion-nixos/hardware.nix
-            ./modules/hp-dv9500-pavilion-nixos/display.nix
-            ./modules/hp-dv9500-pavilion-nixos/desktop.nix
             ./modules/hp-dv9500-pavilion-nixos/networking.nix
-            ./modules/hp-dv9500-pavilion-nixos/packages.nix
             ./modules/hp-dv9500-pavilion-nixos/services.nix
             ./hosts/hp-dv9500-pavilion-nixos/configuration.nix
             ./hosts/hp-dv9500-pavilion-nixos/hardware-configuration.nix
@@ -81,13 +82,14 @@
             ./modules/shared/packages-base.nix
             ./modules/shared/hardware-base.nix
             ./modules/shared/users.nix
-            # Host-specific modules
+            # Profile modules
+            ./modules/profiles/laptop-base.nix
+            ./modules/profiles/gaming-hardware.nix
+            ./modules/profiles/kde-plasma.nix
+            # Host-specific overrides (minimal)
             ./modules/msi-ge75-raider-nixos/hardware.nix
-            ./modules/msi-ge75-raider-nixos/display.nix
-            ./modules/msi-ge75-raider-nixos/desktop.nix
             ./modules/msi-ge75-raider-nixos/nvidia.nix
             ./modules/msi-ge75-raider-nixos/networking.nix
-            ./modules/msi-ge75-raider-nixos/packages.nix
             ./modules/msi-ge75-raider-nixos/services.nix
             ./hosts/msi-ge75-raider-nixos/configuration.nix
             ./hosts/msi-ge75-raider-nixos/hardware-configuration.nix
