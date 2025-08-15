@@ -3,22 +3,15 @@
 { config, pkgs, ... }:
 {
   imports = [
-    # Common settings are applied via the modules imported below
+    # Common settings are applied via shared/profile/role modules in flake.nix
     ../../modules/common.nix
-    ../../modules/hp-dv9500-pavilion-nixos/hardware.nix
-    ../../modules/hp-dv9500-pavilion-nixos/display.nix
-    ../../modules/hp-dv9500-pavilion-nixos/desktop.nix
-    ../../modules/hp-dv9500-pavilion-nixos/networking.nix
-    ../../modules/hp-dv9500-pavilion-nixos/packages.nix
-    ../../modules/hp-dv9500-pavilion-nixos/services.nix
-    ../../modules/hp-dv9500-pavilion-nixos/users.nix
     ./hardware-configuration.nix
     ./bootloader.nix
   ];
   networking.hostName = "hp-dv9500-pavilion-nixos";
   # Disable auto-login to show SDDM login screen
-  # Display manager (SDDM) configured in modules/hp-dv9500-pavilion-nixos/display.nix
-  # Desktop environment (LXQt) configured in modules/hp-dv9500-pavilion-nixos/desktop.nix
+  # Display manager (SDDM) configured in shared/desktop-base.nix
+  # Desktop environment (LXQt) configured in profiles/lxqt.nix
   services.displayManager.autoLogin.enable = false;
   # services.displayManager.autoLogin.user = "joseph";
 

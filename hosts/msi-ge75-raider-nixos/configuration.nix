@@ -3,15 +3,8 @@
 { config, pkgs, ... }:
 {
   imports = [
+    # Common settings are applied via shared/profile/role modules in flake.nix
     ../../modules/common.nix
-    ../../modules/msi-ge75-raider-nixos/hardware.nix
-    ../../modules/msi-ge75-raider-nixos/display.nix
-    ../../modules/msi-ge75-raider-nixos/desktop.nix
-    ../../modules/msi-ge75-raider-nixos/nvidia.nix
-    ../../modules/msi-ge75-raider-nixos/networking.nix
-    ../../modules/msi-ge75-raider-nixos/packages.nix
-    ../../modules/msi-ge75-raider-nixos/services.nix
-    ../../modules/msi-ge75-raider-nixos/users.nix
     ./hardware-configuration.nix
   ];
   nixpkgs.config.allowUnfree = true;
@@ -21,8 +14,8 @@
   };
   networking.hostName = "msi-ge75-raider-nixos";
   # Timezone/locale set in modules/common.nix
-  # Display manager (SDDM) configured in modules/msi-ge75-raider-nixos/display.nix  
-  # Desktop environment (Plasma) configured in modules/msi-ge75-raider-nixos/desktop.nix
+  # Display manager (SDDM) configured in shared/desktop-base.nix  
+  # Desktop environment (Plasma) configured in profiles/kde-plasma.nix
   # Auto-login disabled for security
   # services.displayManager.autoLogin.enable = true;
   # services.displayManager.autoLogin.user = "joseph";
