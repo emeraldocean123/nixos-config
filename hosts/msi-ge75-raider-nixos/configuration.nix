@@ -5,6 +5,7 @@
   imports = [
     ../../modules/common.nix
     ../../modules/msi-ge75-raider-nixos/hardware.nix
+    ../../modules/msi-ge75-raider-nixos/display.nix
     ../../modules/msi-ge75-raider-nixos/desktop.nix
     ../../modules/msi-ge75-raider-nixos/nvidia.nix
     ../../modules/msi-ge75-raider-nixos/networking.nix
@@ -19,9 +20,9 @@
     efi.canTouchEfiVariables = true;
   };
   networking.hostName = "msi-ge75-raider-nixos";
-  # Timezone/locale set in modules/common.nix; desktop stack in modules/msi-ge75-raider-nixos/desktop.nix
-    # Timezone and locale are defined in modules/common.nix
-    # Desktop and display manager are configured in modules/msi-ge75-raider-nixos/desktop.nix
+  # Timezone/locale set in modules/common.nix
+  # Display manager (SDDM) configured in modules/msi-ge75-raider-nixos/display.nix  
+  # Desktop environment (Plasma) configured in modules/msi-ge75-raider-nixos/desktop.nix
   # Auto-login disabled for security
   # services.displayManager.autoLogin.enable = true;
   # services.displayManager.autoLogin.user = "joseph";
