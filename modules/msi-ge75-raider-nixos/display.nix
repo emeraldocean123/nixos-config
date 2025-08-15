@@ -1,16 +1,8 @@
-# modules/msi-ge75-raider-nixos/display.nix
-# SDDM display manager configuration for MSI GE75 Raider
+# MSI GE75 Raider display-specific configuration (base display is in shared/desktop-base.nix)
 { config, pkgs, ... }:
 {
-  # Enable X11 windowing system
-  services.xserver.enable = true;
-  
-  # SDDM display manager configuration
-  services.displayManager.sddm.enable = true;
-  
-  # X11 keyboard configuration
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
+  # MSI-specific display configuration
+  # Note: Screen power management for KDE Plasma should be configured
+  # through Plasma's System Settings > Power Management > Energy Saving
+  # SDDM + Plasma doesn't work well with NixOS-level screen blanking settings
 }

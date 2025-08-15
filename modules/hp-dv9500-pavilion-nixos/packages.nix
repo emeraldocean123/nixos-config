@@ -1,26 +1,12 @@
-# System-wide packages for HP dv9500 Pavilion
+# HP dv9500 Pavilion specific packages (base packages are in shared/packages-base.nix)
 { config, pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    # Utilities
-    htop
-    fastfetch
-
-    # Browsers
-    brave
-    librewolf
-
-    # Theming and icons
-    nixos-icons
-    papirus-icon-theme
+    # LXQt-specific theming packages
     arc-theme
     qgnomeplatform
 
-    # Terminal and X helpers
-    kitty
+    # X helpers for LXQt
     xorg.xhost
-
-    # Sensors CLI
-    lm_sensors
   ];
 }

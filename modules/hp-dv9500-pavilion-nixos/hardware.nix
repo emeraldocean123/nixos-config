@@ -6,33 +6,20 @@
   # Enable AMD CPU microcode updates (for AMD Turion 64 X2)
   hardware.cpu.amd.updateMicrocode = true;
 
-  # Enable redistributable firmware (recommended for WiFi, etc.)
-  hardware.enableRedistributableFirmware = true;
+  # (redistributable firmware enabled in shared/hardware-base.nix)
 
   # Use the open-source nouveau driver for legacy NVIDIA GeForce 7150M GPU
   services.xserver.videoDrivers = [ "nouveau" ];
 
-  # Enable OpenGL/graphics support for legacy hardware
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
+  # (graphics/touchpad/bluetooth base config in shared/hardware-base.nix)
+  
+  # HP-specific touchpad settings (override shared defaults)
+  services.libinput.touchpad = {
+    naturalScrolling = false; # Traditional scrolling for older users
   };
 
-  # Enable touchpad and input devices
-  services.libinput = {
-    enable = true;
-    touchpad = {
-      tapping = true;
-      naturalScrolling = false; # Traditional scrolling for older users
-      disableWhileTyping = true;
-    };
-  };
-
-  # Enable Bluetooth (if present on this model)
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = false; # Save battery on old laptop
-  };
+  # HP-specific Bluetooth settings (override shared defaults)
+  hardware.bluetooth.powerOnBoot = false; # Save battery on old laptop
 
   # Legacy hardware optimizations
   boot.kernel.sysctl = {

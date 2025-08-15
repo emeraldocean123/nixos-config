@@ -1,36 +1,21 @@
-# modules/msi-ge75-raider-nixos/packages.nix
-# System packages for MSI GE75 Raider (aligned with HP where possible)
+# MSI GE75 Raider specific packages (base packages are in shared/packages-base.nix)
 { pkgs, ... }:
 {
-  # Align with HP's package set (minus LXQt-specific packages not used on KDE)
   environment.systemPackages = with pkgs; [
-    # Utilities
-    htop
-    fastfetch
+    # KDE/Plasma-specific theming and integration
+    kdePackages.breeze-icons
+    kdePackages.breeze-gtk
+    kdePackages.xdg-desktop-portal-kde
 
-    # Browsers
-    brave
-    librewolf
+    # KDE QoL tools
+    kdePackages.kdeconnect-kde
+    kdePackages.spectacle
+    kdePackages.dolphin
+    kdePackages.gwenview
 
-  # Theming and icons (Plasma-friendly)
-  nixos-icons
-  papirus-icon-theme
-  kdePackages.breeze-icons
-  kdePackages.breeze-gtk
-  kdePackages.xdg-desktop-portal-kde
-
-  # Terminal and helpers
-    kitty
-
-  # KDE QoL tools
-  kdePackages.kdeconnect-kde
-  kdePackages.spectacle
-  kdePackages.dolphin
-  kdePackages.gwenview
-
-  # GPU diagnostics
-  mesa-demos  # glxinfo/glxgears
-  nvtopPackages.full
+    # Gaming/GPU diagnostics
+    mesa-demos  # glxinfo/glxgears
+    nvtopPackages.full
   ];
 
   # Optional gaming stack (uncomment to enable)

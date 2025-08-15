@@ -3,36 +3,22 @@
 { config, pkgs, ... }:
 
 {
-  # Hardware acceleration and graphics
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-
-  # Enable firmware and microcode updates
+  # (graphics/touchpad/bluetooth base config in shared/hardware-base.nix)
+  
+  # Enable Intel CPU microcode updates (for i7-9750H)
   hardware.cpu.intel.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
 
-  # Enable Bluetooth
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-    settings = {
-      General = {
-        Enable = "Source,Sink,Media,Socket";
-        Experimental = true;
-      };
+  # MSI-specific Bluetooth settings (enhanced features)
+  hardware.bluetooth.settings = {
+    General = {
+      Enable = "Source,Sink,Media,Socket";
+      Experimental = true;
     };
   };
 
-  # Enable touchpad and input devices
-  services.libinput = {
-    enable = true;
-    touchpad = {
-      tapping = true;
-      naturalScrolling = true;
-      disableWhileTyping = true;
-    };
+  # MSI-specific touchpad settings (modern scrolling)
+  services.libinput.touchpad = {
+    naturalScrolling = true;
   };
 
   # Gaming hardware optimizations

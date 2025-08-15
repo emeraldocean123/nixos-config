@@ -45,13 +45,18 @@
           # Make flake inputs available to modules
           specialArgs = { inherit dotfiles; };
           modules = [
+            # Shared base modules
+            ./modules/shared/desktop-base.nix
+            ./modules/shared/packages-base.nix
+            ./modules/shared/hardware-base.nix
+            ./modules/shared/users.nix
+            # Host-specific modules
             ./modules/hp-dv9500-pavilion-nixos/hardware.nix
             ./modules/hp-dv9500-pavilion-nixos/display.nix
             ./modules/hp-dv9500-pavilion-nixos/desktop.nix
             ./modules/hp-dv9500-pavilion-nixos/networking.nix
             ./modules/hp-dv9500-pavilion-nixos/packages.nix
             ./modules/hp-dv9500-pavilion-nixos/services.nix
-            ./modules/hp-dv9500-pavilion-nixos/users.nix
             ./hosts/hp-dv9500-pavilion-nixos/configuration.nix
             ./hosts/hp-dv9500-pavilion-nixos/hardware-configuration.nix
             home-manager.nixosModules.home-manager {
@@ -71,6 +76,12 @@
           inherit system;
           specialArgs = { inherit dotfiles; };
           modules = [
+            # Shared base modules
+            ./modules/shared/desktop-base.nix
+            ./modules/shared/packages-base.nix
+            ./modules/shared/hardware-base.nix
+            ./modules/shared/users.nix
+            # Host-specific modules
             ./modules/msi-ge75-raider-nixos/hardware.nix
             ./modules/msi-ge75-raider-nixos/display.nix
             ./modules/msi-ge75-raider-nixos/desktop.nix
@@ -78,7 +89,6 @@
             ./modules/msi-ge75-raider-nixos/networking.nix
             ./modules/msi-ge75-raider-nixos/packages.nix
             ./modules/msi-ge75-raider-nixos/services.nix
-            ./modules/msi-ge75-raider-nixos/users.nix
             ./hosts/msi-ge75-raider-nixos/configuration.nix
             ./hosts/msi-ge75-raider-nixos/hardware-configuration.nix
             home-manager.nixosModules.home-manager {
