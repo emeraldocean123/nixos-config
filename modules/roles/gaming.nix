@@ -35,11 +35,16 @@
   # Gaming peripheral permissions
   services.udev.extraRules = ''
     # Gaming mouse/keyboard permissions
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="046d", MODE="0666"  # Logitech
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="1532", MODE="0666"  # Razer
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="0b05", MODE="0666"  # ASUS
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="1038", MODE="0666"  # SteelSeries
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="1b1c", MODE="0666"  # Corsair
+    # Logitech devices
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="046d", MODE="0666"
+    # Razer devices
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="1532", MODE="0666"
+    # ASUS devices
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="0b05", MODE="0666"
+    # SteelSeries devices
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="1038", MODE="0666"
+    # Corsair devices
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="1b1c", MODE="0666"
   '';
 
   # Gaming-related firewall ports
