@@ -11,6 +11,13 @@ For detailed guides and documentation, see the [docs repository](https://github.
 - [Hardware Configuration Safety](https://github.com/emeraldocean123/docs/blob/main/NIXOS-HARDWARE-CONFIG-WARNING.md)
 - [Contributing Guidelines](https://github.com/emeraldocean123/docs/blob/main/NIXOS-FLAKE-CONTRIBUTING.md)
 
+## 🔧 Cross-Platform Utilities
+
+SSH and connectivity utilities have been moved to the [dotfiles repository](https://github.com/emeraldocean123/dotfiles) for better cross-platform support:
+- **Test SSH connectivity**: `~/Documents/dotfiles/scripts/ssh/test-ssh-connectivity.ps1 -All`
+- **Connect to hosts**: `~/Documents/dotfiles/scripts/ssh/connect-host.ps1 hp` (hp, msi, nas, etc.)
+- **Environment validation**: `~/Documents/dotfiles/scripts/validate-environment.ps1 -All`
+
 🏗️ Repository Structure
 The repository is organized around a main flake and three core directories for system and user configurations:
 
