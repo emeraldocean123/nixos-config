@@ -1,6 +1,15 @@
-🖥️ NixOS Configuration Repository
-A comprehensive NixOS and Home Manager configuration using Nix flakes
+# 🖥️ NixOS Configuration Repository
+
+A comprehensive NixOS and Home Manager configuration using Nix flakes.
+
 This repository provides a modular, maintainable NixOS configuration for multiple hosts, integrating dotfiles management, user-specific configurations, and host-optimized settings. It supports two hosts: an HP Pavilion dv9500 (legacy laptop) and an MSI GE75 Raider 9SF (gaming laptop).
+
+## 📚 Documentation
+
+For detailed guides and documentation, see the [docs repository](https://github.com/emeraldocean123/docs):
+- [NixOS Installation Guide](https://github.com/emeraldocean123/docs/blob/main/NIXOS-INSTALLATION-GUIDE.md)
+- [Hardware Configuration Safety](https://github.com/emeraldocean123/docs/blob/main/NIXOS-HARDWARE-CONFIG-WARNING.md)
+- [Contributing Guidelines](https://github.com/emeraldocean123/docs/blob/main/NIXOS-FLAKE-CONTRIBUTING.md)
 
 🏗️ Repository Structure
 The repository is organized around a main flake and three core directories for system and user configurations:
@@ -134,9 +143,7 @@ sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
 
 Note: For the MSI host, ensure hosts/msi-ge75-raider-nixos/hardware-configuration.nix is generated using nixos-generate-config before deployment.
 
-## ⚡ Quick start: Install on MSI GE75 Raider and migrate configs
-
-For a step-by-step guide, see INSTALL-CHECKLIST.md.
+## ⚡ Quick Start
 
 Follow these steps after a minimal NixOS install and first boot on the MSI:
 

@@ -2,6 +2,8 @@
 
 This repo uses Nix flakes with local checks to keep code clean and consistent. GitHub Actions is not used to avoid costs.
 
+For detailed contributing guidelines, see [NIXOS-FLAKE-CONTRIBUTING.md](https://github.com/emeraldocean123/docs/blob/main/NIXOS-FLAKE-CONTRIBUTING.md) in the docs repository.
+
 ## Formatting & linting
 
 - Formatter: `nix fmt` (nixpkgs-fmt)
