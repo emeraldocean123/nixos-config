@@ -14,9 +14,9 @@ For detailed guides and documentation, see the [docs repository](https://github.
 ## 🔧 Cross-Platform Utilities
 
 SSH and connectivity utilities have been moved to the [dotfiles repository](https://github.com/emeraldocean123/dotfiles) for better cross-platform support:
-- **Test SSH connectivity**: `~/Documents/dotfiles/scripts/ssh/test-ssh-connectivity.ps1 -All`
-- **Connect to hosts**: `~/Documents/dotfiles/scripts/ssh/connect-host.ps1 hp` (hp, msi, nas, etc.)
-- **Environment validation**: `~/Documents/dotfiles/scripts/validate-environment.ps1 -All`
+- **Test SSH connectivity**: `~/Documents/dev/dotfiles/scripts/ssh/test-ssh-connectivity.ps1 -All`
+- **Connect to hosts**: `~/Documents/dev/dotfiles/scripts/ssh/connect-host.ps1 hp` (hp, msi, nas, etc.)
+- **Environment validation**: `~/Documents/dev/dotfiles/scripts/validate-environment.ps1 -All`
 
 🏗️ Repository Structure
 The repository is organized around a main flake and three core directories for system and user configurations:
@@ -183,7 +183,7 @@ sudo nixos-rebuild switch --flake .#msi-ge75-raider-nixos
 4) Home Manager users joseph/follett are created and configured by the flake modules. Log out/in after the first switch for all user services to settle.
 
 Notes
-- Dotfiles: On NixOS, your prompt/theme/fastfetch are managed by Home Manager. You do not need to run the dotfiles bootstrap scripts here. If you want to edit the Oh My Posh theme locally and test it live, you can clone your dotfiles to ~/Documents/dotfiles and temporarily override the flake input during a build:
+- Dotfiles: On NixOS, your prompt/theme/fastfetch are managed by Home Manager. You do not need to run the dotfiles bootstrap scripts here. If you want to edit the Oh My Posh theme locally and test it live, you can clone your dotfiles to ~/Documents/dev/dotfiles and temporarily override the flake input during a build:
 
 	```bash
 	# from /etc/nixos with your local dotfiles repo at ../dotfiles
