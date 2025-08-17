@@ -3,12 +3,38 @@
 {
   description = "NixOS and Home Manager configuration for multiple hosts and users";
 
+  # Binary cache configuration for faster builds
+  nixConfig = {
+    # Enable parallel builds
+    max-jobs = "auto";
+    cores = 0; # Use all available cores
+    
+    # Add binary caches for faster downloads
+    extra-substituters = [
+      "https://nix-community.cachix.org"
+      "https://cache.nixos.org"
+    ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+    
+    # Keep outputs for debugging
+    keep-outputs = true;
+    keep-derivations = true;
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
+    # Hardware-specific optimizations
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+    
     # Bring in dotfiles repo to source the single theme JSON
     # Use GitHub by default so /etc/nixos can evaluate purely; override locally with:
     #   nix build --override-input dotfiles path:../dotfiles
@@ -19,7 +45,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, dotfiles, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, dotfiles, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -45,6 +71,8 @@
           # Make flake inputs available to modules
           specialArgs = { inherit dotfiles; };
           modules = [
+            # Common optimization modules
+            ./modules/common/base.nix
             # Shared base modules
             ./modules/shared/desktop-base.nix
             ./modules/shared/packages-base.nix
@@ -82,6 +110,8 @@
           inherit system;
           specialArgs = { inherit dotfiles; };
           modules = [
+            # Common optimization modules
+            ./modules/common/base.nix
             # Shared base modules
             ./modules/shared/desktop-base.nix
             ./modules/shared/packages-base.nix
@@ -99,7 +129,9 @@
             ./modules/roles/development.nix
             # Host-specific overrides (minimal)
             ./modules/msi-ge75-raider-nixos/hardware.nix
-            ./modules/msi-ge75-raider-nixos/nvidia.nix
+            # Choose one: nvidia.nix (basic) or nvidia-optimized.nix (performance)
+            # ./modules/msi-ge75-raider-nixos/nvidia.nix
+            ./modules/msi-ge75-raider-nixos/nvidia-optimized.nix
             ./modules/msi-ge75-raider-nixos/networking.nix
             ./modules/msi-ge75-raider-nixos/services.nix
             ./hosts/msi-ge75-raider-nixos/configuration.nix

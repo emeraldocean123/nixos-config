@@ -226,7 +226,7 @@ SSH key quick setup (from Windows PowerShell)
 Prefer: Tasks: Run Task → "SSH: Setup Key (Windows)" (idempotent; it reuses an existing key if found, otherwise generates a new one, and can install it on the remote host.)
 ```powershell
 # Generate a key if you don't have one
-ssh-keygen -t ed25519 -C "joseph@windows"
+ssh-keygen -t ed25519 -C "user@windows"
 
 # Copy the public key to the NixOS host (requires password once)
 type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh joseph@hp-dv9500-pavilion-nixos "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
