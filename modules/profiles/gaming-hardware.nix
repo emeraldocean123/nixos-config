@@ -94,7 +94,7 @@
     
     # Temperature and hardware monitoring
     lm_sensors          # Hardware sensors
-    psensor             # Temperature monitoring GUI
+    mission-center      # Modern system monitoring with GPU support
     
     # Gaming-specific tools
     gamemode            # Automatic gaming optimizations
