@@ -1,11 +1,15 @@
 # HP dv9500 Pavilion hardware-specific configuration
 # (Legacy optimizations are in profiles/legacy-hardware.nix)
 # (Laptop optimizations are in profiles/laptop-base.nix)
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   # Enable AMD CPU microcode updates (for AMD Turion 64 X2)
   hardware.cpu.amd.updateMicrocode = true;
+  
+  # Force PulseAudio for LXQt compatibility (override multimedia role's PipeWire)
+  services.pulseaudio.enable = lib.mkForce true;
+  services.pipewire.enable = lib.mkForce false;
   
   # Nvidia GeForce 7150M graphics support (legacy GPU from 2007)
   hardware.graphics = {

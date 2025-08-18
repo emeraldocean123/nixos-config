@@ -1,16 +1,17 @@
 # modules/roles/multimedia.nix
 # Multimedia role - video/audio codecs, media players, and content creation tools
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   # Modern audio system with PipeWire (better for multimedia and gaming)
-  services.pulseaudio.enable = false; # Disable PulseAudio in favor of PipeWire
+  # Use lib.mkDefault to allow host-specific overrides (e.g., HP laptop needs PulseAudio for LXQt)
+  services.pulseaudio.enable = lib.mkDefault false; # Disable PulseAudio in favor of PipeWire
   security.rtkit.enable = true;
   services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true; # For professional audio
+    enable = lib.mkDefault true;
+    alsa.enable = lib.mkDefault true;
+    alsa.support32Bit = lib.mkDefault true;
+    pulse.enable = lib.mkDefault true;
+    jack.enable = lib.mkDefault true; # For professional audio
   };
 
   # Multimedia packages
