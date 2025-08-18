@@ -8,10 +8,7 @@
   hardware.cpu.amd.updateMicrocode = true;
   
   # Force PulseAudio for LXQt compatibility (override multimedia role's PipeWire)
-  services.pulseaudio = {
-    enable = lib.mkForce true;
-    support32Bit = true;  # For legacy applications
-  };
+  services.pulseaudio.enable = lib.mkForce true;
   services.pipewire.enable = lib.mkForce false;
   
   # Nvidia GeForce 7150M graphics support (legacy GPU from 2007)
@@ -47,8 +44,11 @@
     cpuFreqGovernor = "conservative";
   };
   
-  # Audio support (likely AC97 or HDA) - PulseAudio configured above with lib.mkForce
-  # services.pulseaudio settings are already configured at the top of this file
+  # Audio support (likely AC97 or HDA) - use services.pulseaudio in NixOS 25.05
+  services.pulseaudio = {
+    enable = true;
+    support32Bit = true;  # For legacy applications
+  };
   
   # Legacy input device support - updated for NixOS 25.05
   services.libinput = {
