@@ -102,7 +102,7 @@
   # Systemd service for automated configuration backup
   systemd.services.backup-nixos-config = {
     description = "Backup NixOS configuration";
-    path = with pkgs; [ git rsync gzip gnutar coreutils ];
+    path = with pkgs; [ git rsync gzip gnutar coreutils nixos-rebuild ];
     
     serviceConfig = {
       Type = "oneshot";
@@ -150,11 +150,11 @@
       
       # Keep only last 10 backups to prevent disk usage growth
       cd "$BACKUP_DIR/config"
-      ls -t nixos-config-*.tar.gz | tail -n +11 | xargs -r rm -f
-      ls -t nixos-git-*.bundle | tail -n +11 | xargs -r rm -f
+      ls -t nixos-config-*.tar.gz 2>/dev/null | tail -n +11 | xargs -r rm -f
+      ls -t nixos-git-*.bundle 2>/dev/null | tail -n +11 | xargs -r rm -f
       
       cd "$BACKUP_DIR/generations"
-      ls -t generations-*.txt | tail -n +11 | xargs -r rm -f
+      ls -t generations-*.txt 2>/dev/null | tail -n +11 | xargs -r rm -f
       
       echo "Backup completed successfully"
     '';
