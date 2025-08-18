@@ -45,7 +45,8 @@
   ];
 
   # High-performance CPU governor for gaming
-  powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
+  # Force performance mode to override system-optimization.nix default
+  powerManagement.cpuFreqGovernor = lib.mkForce "performance";
 
   # Advanced power management for gaming laptops
   services.tlp = {
