@@ -29,7 +29,7 @@
   zramSwap = {
     enable = lib.mkDefault true;
     algorithm = "zstd";
-    memoryPercent = 50;
+    memoryPercent = lib.mkDefault 50; # Gaming profiles may override to 25%
   };
   
   # SSD optimizations (if applicable)
