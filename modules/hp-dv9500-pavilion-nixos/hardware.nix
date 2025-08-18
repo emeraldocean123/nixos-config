@@ -12,36 +12,26 @@
   services.pipewire.enable = lib.mkForce false;
   
   # Nvidia GeForce 7150M graphics support (legacy GPU from 2007)
+  # Note: nvidia-304 drivers no longer available in NixOS 25.05
+  # Using open-source nouveau driver for better kernel compatibility
   hardware.graphics = {
     enable = true;
     enable32Bit = true;  # For legacy 32-bit applications
     extraPackages = with pkgs; [
-      # Nvidia legacy drivers for GeForce 7150M
-      # Note: GeForce 7150M requires legacy nvidia-304xx drivers
+      # Mesa drivers for nouveau (open-source NVIDIA)
       mesa.drivers
-      # VDPAU support for video acceleration
+      # Basic video acceleration support
       libvdpau-va-gl
       vaapiVdpau
     ];
   };
   
-  # Nvidia GeForce 7150M specific configuration
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia = {
-    # Use legacy driver for GeForce 7150M (requires nvidia-304xx)
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_304;
-    # Disable modesetting for legacy cards
-    modesetting.enable = false;
-    # Power management not supported on legacy cards
-    powerManagement.enable = false;
-  };
+  # Use nouveau (open-source) driver for GeForce 7150M
+  # This provides better compatibility with modern kernels than legacy proprietary drivers
+  services.xserver.videoDrivers = [ "nouveau" ];
   
-  # Legacy hardware-specific kernel modules
-  boot.kernelModules = [
-    "nvidia"           # Nvidia proprietary driver
-    "nvidia_legacy"    # Legacy Nvidia support
-    "nvidia_drm"       # DRM support
-  ];
+  # Ensure nouveau module is loaded
+  boot.kernelModules = [ "nouveau" ];
   
   # Firmware for AMD graphics cards
   hardware.enableRedistributableFirmware = true;
