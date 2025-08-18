@@ -65,6 +65,9 @@
     enableNotifications = true;
   };
   
+  # Force systembus-notify for earlyoom notifications (conflicts with smartd default)
+  services.systembus-notify.enable = lib.mkForce true;
+  
   # System monitoring tools
   environment.systemPackages = with pkgs; [
     htop
