@@ -10,7 +10,7 @@
     enable = true;
     settings = {
       # Gaming optimizations
-      # Note: CPU governors are configured in gaming-hardware.nix
+      # Note: CPU governors and PCIE settings are configured in gaming-hardware.nix
       CPU_SCALING_GOVERNOR_ON_AC = "performance";
 
       # Disable USB autosuspend for gaming peripherals
@@ -21,7 +21,6 @@
       WIFI_PWR_ON_BAT = "on";
 
       # PCI Express power management
-      PCIE_ASPM_ON_AC = "default";
       PCIE_ASPM_ON_BAT = "powersave";
     };
   };
