@@ -2,9 +2,13 @@
 # BIOS GRUB bootloader for HP dv9500 (legacy BIOS) with CachyOS dual boot
 { config, lib, pkgs, ... }:
 {
-  # Enable GRUB for legacy BIOS systems
-  boot.loader.grub.enable = true;
+  # Force GRUB for legacy BIOS (override common systemd-boot)
+  boot.loader.grub.enable = lib.mkForce true;
   boot.loader.grub.devices = [ "/dev/sda" ];
+  
+  # Disable systemd-boot (conflicts with GRUB)
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
   
   # Extended timeout for dual boot selection
   boot.loader.timeout = 10;

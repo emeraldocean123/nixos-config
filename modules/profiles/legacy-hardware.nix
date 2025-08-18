@@ -66,7 +66,7 @@
       enable = true;
       enable32Bit = true;  # Support for older 32-bit applications
       extraPackages = with pkgs; [
-        mesa.drivers
+        mesa  # Updated from deprecated mesa.drivers
         xorg.xf86videoati    # ATI/AMD legacy support
         xorg.xf86videofbdev  # Fallback framebuffer driver
         xorg.xf86videovesa   # VESA fallback

@@ -21,7 +21,7 @@
     extraPackages = with pkgs; [
       # Nvidia legacy drivers for GeForce 7150M
       # Note: GeForce 7150M requires legacy nvidia-304xx drivers
-      mesa.drivers
+      mesa  # Updated from deprecated mesa.drivers
       # VDPAU support for video acceleration
       libvdpau-va-gl
       vaapiVdpau
