@@ -73,35 +73,64 @@ This file contains the definitive hardware specifications for all machines in th
 
 ## HP dv9500 Pavilion (hp-dv9500-pavilion-nixos)
 
-**Last Updated**: August 17, 2025 (Configuration based on model specifications)  
-**Network Address**: 192.168.1.104  
-**Status**: Template configuration - hardware-configuration.nix needs generation on first boot
+**Last Updated**: August 17, 2025  
+**Source**: Live fastfetch output from running system  
+**Network Address**: 192.168.1.104
 
 ### System Information
-- **Model**: HP dv9500 Pavilion
-- **Year**: ~2007 (Legacy hardware)
-- **Architecture**: x86_64
+- **Model**: HP Pavilion dv9500 Notebook PC (Rev 1)
+- **OS**: NixOS 25.05 (Warbler) x86_64
+- **Kernel**: Linux 6.12.41
+- **Uptime**: Current session shows good stability
+- **Packages**: 1205 (nix-system)
+- **Shell**: bash 5.2.37
+- **Locale**: en_US.UTF-8
 
 ### CPU
-- **Model**: AMD Turion 64 X2
-- **Architecture**: AMD64 (x86_64)
-- **Generation**: Legacy dual-core processor
+- **Model**: AMD Turion(tm) 64 X2 Mobile Technology TL-58
+- **Architecture**: x86_64
+- **Cores**: 2 cores @ 1.90 GHz
+- **Generation**: Legacy AMD Turion 64 X2 (2007 era)
 
 ### Graphics
-- **GPU**: NVIDIA GeForce 7150M
+- **GPU**: NVIDIA GeForce 7150M / nForce 630M [Discrete]
 - **Driver**: nvidia-304xx (legacy driver required)
-- **Type**: Legacy mobile graphics from 2007
-- **Features**: Basic 3D acceleration, limited modern driver support
+- **Type**: Legacy mobile graphics from 2007 era
+- **Desktop Environment**: LXQt (lightweight for legacy hardware)
+
+### Display
+- **Panel**: SEC3847
+- **Resolution**: 1440x900 @ 60Hz
+- **Size**: 17" Built-in
+- **Type**: Legacy laptop display
 
 ### Memory & Storage
-- **RAM**: Typically 2-4GB (exact amount TBD on first boot)
-- **Storage**: Variable (will be determined by hardware-configuration.nix generation)
+- **RAM**: 3.58 GiB total (~3.6GB)
+- **Current Usage**: ~632MB used, 3GB available
+- **Swap**: Disabled
+- **Primary Storage**: 211.26 GiB total (~220GB)
+- **Used Storage**: 28.21 GiB (13% utilization)
+- **Filesystem**: ext4
+
+### Network
+- **Interface**: wlp3s0 (WiFi)
+- **IP Address**: 192.168.1.104/24
+- **Connection**: Wireless
+
+### Power
+- **Battery**: Primary battery
+- **Status**: 83% charged, AC connected
+- **Charging**: Active charging support
 
 ### Configuration Notes
-- **Legacy Hardware**: Requires conservative power management
-- **Limited Performance**: Optimized for stability over performance
-- **Legacy Drivers**: Requires nvidia-304xx legacy driver package
-- **First Boot Required**: Must generate hardware-configuration.nix with actual UUIDs and device paths
+- **Legacy Hardware**: 2007-era laptop optimized for stability over performance
+- **Audio System**: Uses PulseAudio (forced override) for LXQt desktop compatibility
+- **Graphics**: NVIDIA GeForce 7150M with legacy nvidia-304xx drivers
+- **Desktop Environment**: LXQt chosen for low resource usage on 3.6GB RAM
+- **Power Management**: Conservative settings to preserve old hardware
+- **Storage**: 220GB drive with 87% free space - plenty of room
+- **Network**: WiFi working on wlp3s0 interface
+- **Current Status**: Stable, low resource usage, good battery life
 
 ---
 
