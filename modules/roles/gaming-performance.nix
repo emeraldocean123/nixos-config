@@ -10,8 +10,8 @@
     enable = true;
     settings = {
       # Gaming optimizations
+      # Note: CPU governors are configured in gaming-hardware.nix
       CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
       # Disable USB autosuspend for gaming peripherals
       USB_AUTOSUSPEND = 0;
