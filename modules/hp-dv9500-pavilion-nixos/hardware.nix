@@ -19,7 +19,7 @@
     enable32Bit = true;  # For legacy 32-bit applications
     extraPackages = with pkgs; [
       # Mesa drivers for nouveau (open-source NVIDIA)
-      mesa  # mesa.drivers is deprecated, use mesa directly
+      mesa.drivers
       # Basic video acceleration support
       libvdpau-va-gl
       vaapiVdpau
@@ -44,14 +44,15 @@
     cpuFreqGovernor = "conservative";
   };
   
-  # Audio support (likely AC97 or HDA) - use services.pulseaudio in NixOS 25.05
-  services.pulseaudio = {
+  # Audio support (likely AC97 or HDA) - sound.enable deprecated
+  # Audio is handled by PulseAudio configuration above
+  hardware.pulseaudio = {
     enable = true;
     support32Bit = true;  # For legacy applications
   };
   
-  # Legacy input device support - updated for NixOS 25.05
-  services.libinput = {
+  # Legacy input device support
+  services.xserver.libinput = {
     enable = true;
     # More lenient settings for older touchpads
     touchpad = {
