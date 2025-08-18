@@ -90,13 +90,13 @@
     "kernel.kptr_restrict" = 2;
   };
   
-  # Fail2ban for SSH protection
+  # Fail2ban for SSH protection (relaxed for home network)
   services.fail2ban = {
-    enable = lib.mkDefault true;
-    maxretry = 5;
-    bantime = "10m";
+    enable = lib.mkDefault false;  # Disabled by default for home network
+    maxretry = 10;
+    bantime = "5m";
     bantime-increment = {
-      enable = true;
+      enable = false;  # Disable progressive banning
       multipliers = "1 2 4 8 16 32 64";
       maxtime = "168h"; # 1 week
       overalljails = true;
@@ -107,9 +107,9 @@
         enabled = true
         filter = sshd
         action = iptables-multiport[name=SSH, port="ssh", protocol=tcp]
-        maxretry = 3
+        maxretry = 10
         findtime = 600
-        bantime = 3600
+        bantime = 300
       '';
     };
   };
