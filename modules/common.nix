@@ -45,6 +45,7 @@ in
 		networking.firewall.enable = true;
 
 		# Ensure SSH is available for remote management and force it on.
+		# SSH security settings are handled by security.nix module to avoid conflicts
 		services.openssh = {
 			enable = mkForce true;
 			openFirewall = true;
@@ -52,12 +53,6 @@ in
 				# Listen on all IPv4 addresses so both LAN (e.g., 192.168.1.103) and Wi‑Fi (e.g., 192.168.1.104)
 				# are accepted without binding to a missing address when one interface is down.
 				AddressFamily = "inet";
-				PermitRootLogin = "no";
-				# Password authentication enabled for convenience on private home network
-				# TODO: Consider disabling and using key-only auth for better security:
-				# PasswordAuthentication = false;
-				# Requires setup-ssh-key.ps1 to be run on all client machines first
-				PasswordAuthentication = true;
 			};
 		};
 

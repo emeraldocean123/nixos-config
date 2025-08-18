@@ -38,9 +38,13 @@
     interval = "weekly";
   };
   
-  # Better I/O scheduling
+  # Better I/O scheduling and performance tuning
+  # NOTE: CPU vulnerability mitigations are kept enabled for security
+  # Use selective optimizations instead of blanket "mitigations=off"
   boot.kernelParams = [
-    "mitigations=off" # Disable CPU vulnerability mitigations for performance (optional)
+    # I/O and performance optimizations that don't compromise security
+    "elevator=mq-deadline"  # Better I/O scheduler for SSDs
+    "transparent_hugepage=madvise"  # More efficient memory management
   ];
   
   # Systemd service optimizations

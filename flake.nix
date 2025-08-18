@@ -79,6 +79,7 @@
             ./modules/shared/hardware-base.nix
             ./modules/shared/services-base.nix
             ./modules/shared/users.nix
+            ./modules/shared/backup.nix
             # Profile modules
             ./modules/profiles/laptop-base.nix
             ./modules/profiles/legacy-hardware.nix
@@ -118,6 +119,7 @@
             ./modules/shared/hardware-base.nix
             ./modules/shared/services-base.nix
             ./modules/shared/users.nix
+            ./modules/shared/backup.nix
             # Profile modules
             ./modules/profiles/laptop-base.nix
             ./modules/profiles/gaming-hardware.nix

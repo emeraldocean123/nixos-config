@@ -118,7 +118,9 @@
   services.openssh = {
     settings = {
       PermitRootLogin = lib.mkDefault "no";
-      PasswordAuthentication = lib.mkDefault false;
+      # Allow password auth on home network but with strict rate limiting
+      # Key-based auth is preferred but passwords provide fallback access
+      PasswordAuthentication = lib.mkDefault true;
       KbdInteractiveAuthentication = false;
       X11Forwarding = false;
       
