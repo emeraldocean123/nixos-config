@@ -15,20 +15,19 @@
   services.displayManager.autoLogin.enable = false;
   # services.displayManager.autoLogin.user = "joseph";
 
-  # Guard: ensure the host hardware config file exists
-  # TODO: Generate actual hardware-configuration.nix with nixos-generate-config
+  # Guard: ensure the host hardware config file exists and warn about placeholders
   assertions = [
     {
       assertion = (builtins.pathExists ./hardware-configuration.nix) && ((builtins.stringLength (builtins.readFile ./hardware-configuration.nix)) > 100);
       message = "hosts/hp-dv9500-pavilion-nixos/hardware-configuration.nix is missing or too small.";
     }
-    # Temporarily disabled - will generate actual UUIDs after first successful boot
-    # {
-    #   assertion = (
-    #     builtins.match ".*REPLACE-WITH-ACTUAL.*" (builtins.readFile ./hardware-configuration.nix)
-    #   ) == null;
-    #   message = "WARNING: Placeholder UUIDs detected in hardware-configuration.nix. Run 'sudo nixos-generate-config' on the HP machine to generate actual hardware configuration!";
-    # }
+    {
+      # Check for placeholder UUIDs that need to be replaced
+      assertion = (
+        builtins.match ".*REPLACE-WITH-ACTUAL.*" (builtins.readFile ./hardware-configuration.nix)
+      ) == null;
+      message = "WARNING: Placeholder UUIDs detected in hardware-configuration.nix. Run 'sudo nixos-generate-config' on the HP machine to generate actual hardware configuration!";
+    }
   ];
   system.stateVersion = "25.05";
 }
