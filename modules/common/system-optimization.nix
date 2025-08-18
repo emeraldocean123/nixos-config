@@ -49,11 +49,11 @@
   
   # Systemd service optimizations
   systemd.services = {
-    # Nix daemon with higher priority
+    # Nix daemon with higher priority (override NixOS default IOSchedulingPriority = 4)
     nix-daemon.serviceConfig = {
       Nice = -5;
       IOSchedulingClass = "best-effort";
-      IOSchedulingPriority = 0;
+      IOSchedulingPriority = lib.mkForce 0;
     };
   };
   
