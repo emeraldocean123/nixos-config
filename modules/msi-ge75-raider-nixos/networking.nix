@@ -12,12 +12,12 @@
   programs.nm-applet.enable = false;
 
   # Gaming-specific networking optimizations (kernel sysctl settings)
+  # Note: net.core.netdev_max_backlog is handled by gaming-hardware.nix
   boot.kernel.sysctl = {
     "net.core.rmem_max" = 16777216;
     "net.core.wmem_max" = 16777216;
     "net.ipv4.tcp_rmem" = "4096 87380 16777216";
     "net.ipv4.tcp_wmem" = "4096 65536 16777216";
-    "net.core.netdev_max_backlog" = 5000;
     "net.ipv4.tcp_congestion_control" = "bbr"; # Enable BBR for better network performance
   };
 
