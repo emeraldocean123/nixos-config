@@ -8,6 +8,7 @@
     rsync
     gzip
     bzip2
+    tar
     git
     
     # Recovery script helpers
@@ -101,7 +102,7 @@
   # Systemd service for automated configuration backup
   systemd.services.backup-nixos-config = {
     description = "Backup NixOS configuration";
-    path = with pkgs; [ git rsync gzip coreutils ];
+    path = with pkgs; [ git rsync gzip tar coreutils ];
     
     serviceConfig = {
       Type = "oneshot";
