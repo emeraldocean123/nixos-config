@@ -94,7 +94,7 @@ This file contains the definitive hardware specifications for all machines in th
 
 ### Graphics
 - **GPU**: NVIDIA GeForce 7150M / nForce 630M [Discrete]
-- **Driver**: nvidia-304xx (legacy driver required)
+- **Driver**: nouveau (open-source driver, legacy_304 unavailable in NixOS 25.05)
 - **Type**: Legacy mobile graphics from 2007 era
 - **Desktop Environment**: LXQt (lightweight for legacy hardware)
 
@@ -125,7 +125,7 @@ This file contains the definitive hardware specifications for all machines in th
 ### Configuration Notes
 - **Legacy Hardware**: 2007-era laptop optimized for stability over performance
 - **Audio System**: Uses PulseAudio (forced override) for LXQt desktop compatibility
-- **Graphics**: NVIDIA GeForce 7150M with legacy nvidia-304xx drivers
+- **Graphics**: NVIDIA GeForce 7150M with nouveau open-source drivers
 - **Desktop Environment**: LXQt chosen for low resource usage on 3.6GB RAM
 - **Power Management**: Conservative settings to preserve old hardware
 - **Storage**: 220GB drive with 87% free space - plenty of room

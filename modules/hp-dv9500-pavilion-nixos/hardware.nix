@@ -8,7 +8,10 @@
   hardware.cpu.amd.updateMicrocode = true;
   
   # Force PulseAudio for LXQt compatibility (override multimedia role's PipeWire)
-  services.pulseaudio.enable = lib.mkForce true;
+  services.pulseaudio = {
+    enable = lib.mkForce true;
+    support32Bit = true;  # For legacy applications
+  };
   services.pipewire.enable = lib.mkForce false;
   
   # Nvidia GeForce 7150M graphics support (legacy GPU from 2007)
@@ -26,22 +29,11 @@
   };
   
   # Nvidia GeForce 7150M specific configuration
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia = {
-    # Use legacy driver for GeForce 7150M (requires nvidia-304xx)
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_304;
-    # Disable modesetting for legacy cards
-    modesetting.enable = false;
-    # Power management not supported on legacy cards
-    powerManagement.enable = false;
-  };
+  # Use nouveau driver since legacy_304 is not available in NixOS 25.05
+  services.xserver.videoDrivers = [ "nouveau" ];
   
-  # Legacy hardware-specific kernel modules
-  boot.kernelModules = [
-    "nvidia"           # Nvidia proprietary driver
-    "nvidia_legacy"    # Legacy Nvidia support
-    "nvidia_drm"       # DRM support
-  ];
+  # Ensure nouveau module is loaded (safer than proprietary legacy drivers)
+  boot.kernelModules = [ "nouveau" ];
   
   # Firmware for AMD graphics cards
   hardware.enableRedistributableFirmware = true;
@@ -53,15 +45,11 @@
     cpuFreqGovernor = "conservative";
   };
   
-  # Audio support (likely AC97 or HDA)
-  sound.enable = true;
-  hardware.pulseaudio = {
-    enable = true;
-    support32Bit = true;  # For legacy applications
-  };
+  # Audio support handled by services.pulseaudio configuration above
+  # sound.enable deprecated in NixOS 25.05
   
-  # Legacy input device support
-  services.xserver.libinput = {
+  # Legacy input device support (updated for NixOS 25.05)
+  services.libinput = {
     enable = true;
     # More lenient settings for older touchpads
     touchpad = {
