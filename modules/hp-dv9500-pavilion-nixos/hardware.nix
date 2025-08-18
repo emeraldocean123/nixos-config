@@ -33,8 +33,9 @@
   # Ensure nouveau module is loaded
   boot.kernelModules = [ "nouveau" ];
   
-  # Firmware for AMD graphics cards
+  # Firmware for legacy hardware (allow unfree for full compatibility)
   hardware.enableRedistributableFirmware = true;
+  nixpkgs.config.allowUnfree = true;  # Required for some legacy firmware
   
   # Power management for legacy laptop
   powerManagement = {
@@ -43,8 +44,8 @@
     cpuFreqGovernor = "conservative";
   };
   
-  # Audio support (likely AC97 or HDA)
-  sound.enable = true;
+  # Audio support (likely AC97 or HDA) - sound.enable deprecated
+  # Audio is handled by PulseAudio configuration above
   hardware.pulseaudio = {
     enable = true;
     support32Bit = true;  # For legacy applications
