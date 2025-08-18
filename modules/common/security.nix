@@ -76,7 +76,6 @@
     "net.ipv4.tcp_syncookies" = 1;
     
     # Kernel hardening
-    "kernel.kptr_restrict" = 2;
     "kernel.dmesg_restrict" = 1;
     "kernel.printk" = "3 3 3 3";
     "kernel.unprivileged_bpf_disabled" = 1;
