@@ -6,21 +6,22 @@
   networking.firewall = {
     enable = lib.mkDefault true;
     allowedTCPPorts = lib.mkDefault [ 22 ]; # SSH only by default
-    allowPing = lib.mkDefault false;
+    allowPing = lib.mkDefault true;  # Allow ping for network diagnostics
     logReversePathDrops = true;
     
     # Log refused connections
     logRefusedConnections = true;
-    logRefusedPackets = true;
+    logRefusedPackets = false;  # Reduce log spam
     
     # Extra iptables rules
     extraCommands = ''
       # Drop invalid packets
       iptables -A INPUT -m state --state INVALID -j DROP
       
-      # Limit SSH connection attempts
+      # More lenient SSH rate limiting for home network
+      # Allow 10 connection attempts per minute instead of 4
       iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --set
-      iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 60 --hitcount 4 -j DROP
+      iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 60 --hitcount 10 -j DROP
     '';
   };
   

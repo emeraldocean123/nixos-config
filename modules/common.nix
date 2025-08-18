@@ -50,9 +50,10 @@ in
 			enable = mkForce true;
 			openFirewall = true;
 			settings = {
-				# Listen on all IPv4 addresses so both LAN (e.g., 192.168.1.103) and Wi‑Fi (e.g., 192.168.1.104)
-				# are accepted without binding to a missing address when one interface is down.
-				AddressFamily = "inet";
+				# Listen on all addresses (both IPv4 and IPv6)
+				# Removed AddressFamily restriction to allow broader connectivity
+				ListenAddress = "0.0.0.0";
+				ListenAddress = "::";
 			};
 		};
 
