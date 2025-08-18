@@ -49,12 +49,8 @@ in
 		services.openssh = {
 			enable = mkForce true;
 			openFirewall = true;
-			settings = {
-				# Listen on all addresses (both IPv4 and IPv6)
-				# Removed AddressFamily restriction to allow broader connectivity
-				ListenAddress = "0.0.0.0";
-				ListenAddress = "::";
-			};
+			# Listen on all addresses by default (no specific binding needed)
+			# SSH will automatically listen on both IPv4 and IPv6
 		};
 
 		# Enable modern Nix features system-wide so remote flake commands work without extra flags
