@@ -11,11 +11,9 @@
   # KDE Plasma provides its own network applet; disable nm-applet
   programs.nm-applet.enable = false;
 
-  # Gaming-specific networking optimizations (kernel sysctl settings)
-  # Note: Gaming optimizations (netdev_max_backlog, tcp_congestion_control) are handled by gaming-hardware.nix
+  # Gaming-specific networking optimizations are handled by gaming-hardware.nix
+  # Host-specific TCP buffer sizes for MSI laptop
   boot.kernel.sysctl = {
-    "net.core.rmem_max" = 16777216;
-    "net.core.wmem_max" = 16777216;
     "net.ipv4.tcp_rmem" = "4096 87380 16777216";
     "net.ipv4.tcp_wmem" = "4096 65536 16777216";
   };

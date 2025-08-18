@@ -21,8 +21,7 @@
     heroic
     
     # Gaming utilities
-    gamemode
-    mangohud
+    # Note: gamemode, mangohud provided by gaming-hardware.nix
     gamescope
     
     # Performance monitoring

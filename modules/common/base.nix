@@ -10,7 +10,7 @@
   ];
   
   # Common settings for all hosts
-  time.timeZone = lib.mkDefault "America/New_York";
+  # Note: time.timeZone is set in common.nix
   
   # Common packages all systems need
   environment.systemPackages = with pkgs; [
