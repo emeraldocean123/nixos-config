@@ -26,22 +26,19 @@
   # Generated UUIDs and device paths will look different on each machine
   
   fileSystems."/" = {
-    # PLACEHOLDER - replace with actual UUID from nixos-generate-config
-    device = "/dev/disk/by-uuid/REPLACE-WITH-ACTUAL-ROOT-UUID";
+    device = "/dev/disk/by-uuid/5a4cf61f-d099-4025-bea4-690acc4526e6";
     fsType = "ext4";
     options = [ "relatime" "errors=remount-ro" ];  # Stability for older hardware
   };
 
   fileSystems."/boot" = {
-    # PLACEHOLDER - replace with actual UUID from nixos-generate-config
-    device = "/dev/disk/by-uuid/REPLACE-WITH-ACTUAL-BOOT-UUID";
+    device = "/dev/disk/by-uuid/36AD-70D7";
     fsType = "vfat";
     options = [ "fmask=0077" "dmask=0077" ];
   };
 
   swapDevices = [
-    # PLACEHOLDER - replace with actual swap UUID if using swap partition
-    # { device = "/dev/disk/by-uuid/REPLACE-WITH-ACTUAL-SWAP-UUID"; }
+    { device = "/dev/disk/by-uuid/f00eb51c-b601-45ec-a234-742b62afc4ea"; }
   ];
 
   # Enable DHCP on ethernet and wireless interfaces

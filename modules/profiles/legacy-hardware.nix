@@ -58,9 +58,8 @@
   
   # Legacy hardware compatibility
   hardware = {
-    # Enable older firmware
+    # Enable older firmware (redistributable only, no unfree blobs)
     enableRedistributableFirmware = true;
-    enableAllFirmware = true;
     
     # Legacy graphics support
     graphics = {
