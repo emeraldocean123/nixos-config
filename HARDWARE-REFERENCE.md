@@ -12,29 +12,42 @@ This file contains the definitive hardware specifications for all machines in th
 - **Model**: MSI GE75 Raider 9SF (REV:1.0)
 - **OS**: NixOS 25.05 (Warbler) x86_64
 - **Kernel**: Linux 6.12.41
+- **Uptime**: Current session shows good stability
 - **Packages**: 1898 (nix-system)
 - **Shell**: bash 5.2.37
 - **Locale**: en_US.UTF-8
 
 ### CPU
-- **Model**: Intel processor (specific model not shown in fastfetch)
+- **Model**: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
 - **Architecture**: x86_64
+- **Cores**: 12 threads (6 cores with hyperthreading)
+- **Max Frequency**: 4.50 GHz (boost)
+- **Generation**: 9th gen Intel Coffee Lake-H
 
 ### Graphics
 - **GPU 1**: NVIDIA GeForce RTX 2070 Mobile [Discrete]
 - **GPU 2**: Intel UHD Graphics 630 @ 1.15 GHz [Integrated]
+- **Display Manager**: Wayland with KWin
+- **Desktop Environment**: KDE Plasma 6
 
 ### Display
 - **Panel**: AUO409D
 - **Resolution**: 1920x1080 @ 144Hz
 - **Size**: 17" Built-in
-- **Type**: Gaming laptop display
+- **Type**: Gaming laptop display with high refresh rate
 
 ### Memory & Storage
-- **RAM**: 62.64 GiB total
-- **Swap**: 68.91 GiB configured
-- **Primary Disk**: 1.72 TiB total (ext4 filesystem)
-- **Current Usage**: 45.15 GiB used (3% utilization)
+- **RAM**: 64GB total (62.64 GiB usable)
+- **Current Usage**: ~2.2GB used, 60GB available
+- **Swap**: 68.91 GiB configured on NVMe
+- **Primary Storage**: Dual NVMe SSD configuration
+  - **NVMe0 (System)**: 1.8TB NVMe SSD (root, nix/store, boot)
+  - **NVMe1 (Data)**: 1.9TB NVMe SSD (additional storage)
+  - **External**: 239GB USB SDA device
+- **Partitioning**: 
+  - `/boot`: 1GB (nvme0n1p1)
+  - `/` and `/nix/store`: 1.8TB (nvme0n1p2)
+  - `[SWAP]`: 68.9GB (nvme0n1p3)
 
 ### Network
 - **Interface**: wlp3s0f0 (WiFi)
@@ -47,11 +60,14 @@ This file contains the definitive hardware specifications for all machines in th
 - **Current State**: 81% charged, AC connected
 
 ### Configuration Notes
-- **Gaming Laptop**: Optimized for performance and gaming workloads
-- **Dual GPU**: Hybrid graphics with Intel integrated + Nvidia discrete
-- **High Refresh Display**: 144Hz panel for gaming
-- **Large RAM**: 62GB+ suitable for development and gaming
-- **Fast Storage**: Large capacity for games and development
+- **Gaming Laptop**: High-performance laptop optimized for gaming and development
+- **Dual GPU Setup**: Hybrid graphics with Intel UHD 630 integrated + RTX 2070 Mobile discrete
+- **High Refresh Display**: 144Hz panel optimized for competitive gaming
+- **Large RAM**: 64GB total - excellent for development, virtualization, and gaming
+- **Dual NVMe Storage**: Fast dual SSD configuration with 3.7TB total capacity
+- **Intel 9th Gen**: Coffee Lake-H architecture with 6 cores, 12 threads
+- **KDE Plasma 6**: Running on Wayland with modern desktop environment
+- **Current Status**: Stable, low memory usage, good thermals
 
 ---
 
