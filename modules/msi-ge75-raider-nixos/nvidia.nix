@@ -15,6 +15,18 @@
 
       nvidiaSettings = true;
       package = config.boot.kernelPackages.nvidiaPackages.stable;
+      
+      # Ensure proper Prime sync for hybrid graphics
+      prime = {
+        sync.enable = false;  # Use offload mode instead of sync
+        offload = {
+          enable = true;
+          enableOffloadCmd = true;
+        };
+        # Bus IDs from lspci
+        intelBusId = "PCI:0:2:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
     };
 
     services.xserver.videoDrivers = [ "nvidia" ];
