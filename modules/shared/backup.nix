@@ -3,12 +3,87 @@
 { config, lib, pkgs, ... }:
 
 {
-  # Backup essential system configurations
+  # Backup essential system configurations and recovery scripts
   environment.systemPackages = with pkgs; [
     rsync
     gzip
     bzip2
     git
+    
+    # Recovery script helpers
+    (writeShellScriptBin "nixos-config-restore" ''
+      set -euo pipefail
+      
+      BACKUP_DIR="/var/backups/nixos"
+      
+      if [ $# -eq 0 ]; then
+        echo "Usage: nixos-config-restore [backup-file|latest]"
+        echo "Available backups:"
+        ls -la "$BACKUP_DIR/config/"
+        exit 1
+      fi
+      
+      if [ "$1" = "latest" ]; then
+        BACKUP_FILE=$(ls -t "$BACKUP_DIR/config/nixos-config-"*.tar.gz | head -n1)
+      else
+        BACKUP_FILE="$1"
+      fi
+      
+      if [ ! -f "$BACKUP_FILE" ]; then
+        echo "Error: Backup file not found: $BACKUP_FILE"
+        exit 1
+      fi
+      
+      echo "WARNING: This will overwrite current /etc/nixos configuration!"
+      echo "Backup file: $BACKUP_FILE"
+      read -p "Continue? (y/N): " -n 1 -r
+      echo
+      
+      if [[ $REPLY =~ ^[Yy]$ ]]; then
+        # Create a backup of current config before restoring
+        TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+        if [ -d "/etc/nixos" ]; then
+          tar -czf "/var/backups/nixos/config/nixos-pre-restore-$TIMESTAMP.tar.gz" -C /etc/nixos .
+          echo "Current configuration backed up to nixos-pre-restore-$TIMESTAMP.tar.gz"
+        fi
+        
+        # Restore configuration
+        cd /etc/nixos
+        tar -xzf "$BACKUP_FILE"
+        echo "Configuration restored from $BACKUP_FILE"
+        echo "Run 'sudo nixos-rebuild switch' to apply the restored configuration"
+      else
+        echo "Restore cancelled"
+      fi
+    '')
+    
+    (writeShellScriptBin "nixos-backup-status" ''
+      set -euo pipefail
+      
+      BACKUP_DIR="/var/backups/nixos"
+      
+      echo "=== NixOS Backup Status ==="
+      echo
+      
+      echo "Last 5 configuration backups:"
+      ls -lat "$BACKUP_DIR/config/" | head -6
+      echo
+      
+      echo "Last 3 generation snapshots:"
+      ls -lat "$BACKUP_DIR/generations/" | head -4
+      echo
+      
+      echo "Hardware configurations:"
+      ls -la "$BACKUP_DIR/hardware/" 2>/dev/null || echo "No hardware backups found"
+      echo
+      
+      echo "Disk usage:"
+      du -sh "$BACKUP_DIR"
+      echo
+      
+      echo "Next scheduled backup:"
+      systemctl list-timers backup-nixos-config.timer
+    '')
   ];
 
   # Create backup directory structure
@@ -96,83 +171,6 @@
       Persistent = true;
     };
   };
-
-  # Recovery script helper
-  environment.systemPackages = with pkgs; [
-    (writeShellScriptBin "nixos-config-restore" ''
-      set -euo pipefail
-      
-      BACKUP_DIR="/var/backups/nixos"
-      
-      if [ $# -eq 0 ]; then
-        echo "Usage: nixos-config-restore [backup-file|latest]"
-        echo "Available backups:"
-        ls -la "$BACKUP_DIR/config/"
-        exit 1
-      fi
-      
-      if [ "$1" = "latest" ]; then
-        BACKUP_FILE=$(ls -t "$BACKUP_DIR/config/nixos-config-"*.tar.gz | head -n1)
-      else
-        BACKUP_FILE="$1"
-      fi
-      
-      if [ ! -f "$BACKUP_FILE" ]; then
-        echo "Error: Backup file not found: $BACKUP_FILE"
-        exit 1
-      fi
-      
-      echo "WARNING: This will overwrite current /etc/nixos configuration!"
-      echo "Backup file: $BACKUP_FILE"
-      read -p "Continue? (y/N): " -n 1 -r
-      echo
-      
-      if [[ $REPLY =~ ^[Yy]$ ]]; then
-        # Create a backup of current config before restoring
-        TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-        if [ -d "/etc/nixos" ]; then
-          tar -czf "/var/backups/nixos/config/nixos-pre-restore-$TIMESTAMP.tar.gz" -C /etc/nixos .
-          echo "Current configuration backed up to nixos-pre-restore-$TIMESTAMP.tar.gz"
-        fi
-        
-        # Restore configuration
-        cd /etc/nixos
-        tar -xzf "$BACKUP_FILE"
-        echo "Configuration restored from $BACKUP_FILE"
-        echo "Run 'sudo nixos-rebuild switch' to apply the restored configuration"
-      else
-        echo "Restore cancelled"
-      fi
-    '')
-    
-    (writeShellScriptBin "nixos-backup-status" ''
-      set -euo pipefail
-      
-      BACKUP_DIR="/var/backups/nixos"
-      
-      echo "=== NixOS Backup Status ==="
-      echo
-      
-      echo "Last 5 configuration backups:"
-      ls -lat "$BACKUP_DIR/config/" | head -6
-      echo
-      
-      echo "Last 3 generation snapshots:"
-      ls -lat "$BACKUP_DIR/generations/" | head -4
-      echo
-      
-      echo "Hardware configurations:"
-      ls -la "$BACKUP_DIR/hardware/" 2>/dev/null || echo "No hardware backups found"
-      echo
-      
-      echo "Disk usage:"
-      du -sh "$BACKUP_DIR"
-      echo
-      
-      echo "Next scheduled backup:"
-      systemctl list-timers backup-nixos-config.timer
-    '')
-  ];
 
   # Git configuration for system-level operations
   programs.git = {
