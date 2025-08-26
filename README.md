@@ -316,6 +316,10 @@ Prefer Debian on WSL2 with systemd enabled.
 
 This installs Nix (daemon mode), enables flakes, reuses your unified SSH key, clones this repo into `~/projects/nixos-config`, and runs `nix flake check -L`.
 
+## Review Routing
+
+- CODEOWNERS is configured so PRs request review from `@emeraldocean123` by default.
+
 ## Contributing
 
 - Use Conventional Commits for all messages: `type(scope)?: subject`.
