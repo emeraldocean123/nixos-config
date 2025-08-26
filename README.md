@@ -291,3 +291,10 @@ CI
 - Shared Hooks (global): `core.hooksPath` points to `Documents/dev/dotfiles/githooks`.
   - `pre-commit`: blocks secrets, `.env*`, large files, and `package-lock.json` when `bun.lock` exists. Use `.githooks-allow.txt` for allowlisted paths.
   - `commit-msg`: enforces Conventional Commits; bypass once with `GITHOOKS_BYPASS=1`.
+
+## Contributing
+
+- Use Conventional Commits for all messages: `type(scope)?: subject`.
+- Commit Template: this repo is configured with a commit message template to guide messages.
+- Hooks: shared `pre-commit` and `commit-msg` hooks run automatically (configured via global `core.hooksPath`).
+- Bypass (rare): set `GITHOOKS_BYPASS=1` to skip checks once.

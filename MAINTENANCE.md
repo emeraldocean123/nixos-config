@@ -274,7 +274,7 @@ lsmod | grep nvidia
 
 ### Emergency Contacts
 
-- **System Administrator**: Joseph (emeraldocean123@users.noreply.github.com)
+- **System Administrator**: User (emeraldocean123@users.noreply.github.com)
 - **NixOS Community**: [NixOS Discourse](https://discourse.nixos.org/)
 - **Security Issues**: Report to NixOS security team
 

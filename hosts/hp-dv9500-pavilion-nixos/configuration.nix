@@ -13,7 +13,7 @@
   # Display manager (SDDM) configured in shared/desktop-base.nix
   # Desktop environment (LXQt) configured in profiles/lxqt.nix
   services.displayManager.autoLogin.enable = false;
-  # services.displayManager.autoLogin.user = "joseph";
+  # services.displayManager.autoLogin.user = "user";
 
   # Guard: ensure the host hardware config file exists and warn about placeholders
   assertions = [

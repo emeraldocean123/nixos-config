@@ -18,7 +18,7 @@
   # Desktop environment (Plasma) configured in profiles/kde-plasma.nix
   # Auto-login disabled for security
   # services.displayManager.autoLogin.enable = true;
-  # services.displayManager.autoLogin.user = "joseph";
+  # services.displayManager.autoLogin.user = "user";
 
   # CRITICAL: Hardware validation to prevent boot failures
   # These assertions MUST pass or the system will not boot
