@@ -292,6 +292,30 @@ CI
   - `pre-commit`: blocks secrets, `.env*`, large files, and `package-lock.json` when `bun.lock` exists. Use `.githooks-allow.txt` for allowlisted paths.
   - `commit-msg`: enforces Conventional Commits; bypass once with `GITHOOKS_BYPASS=1`.
 
+## WSL + Nix (Debian)
+
+Prefer Debian on WSL2 with systemd enabled.
+
+1) Inside Debian (one-time):
+
+   ```bash
+   sudo /mnt/c/Users/josep/Documents/dev/scripts/wsl/bootstrap-nix-debian.sh --write-wslconf
+   ```
+
+   Then from Windows PowerShell:
+
+   ```powershell
+   wsl --shutdown
+   ```
+
+2) User-level bootstrap inside Debian:
+
+   ```bash
+   /mnt/c/Users/josep/Documents/dev/scripts/wsl/bootstrap-nix-debian.sh
+   ```
+
+This installs Nix (daemon mode), enables flakes, reuses your unified SSH key, clones this repo into `~/projects/nixos-config`, and runs `nix flake check -L`.
+
 ## Contributing
 
 - Use Conventional Commits for all messages: `type(scope)?: subject`.
