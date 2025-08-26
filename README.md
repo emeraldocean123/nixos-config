@@ -285,3 +285,9 @@ Optional host tweaks
 
 CI
 - No GitHub Actions. Run checks locally (nix fmt, statix, nix flake check) or via the provided Remote SSH tasks.
+## Conventional Commits & Hooks
+
+- Commit Template: a shared template is available in your dotfiles at `Documents/dev/dotfiles/git-templates/commit_template.txt` and is configured globally. `git commit` will open with helpful guidance.
+- Shared Hooks (global): `core.hooksPath` points to `Documents/dev/dotfiles/githooks`.
+  - `pre-commit`: blocks secrets, `.env*`, large files, and `package-lock.json` when `bun.lock` exists. Use `.githooks-allow.txt` for allowlisted paths.
+  - `commit-msg`: enforces Conventional Commits; bypass once with `GITHOOKS_BYPASS=1`.
