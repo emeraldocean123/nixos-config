@@ -1,6 +1,6 @@
 # modules/profiles/laptop-base.nix
 # Common laptop optimizations and power management
-{...}: {
+_: {
   # Power management optimizations
   powerManagement = {
     enable = true;

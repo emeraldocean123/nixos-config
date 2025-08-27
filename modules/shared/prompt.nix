@@ -1,6 +1,6 @@
 ## modules/shared/prompt.nix
 # Initializes Oh My Posh prompt in bash via Home Manager
-{...}: {
+_: {
   programs.bash = {
     # Show fastfetch on login shells once per session (guarded by env var)
     profileExtra = ''

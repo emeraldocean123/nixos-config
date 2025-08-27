@@ -1,6 +1,6 @@
 # modules/shared/services-base.nix
 # Essential services shared across all hosts
-{...}: {
+_: {
   # Essential system services
   services = {
     # D-Bus for desktop applications
