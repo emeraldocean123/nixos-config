@@ -1,7 +1,6 @@
 ## home/hp-dv9500-pavilion-nixos/follett.nix
 # Home Manager configuration for user follett on HP dv9500 Pavilion
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ../shared/user-base.nix
   ];

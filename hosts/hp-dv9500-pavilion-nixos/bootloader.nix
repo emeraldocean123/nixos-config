@@ -1,26 +1,30 @@
 ## hosts/hp-dv9500-pavilion-nixos/bootloader.nix
 # BIOS GRUB bootloader for HP dv9500 (legacy BIOS) with CachyOS dual boot
-{ config, lib, pkgs, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # Force GRUB for legacy BIOS (override common systemd-boot)
   boot.loader.grub.enable = lib.mkForce true;
-  boot.loader.grub.devices = [ "/dev/sda" ];
-  
+  boot.loader.grub.devices = ["/dev/sda"];
+
   # Disable systemd-boot (conflicts with GRUB)
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
-  
+
   # Extended timeout for dual boot selection
   boot.loader.timeout = 10;
-  
+
   # Alternative approach - force GRUB to detect other systems
   boot.loader.grub.useOSProber = true;
-  
+
   # Manual CachyOS entry as fallback
   boot.loader.grub.extraEntries = ''
-menuentry "CachyOS (Manual)" {
-  set root=(hd1)
-  chainloader +1
-}
+    menuentry "CachyOS (Manual)" {
+      set root=(hd1)
+      chainloader +1
+    }
   '';
 }

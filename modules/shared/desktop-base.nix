@@ -1,13 +1,17 @@
 # modules/shared/desktop-base.nix
 # Shared desktop base configuration for all hosts
-{ config, pkgs, lib, ... }:
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   # Enable X11 windowing system
   services.xserver.enable = true;
-  
+
   # SDDM display manager configuration
   services.displayManager.sddm.enable = true;
-  
+
   # X11 keyboard configuration
   services.xserver.xkb = {
     layout = "us";

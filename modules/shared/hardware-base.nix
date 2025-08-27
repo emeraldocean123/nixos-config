@@ -1,7 +1,11 @@
 # modules/shared/hardware-base.nix
 # Shared hardware configuration for all hosts
-{ config, pkgs, lib, ... }:
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   # Enable redistributable firmware (needed for WiFi, etc.)
   hardware.enableRedistributableFirmware = true;
 

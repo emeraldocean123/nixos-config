@@ -1,7 +1,6 @@
-## home/shared/user-base.nix  
+## home/shared/user-base.nix
 # Base Home Manager configuration shared by all users
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ../../modules/shared/prompt.nix
     ../../modules/shared/path-localbin.nix
@@ -11,8 +10,16 @@
 
   # Common packages for all users
   home.packages = with pkgs; [
-    dconf git curl wget unzip nano
-    oh-my-posh fzf htop fastfetch
+    dconf
+    git
+    curl
+    wget
+    unzip
+    nano
+    oh-my-posh
+    fzf
+    htop
+    fastfetch
   ];
 
   # Common program configurations

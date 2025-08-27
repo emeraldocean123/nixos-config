@@ -1,7 +1,10 @@
 ## hosts/hp-dv9500-pavilion-nixos/configuration.nix
 # Main host configuration for HP dv9500 Pavilion
-{ config, pkgs, ... }:
 {
+  config,
+  pkgs,
+  ...
+}: {
   imports = [
     # Common settings are applied via shared/profile/role modules in flake.nix
     ../../modules/common.nix
@@ -23,9 +26,11 @@
     }
     {
       # Check for placeholder UUIDs that need to be replaced
-      assertion = (
-        builtins.match ".*REPLACE-WITH-ACTUAL.*" (builtins.readFile ./hardware-configuration.nix)
-      ) == null;
+      assertion =
+        (
+          builtins.match ".*REPLACE-WITH-ACTUAL.*" (builtins.readFile ./hardware-configuration.nix)
+        )
+        == null;
       message = "WARNING: Placeholder UUIDs detected in hardware-configuration.nix. Run 'sudo nixos-generate-config' on the HP machine to generate actual hardware configuration!";
     }
   ];

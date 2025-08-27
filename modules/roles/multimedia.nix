@@ -1,7 +1,11 @@
 # modules/roles/multimedia.nix
 # Multimedia role - video/audio codecs, media players, and content creation tools
-{ config, lib, pkgs, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # Modern audio system with PipeWire (better for multimedia and gaming)
   # Use lib.mkDefault to allow host-specific overrides (e.g., HP laptop needs PulseAudio for LXQt)
   services.pulseaudio.enable = lib.mkDefault false; # Disable PulseAudio in favor of PipeWire
@@ -20,20 +24,20 @@
     vlc
     mpv
     ffmpeg
-    
+
     # Audio tools
     audacity
     pavucontrol
-    
+
     # Image/photo tools
     gimp
     imagemagick
-    
+
     # Screen capture and streaming
     obs-studio
     flameshot
     peek
-    
+
     # Media codecs and libraries
     gst_all_1.gstreamer
     gst_all_1.gst-plugins-base
@@ -41,7 +45,7 @@
     gst_all_1.gst-plugins-bad
     gst_all_1.gst-plugins-ugly
     gst_all_1.gst-libav
-    
+
     # Video editing (optional - can be heavy)
     # kdenlive
     # blender

@@ -1,7 +1,11 @@
 # modules/roles/gaming.nix
 # Gaming role - Steam, performance optimizations, and gaming tools
-{ config, pkgs, lib, ... }:
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   # Enable Steam and gaming features
   programs.steam = {
     enable = true;
@@ -19,11 +23,11 @@
     lutris
     bottles
     heroic
-    
+
     # Gaming utilities
     # Note: gamemode, mangohud provided by gaming-hardware.nix
     gamescope
-    
+
     # Performance monitoring
     corectrl
   ];

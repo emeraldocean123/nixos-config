@@ -1,7 +1,6 @@
 ## home/hp-dv9500-pavilion-nixos/joseph.nix
 # Home Manager configuration for user joseph on HP dv9500 Pavilion
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ../shared/user-base.nix
   ];

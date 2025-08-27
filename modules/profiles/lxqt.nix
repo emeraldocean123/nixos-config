@@ -1,10 +1,13 @@
 # modules/profiles/lxqt.nix
 # LXQt desktop environment profile
-{ config, pkgs, ... }:
 {
+  config,
+  pkgs,
+  ...
+}: {
   # LXQt Desktop Environment
   services.xserver.desktopManager.lxqt.enable = true;
-  
+
   # Disable conflicting window managers
   services.xserver.windowManager.icewm.enable = false;
 
@@ -13,7 +16,7 @@
     # LXQt-specific theming
     arc-theme
     qgnomeplatform
-    
+
     # X helpers for LXQt compatibility
     xorg.xhost
   ];

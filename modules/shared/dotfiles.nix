@@ -1,7 +1,12 @@
 ## modules/shared/dotfiles.nix
 # Shared user dotfiles: aliases and Oh My Posh theme symlink from dotfiles flake input
-{ config, lib, pkgs, dotfiles, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  dotfiles,
+  ...
+}: {
   home.file = {
     ".bash_aliases".text = ''
       alias ll='ls -alF'
@@ -12,9 +17,9 @@
     ".config/oh-my-posh/jandedobbeleer.omp.json".source =
       dotfiles.outPath + "/posh-themes/jandedobbeleer.omp.json";
 
-  # Future shared symlinks (uncomment if/when added to dotfiles repo):
-  # ".gitconfig".source = dotfiles.outPath + "/gitconfig";
-  # ".editorconfig".source = dotfiles.outPath + "/.editorconfig";
-  # ".config/fastfetch/config.jsonc".source = dotfiles.outPath + "/fastfetch/config.jsonc";
+    # Future shared symlinks (uncomment if/when added to dotfiles repo):
+    # ".gitconfig".source = dotfiles.outPath + "/gitconfig";
+    # ".editorconfig".source = dotfiles.outPath + "/.editorconfig";
+    # ".config/fastfetch/config.jsonc".source = dotfiles.outPath + "/fastfetch/config.jsonc";
   };
 }

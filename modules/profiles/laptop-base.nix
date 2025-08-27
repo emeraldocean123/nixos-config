@@ -1,7 +1,11 @@
 # modules/profiles/laptop-base.nix
 # Common laptop optimizations and power management
-{ config, pkgs, lib, ... }:
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   # Power management optimizations
   powerManagement = {
     enable = true;
@@ -12,10 +16,10 @@
   services = {
     # Enable SMART monitoring for laptop drives
     smartd.enable = true;
-    
+
     # Auto-mount USB devices
     udisks2.enable = true;
-    
+
     # Network time sync
     timesyncd.enable = true;
   };

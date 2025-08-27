@@ -1,30 +1,33 @@
 # Security hardening module
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # Firewall configuration
   networking.firewall = {
     enable = lib.mkDefault true;
-    allowedTCPPorts = lib.mkDefault [ 22 ]; # SSH only by default
-    allowPing = lib.mkDefault true;  # Allow ping for network diagnostics
+    allowedTCPPorts = lib.mkDefault [22]; # SSH only by default
+    allowPing = lib.mkDefault true; # Allow ping for network diagnostics
     logReversePathDrops = true;
-    
+
     # Log refused connections
     logRefusedConnections = true;
-    logRefusedPackets = false;  # Reduce log spam
-    
+    logRefusedPackets = false; # Reduce log spam
+
     # Extra iptables rules
     extraCommands = ''
       # Drop invalid packets
       iptables -A INPUT -m state --state INVALID -j DROP
-      
+
       # More lenient SSH rate limiting for home network
       # Allow 10 connection attempts per minute instead of 4
       iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --set
       iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 60 --hitcount 10 -j DROP
     '';
   };
-  
+
   # Security settings
   security = {
     # Sudo configuration
@@ -34,26 +37,26 @@
       extraConfig = ''
         # Timeout after 5 minutes
         Defaults timestamp_timeout=5
-        
+
         # Require password for dangerous operations
         Defaults !targetpw
         Defaults !rootpw
         Defaults !runaspw
       '';
     };
-    
+
     # Polkit for GUI authentication
     polkit.enable = true;
-    
+
     # AppArmor for additional security (optional - may need profiles)
     apparmor = {
       enable = lib.mkDefault false; # Set to true if you want AppArmor
       killUnconfinedConfinables = lib.mkDefault false;
     };
-    
+
     # Protect kernel
     protectKernelImage = true;
-    
+
     # Audit framework
     auditd.enable = lib.mkDefault true;
     audit = {
@@ -63,7 +66,7 @@
       ];
     };
   };
-  
+
   # Kernel hardening
   boot.kernel.sysctl = {
     # Network hardening
@@ -75,33 +78,33 @@
     "net.ipv4.conf.all.accept_redirects" = 0;
     "net.ipv6.conf.all.accept_redirects" = 0;
     "net.ipv4.tcp_syncookies" = 1;
-    
+
     # Kernel hardening
     "kernel.dmesg_restrict" = 1;
     "kernel.printk" = "3 3 3 3";
     "kernel.unprivileged_bpf_disabled" = 1;
     "kernel.yama.ptrace_scope" = 1;
     "net.core.bpf_jit_harden" = 2;
-    
+
     # Disable magic SysRq key
     "kernel.sysrq" = 0;
-    
+
     # Hide kernel pointers
     "kernel.kptr_restrict" = 2;
   };
-  
+
   # Fail2ban for SSH protection (relaxed for home network)
   services.fail2ban = {
-    enable = lib.mkDefault false;  # Disabled by default for home network
+    enable = lib.mkDefault false; # Disabled by default for home network
     maxretry = 10;
     bantime = "5m";
     bantime-increment = {
-      enable = false;  # Disable progressive banning
+      enable = false; # Disable progressive banning
       multipliers = "1 2 4 8 16 32 64";
       maxtime = "168h"; # 1 week
       overalljails = true;
     };
-    
+
     jails = {
       ssh-iptables = ''
         enabled = true
@@ -113,7 +116,7 @@
       '';
     };
   };
-  
+
   # SSH hardening
   services.openssh = {
     settings = {
@@ -123,12 +126,12 @@
       PasswordAuthentication = lib.mkDefault true;
       KbdInteractiveAuthentication = false;
       X11Forwarding = false;
-      
+
       # Only allow specific users/groups
       AllowUsers = lib.mkDefault null;
-      AllowGroups = lib.mkDefault [ "wheel" ];
+      AllowGroups = lib.mkDefault ["wheel"];
     };
-    
+
     # Use only strong ciphers
     extraConfig = ''
       Protocol 2

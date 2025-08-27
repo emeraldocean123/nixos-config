@@ -1,8 +1,10 @@
 # modules/msi-ge75-raider-nixos/networking.nix
 # MSI GE75 Raider networking (2018, i7-9750H, RTX 2070)
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   # Set system hostname
   networking.hostName = "msi-ge75-raider-nixos";
 
@@ -35,7 +37,10 @@
       50000 # Discord voice range start
     ];
     allowedUDPPortRanges = [
-      { from = 50000; to = 65535; } # Discord voice range
+      {
+        from = 50000;
+        to = 65535;
+      } # Discord voice range
     ];
   };
 }

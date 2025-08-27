@@ -8,7 +8,7 @@
     # Enable parallel builds
     max-jobs = "auto";
     cores = 0; # Use all available cores
-    
+
     # Add binary caches for faster downloads
     extra-substituters = [
       "https://nix-community.cachix.org"
@@ -17,7 +17,7 @@
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
-    
+
     # Keep outputs for debugging
     keep-outputs = true;
     keep-derivations = true;
@@ -26,15 +26,15 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     # Hardware-specific optimizations
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    
+
     # Bring in dotfiles repo to source the single theme JSON
     # Use GitHub by default so /etc/nixos can evaluate purely; override locally with:
     #   nix build --override-input dotfiles path:../dotfiles
@@ -45,109 +45,117 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, dotfiles, ... }@inputs:
-    let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
-    in
-    {
-  # Allow `nix fmt` to format Nix files using nixpkgs-fmt
-  formatter.${system} = pkgs.nixpkgs-fmt;
+  outputs = {
+    self,
+    nixpkgs,
+    nixpkgs-unstable,
+    home-manager,
+    nixos-hardware,
+    dotfiles,
+    ...
+  } @ inputs: let
+    system = "x86_64-linux";
+    pkgs = import nixpkgs {inherit system;};
+  in {
+    # Allow `nix fmt` to format Nix files using nixpkgs-fmt
+    formatter.${system} = pkgs.nixpkgs-fmt;
 
-      # Add a developer shell for formatting and checking your code.
-      # Run `nix develop` in this directory to use it.
-      devShells.${system}.default = pkgs.mkShell {
-        buildInputs = with pkgs; [
-          nixpkgs-fmt
-          statix
-          nil
+    # Add a developer shell for formatting and checking your code.
+    # Run `nix develop` in this directory to use it.
+    devShells.${system}.default = pkgs.mkShell {
+      buildInputs = with pkgs; [
+        nixpkgs-fmt
+        statix
+        nil
+      ];
+    };
+
+    nixosConfigurations = {
+      # HP dv9500 Pavilion host
+      hp-dv9500-pavilion-nixos = nixpkgs.lib.nixosSystem {
+        inherit system;
+        # Make flake inputs available to modules
+        specialArgs = {inherit dotfiles;};
+        modules = [
+          # Common optimization modules
+          ./modules/common/base.nix
+          # Shared base modules
+          ./modules/shared/desktop-base.nix
+          ./modules/shared/packages-base.nix
+          ./modules/shared/hardware-base.nix
+          ./modules/shared/services-base.nix
+          ./modules/shared/users.nix
+          ./modules/shared/backup.nix
+          # Profile modules
+          ./modules/profiles/laptop-base.nix
+          ./modules/profiles/legacy-hardware.nix
+          ./modules/profiles/lxqt.nix
+          # Role modules (optional - uncomment as needed)
+          ./modules/roles/multimedia.nix
+          # ./modules/roles/development.nix
+          # ./modules/roles/gaming.nix
+          # Host-specific overrides (minimal)
+          ./modules/hp-dv9500-pavilion-nixos/hardware.nix
+          ./modules/hp-dv9500-pavilion-nixos/networking.nix
+          ./modules/hp-dv9500-pavilion-nixos/services.nix
+          ./hosts/hp-dv9500-pavilion-nixos/configuration.nix
+          ./hosts/hp-dv9500-pavilion-nixos/hardware-configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+            # Also expose flake inputs to Home Manager modules
+            home-manager.extraSpecialArgs = {inherit dotfiles;};
+            home-manager.users.joseph = import ./home/hp-dv9500-pavilion-nixos/joseph.nix;
+            home-manager.users.follett = import ./home/hp-dv9500-pavilion-nixos/follett.nix;
+          }
         ];
       };
 
-      nixosConfigurations = {
-        # HP dv9500 Pavilion host
-  hp-dv9500-pavilion-nixos = nixpkgs.lib.nixosSystem {
-          inherit system;
-          # Make flake inputs available to modules
-          specialArgs = { inherit dotfiles; };
-          modules = [
-            # Common optimization modules
-            ./modules/common/base.nix
-            # Shared base modules
-            ./modules/shared/desktop-base.nix
-            ./modules/shared/packages-base.nix
-            ./modules/shared/hardware-base.nix
-            ./modules/shared/services-base.nix
-            ./modules/shared/users.nix
-            ./modules/shared/backup.nix
-            # Profile modules
-            ./modules/profiles/laptop-base.nix
-            ./modules/profiles/legacy-hardware.nix
-            ./modules/profiles/lxqt.nix
-            # Role modules (optional - uncomment as needed)
-            ./modules/roles/multimedia.nix
-            # ./modules/roles/development.nix
-            # ./modules/roles/gaming.nix
-            # Host-specific overrides (minimal)
-            ./modules/hp-dv9500-pavilion-nixos/hardware.nix
-            ./modules/hp-dv9500-pavilion-nixos/networking.nix
-            ./modules/hp-dv9500-pavilion-nixos/services.nix
-            ./hosts/hp-dv9500-pavilion-nixos/configuration.nix
-            ./hosts/hp-dv9500-pavilion-nixos/hardware-configuration.nix
-            home-manager.nixosModules.home-manager {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "backup";
-              # Also expose flake inputs to Home Manager modules
-              home-manager.extraSpecialArgs = { inherit dotfiles; };
-              home-manager.users.joseph = import ./home/hp-dv9500-pavilion-nixos/joseph.nix;
-              home-manager.users.follett = import ./home/hp-dv9500-pavilion-nixos/follett.nix;
-            }
-          ];
-        };
-
-        # MSI GE75 Raider host
-  msi-ge75-raider-nixos = nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit dotfiles; };
-          modules = [
-            # Common optimization modules
-            ./modules/common/base.nix
-            # Shared base modules
-            ./modules/shared/desktop-base.nix
-            ./modules/shared/packages-base.nix
-            ./modules/shared/hardware-base.nix
-            ./modules/shared/services-base.nix
-            ./modules/shared/users.nix
-            ./modules/shared/backup.nix
-            # Profile modules
-            ./modules/profiles/laptop-base.nix
-            ./modules/profiles/gaming-hardware.nix
-            ./modules/profiles/kde-plasma.nix
-            # Role modules (gaming laptop roles)
-            ./modules/roles/multimedia.nix
-            ./modules/roles/gaming.nix
-            ./modules/roles/gaming-performance.nix
-            ./modules/roles/development.nix
-            # Host-specific overrides (minimal)
-            ./modules/msi-ge75-raider-nixos/hardware.nix
-            # Choose one: nvidia.nix (basic) or nvidia-optimized.nix (performance)
-            # ./modules/msi-ge75-raider-nixos/nvidia.nix
-            ./modules/msi-ge75-raider-nixos/nvidia-optimized.nix
-            ./modules/msi-ge75-raider-nixos/networking.nix
-            ./modules/msi-ge75-raider-nixos/services.nix
-            ./hosts/msi-ge75-raider-nixos/configuration.nix
-            ./hosts/msi-ge75-raider-nixos/hardware-configuration.nix
-            home-manager.nixosModules.home-manager {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "backup";
-              home-manager.extraSpecialArgs = { inherit dotfiles; };
-              home-manager.users.joseph = import ./home/msi-ge75-raider-nixos/joseph.nix;
-              home-manager.users.follett = import ./home/msi-ge75-raider-nixos/follett.nix;
-            }
-          ];
-        };
+      # MSI GE75 Raider host
+      msi-ge75-raider-nixos = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {inherit dotfiles;};
+        modules = [
+          # Common optimization modules
+          ./modules/common/base.nix
+          # Shared base modules
+          ./modules/shared/desktop-base.nix
+          ./modules/shared/packages-base.nix
+          ./modules/shared/hardware-base.nix
+          ./modules/shared/services-base.nix
+          ./modules/shared/users.nix
+          ./modules/shared/backup.nix
+          # Profile modules
+          ./modules/profiles/laptop-base.nix
+          ./modules/profiles/gaming-hardware.nix
+          ./modules/profiles/kde-plasma.nix
+          # Role modules (gaming laptop roles)
+          ./modules/roles/multimedia.nix
+          ./modules/roles/gaming.nix
+          ./modules/roles/gaming-performance.nix
+          ./modules/roles/development.nix
+          # Host-specific overrides (minimal)
+          ./modules/msi-ge75-raider-nixos/hardware.nix
+          # Choose one: nvidia.nix (basic) or nvidia-optimized.nix (performance)
+          # ./modules/msi-ge75-raider-nixos/nvidia.nix
+          ./modules/msi-ge75-raider-nixos/nvidia-optimized.nix
+          ./modules/msi-ge75-raider-nixos/networking.nix
+          ./modules/msi-ge75-raider-nixos/services.nix
+          ./hosts/msi-ge75-raider-nixos/configuration.nix
+          ./hosts/msi-ge75-raider-nixos/hardware-configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+            home-manager.extraSpecialArgs = {inherit dotfiles;};
+            home-manager.users.joseph = import ./home/msi-ge75-raider-nixos/joseph.nix;
+            home-manager.users.follett = import ./home/msi-ge75-raider-nixos/follett.nix;
+          }
+        ];
       };
     };
+  };
 }
