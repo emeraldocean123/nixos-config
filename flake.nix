@@ -50,7 +50,7 @@
     home-manager,
     dotfiles,
     ...
-  } @ _inputs: let
+  } @ __inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
   in {
