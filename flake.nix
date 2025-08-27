@@ -46,11 +46,11 @@
   };
 
   outputs = {
-        nixpkgs,
-        home-manager,
-        dotfiles,
+    nixpkgs,
+    home-manager,
+    dotfiles,
     ...
-  } @ : let
+  } @ _inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
   in {
