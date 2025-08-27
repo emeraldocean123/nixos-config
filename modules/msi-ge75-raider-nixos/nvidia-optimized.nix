@@ -5,83 +5,89 @@
   pkgs,
   ...
 }: {
-  # Enable graphics
-  hardware.graphics = {
-    enable = true;
-    # Enable 32-bit support for gaming
-    enable32Bit = true;
-
-    # Extra packages for Vulkan support
-    extraPackages = with pkgs; [
-      vulkan-loader
-      vulkan-validation-layers
-      vulkan-extension-layer
-    ];
-    extraPackages32 = with pkgs.pkgsi686Linux; [
-      vulkan-loader
-      vulkan-validation-layers
-    ];
-  };
-
-  # Modern NVIDIA setup
-  hardware.nvidia = {
-    # Enable kernel modesetting
-    modesetting.enable = true;
-
-    # Power management for laptops
-    powerManagement = {
+  # Consolidate hardware.*
+  hardware = {
+    # Enable graphics
+    graphics = {
       enable = true;
-      # Fine-grained power management (supported on RTX 2070)
-      finegrained = true;
+      # Enable 32-bit support for gaming
+      enable32Bit = true;
+
+      # Extra packages for Vulkan support
+      extraPackages = with pkgs; [
+        vulkan-loader
+        vulkan-validation-layers
+        vulkan-extension-layer
+      ];
+      extraPackages32 = with pkgs.pkgsi686Linux; [
+        vulkan-loader
+        vulkan-validation-layers
+      ];
     };
 
-    # Use proprietary driver for RTX 2070 (better compatibility)
-    open = false; # RTX 2070 works better with proprietary
+    # Modern NVIDIA setup
+    nvidia = {
+      # Enable kernel modesetting
+      modesetting.enable = true;
 
-    # Enable nvidia-settings GUI
-    nvidiaSettings = true;
+      # Power management for laptops
+      powerManagement = {
+        enable = true;
+        # Fine-grained power management (supported on RTX 2070)
+        finegrained = true;
+      };
 
-    # Use production driver for stability
-    package = config.boot.kernelPackages.nvidiaPackages.production;
+      # Use proprietary driver for RTX 2070 (better compatibility)
+      open = false; # RTX 2070 works better with proprietary
 
-    # Force full composition pipeline to prevent tearing
-    forceFullCompositionPipeline = true;
-  };
+      # Enable nvidia-settings GUI
+      nvidiaSettings = true;
 
-  # PRIME configuration for hybrid graphics
-  hardware.nvidia.prime = {
-    # Offload rendering for better battery life
-    offload = {
-      enable = true;
-      enableOffloadCmd = true; # Adds nvidia-offload command
+      # Use production driver for stability
+      package = config.boot.kernelPackages.nvidiaPackages.production;
+
+      # Force full composition pipeline to prevent tearing
+      forceFullCompositionPipeline = true;
+
+      # PRIME configuration for hybrid graphics
+      prime = {
+        # Offload rendering for better battery life
+        offload = {
+          enable = true;
+          enableOffloadCmd = true; # Adds nvidia-offload command
+        };
+
+        # Bus IDs for Intel and NVIDIA GPUs
+        # Find these with: lspci | grep -E 'VGA|3D'
+        # These are typical values for MSI GE75 Raider
+        intelBusId = "PCI:0:2:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
     };
-
-    # Bus IDs for Intel and NVIDIA GPUs
-    # Find these with: lspci | grep -E 'VGA|3D'
-    # These are typical values for MSI GE75 Raider
-    intelBusId = "PCI:0:2:0";
-    nvidiaBusId = "PCI:1:0:0";
   };
 
-  # Kernel parameters for NVIDIA optimization
-  boot.kernelParams = [
-    "nvidia-drm.modeset=1"
-    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-    "nvidia.NVreg_TemporaryFilePath=/var/tmp"
-    # Enable Dynamic Boost if supported
-    "nvidia.NVreg_DynamicPowerManagement=0x02"
-  ];
+  # Consolidate boot.*
+  boot = {
+    # Kernel parameters for NVIDIA optimization
+    kernelParams = [
+      "nvidia-drm.modeset=1"
+      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      "nvidia.NVreg_TemporaryFilePath=/var/tmp"
+      # Enable Dynamic Boost if supported
+      "nvidia.NVreg_DynamicPowerManagement=0x02"
+    ];
 
-  # Blacklist nouveau driver
-  boot.blacklistedKernelModules = ["nouveau"];
+    # Blacklist nouveau driver
+    blacklistedKernelModules = ["nouveau"];
 
-  # Load NVIDIA modules early
-  boot.initrd.kernelModules = [
-    "nvidia"
-    "nvidia_modeset"
-    "nvidia_uvm"
-    "nvidia_drm"
-  ];
+    # Load NVIDIA modules early
+    initrd.kernelModules = [
+      "nvidia"
+      "nvidia_modeset"
+      "nvidia_uvm"
+      "nvidia_drm"
+    ];
+  };
 
   # X11 configuration
   services.xserver = {

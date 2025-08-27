@@ -37,15 +37,18 @@ in {
     time.timeZone = "America/Los_Angeles";
     i18n.defaultLocale = "en_US.UTF-8";
 
-    # Hard-require NetworkManager. If any other module tries to disable it, we force it on.
-    networking.networkmanager.enable = mkForce true;
-    # Forbid legacy wireless and systemd-networkd while using NetworkManager.
-    networking.wireless.enable = mkForce false;
+    # Networking consolidated to avoid repeated keys
+    networking = {
+      # Hard-require NetworkManager. If any other module tries to disable it, we force it on.
+      networkmanager.enable = mkForce true;
+      # Forbid legacy wireless while using NetworkManager.
+      wireless.enable = mkForce false;
+      # Basic firewall; we don't force the whole list to avoid clobbering host-specific ports.
+      # Instead, assert that SSH is reachable when enabled.
+      firewall.enable = true;
+    };
+    # Disable systemd-networkd when using NetworkManager
     systemd.network.enable = mkForce false;
-
-    # Basic firewall; we don't force the whole list to avoid clobbering host-specific ports.
-    # Instead, assert that SSH is reachable when enabled.
-    networking.firewall.enable = true;
 
     # Ensure SSH is available for remote management and force it on.
     # SSH security settings are handled by security.nix module to avoid conflicts
@@ -99,98 +102,101 @@ in {
       '')
     ];
 
-    # Wait for networking to be online when requested and make sshd start after network-online
-    systemd.services."NetworkManager-wait-online".enable = true;
-    systemd.services.sshd.wants = ["network-online.target"];
-    systemd.services.sshd.after = ["network-online.target"];
+    # Consolidate systemd services configuration to avoid repeated keys
+    systemd.services = {
+      # Wait for networking to be online when requested and make sshd start after network-online
+      "NetworkManager-wait-online".enable = true;
+      sshd.wants = ["network-online.target"];
+      sshd.after = ["network-online.target"];
 
-    # Proactively unblock any soft-rfkill at boot (Wi‑Fi toggles, etc.)
-    systemd.services.rfkill-unblock = {
-      description = "Unblock all rfkill switches at boot";
-      wantedBy = ["multi-user.target"];
-      before = ["NetworkManager.service"];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${pkgs.bash}/bin/bash -lc 'command -v rfkill >/dev/null 2>&1 && rfkill unblock all || true'";
+      # Proactively unblock any soft-rfkill at boot (Wi‑Fi toggles, etc.)
+      rfkill-unblock = {
+        description = "Unblock all rfkill switches at boot";
+        wantedBy = ["multi-user.target"];
+        before = ["NetworkManager.service"];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.bash}/bin/bash -lc 'command -v rfkill >/dev/null 2>&1 && rfkill unblock all || true'";
+        };
       };
-    };
 
-    # Inhibit lid handling only at the greeter (LightDM/SDDM). When a real user session exists,
-    # release the inhibitor so the GUI (LXQt/Plasma) can control lid behavior.
-    systemd.services."lid-inhibit-at-greeter" = mkIf cfg.enable (let
-      mainScript = pkgs.writeShellScript "lid-inhibit-at-greeter" ''
-        # Ensure required tools are on PATH even in minimal systemd environments
-        export PATH="${pkgs.coreutils}/bin:${pkgs.gawk}/bin:${pkgs.systemd}/bin:/run/current-system/sw/bin:$PATH"
-        pidfile=/run/lid-greeter-inhibit/pid
-        	last_count=-1
-        	last_log_ts=0
-        cleanup() {
-          if [ -f "$pidfile" ]; then
-            if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
-              kill "$(cat "$pidfile")" 2>/dev/null || true
-            fi
-            rm -f "$pidfile"
-          fi
-        }
-        trap cleanup EXIT
-        while true; do
-          sessions="$(${pkgs.systemd}/bin/loginctl --no-legend list-sessions 2>/dev/null || true)"
-          if [ -z "$sessions" ]; then
-            count=0
-          else
-            count=$(echo "$sessions" | ${pkgs.gawk}/bin/awk 'BEGIN{c=0} { if ($3 !~ /^(sddm|lightdm|gdm|greeter)$/) c++ } END{ print c }')
-          fi
-        	  now=$(${pkgs.coreutils}/bin/date +%s)
-        	  if [ "$count" -ne "$last_count" ] || [ $((now - last_log_ts)) -ge 300 ]; then
-        	    echo "[lid-inhibit] non-greeter sessions: $count" >&2
-        	    last_count=$count
-        	    last_log_ts=$now
-        	  fi
-          if [ "$count" -eq 0 ]; then
-            if [ ! -f "$pidfile" ] || ! kill -0 "$(cat "$pidfile")" 2>/dev/null; then
-              ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' ${pkgs.coreutils}/bin/tail -f /dev/null &
-              echo $! > "$pidfile"
-            fi
-            ${pkgs.coreutils}/bin/sleep 5
-          else
+      # Inhibit lid handling only at the greeter (LightDM/SDDM). When a real user session exists,
+      # release the inhibitor so the GUI (LXQt/Plasma) can control lid behavior.
+      "lid-inhibit-at-greeter" = mkIf cfg.enable (let
+        mainScript = pkgs.writeShellScript "lid-inhibit-at-greeter" ''
+          # Ensure required tools are on PATH even in minimal systemd environments
+          export PATH="${pkgs.coreutils}/bin:${pkgs.gawk}/bin:${pkgs.systemd}/bin:/run/current-system/sw/bin:$PATH"
+          pidfile=/run/lid-greeter-inhibit/pid
+          	last_count=-1
+          	last_log_ts=0
+          cleanup() {
             if [ -f "$pidfile" ]; then
               if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
                 kill "$(cat "$pidfile")" 2>/dev/null || true
               fi
               rm -f "$pidfile"
             fi
-            ${pkgs.coreutils}/bin/sleep 10
+          }
+          trap cleanup EXIT
+          while true; do
+            sessions="$(${pkgs.systemd}/bin/loginctl --no-legend list-sessions 2>/dev/null || true)"
+            if [ -z "$sessions" ]; then
+              count=0
+            else
+              count=$(echo "$sessions" | ${pkgs.gawk}/bin/awk 'BEGIN{c=0} { if ($3 !~ /^(sddm|lightdm|gdm|greeter)$/) c++ } END{ print c }')
+            fi
+          	  now=$(${pkgs.coreutils}/bin/date +%s)
+          	  if [ "$count" -ne "$last_count" ] || [ $((now - last_log_ts)) -ge 300 ]; then
+          	    echo "[lid-inhibit] non-greeter sessions: $count" >&2
+          	    last_count=$count
+          	    last_log_ts=$now
+          	  fi
+            if [ "$count" -eq 0 ]; then
+              if [ ! -f "$pidfile" ] || ! kill -0 "$(cat "$pidfile")" 2>/dev/null; then
+                ${pkgs.systemd}/bin/systemd-inhibit --what=handle-lid-switch --mode=block --why='Ignore lid at greeter' ${pkgs.coreutils}/bin/tail -f /dev/null &
+                echo $! > "$pidfile"
+              fi
+              ${pkgs.coreutils}/bin/sleep 5
+            else
+              if [ -f "$pidfile" ]; then
+                if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
+                  kill "$(cat "$pidfile")" 2>/dev/null || true
+                fi
+                rm -f "$pidfile"
+              fi
+              ${pkgs.coreutils}/bin/sleep 10
+            fi
+          done
+        '';
+        cleanupScript = pkgs.writeShellScript "lid-inhibit-at-greeter-cleanup" ''
+          set -euo pipefail
+          pidfile=/run/lid-greeter-inhibit/pid
+          if [ -f "$pidfile" ]; then
+            if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
+              kill "$(cat "$pidfile")" 2>/dev/null || true
+            fi
+            rm -f "$pidfile"
           fi
-        done
-      '';
-      cleanupScript = pkgs.writeShellScript "lid-inhibit-at-greeter-cleanup" ''
-        set -euo pipefail
-        pidfile=/run/lid-greeter-inhibit/pid
-        if [ -f "$pidfile" ]; then
-          if kill -0 "$(cat "$pidfile")" 2>/dev/null; then
-            kill "$(cat "$pidfile")" 2>/dev/null || true
-          fi
-          rm -f "$pidfile"
-        fi
-      '';
-    in {
-      description = "Ignore lid switch at display manager greeter";
-      partOf = ["display-manager.service"];
-      wants = ["display-manager.service"];
-      after = ["display-manager.service"];
-      unitConfig = {
-        ConditionPathExistsGlob = "/proc/acpi/button/lid/*/state";
-      };
-      serviceConfig = {
-        Type = "simple";
-        RuntimeDirectory = "lid-greeter-inhibit";
-        ExecStart = mainScript;
-        ExecStopPost = cleanupScript;
-        Restart = "always";
-        RestartSec = "5s";
-      };
-      wantedBy = ["display-manager.service"];
-    });
+        '';
+      in {
+        description = "Ignore lid switch at display manager greeter";
+        partOf = ["display-manager.service"];
+        wants = ["display-manager.service"];
+        after = ["display-manager.service"];
+        unitConfig = {
+          ConditionPathExistsGlob = "/proc/acpi/button/lid/*/state";
+        };
+        serviceConfig = {
+          Type = "simple";
+          RuntimeDirectory = "lid-greeter-inhibit";
+          ExecStart = mainScript;
+          ExecStopPost = cleanupScript;
+          Restart = "always";
+          RestartSec = "5s";
+        };
+        wantedBy = ["display-manager.service"];
+      });
+    };
 
     # Sudo quality-of-life: allow joseph/follett to update /etc/nixos and rebuild without a password,
     # and keep sudo tokens warm a bit longer to reduce re-prompts. Scope is tightly limited.
