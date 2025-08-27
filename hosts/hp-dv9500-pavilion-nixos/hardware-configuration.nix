@@ -12,17 +12,19 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  # Kernel modules for HP dv9500 Pavilion hardware
-  boot.initrd.availableKernelModules = [
-    "ahci" # SATA controller
-    "pata_atiixp" # AMD PATA controller
-    "usb_storage" # USB storage devices
-    "sd_mod" # SCSI disk support
-    "sr_mod" # SCSI CD-ROM support
-  ];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-amd"]; # AMD virtualization
-  boot.extraModulePackages = [];
+  # Kernel modules for HP dv9500 Pavilion hardware (consolidated)
+  boot = {
+    initrd.availableKernelModules = [
+      "ahci" # SATA controller
+      "pata_atiixp" # AMD PATA controller
+      "usb_storage" # USB storage devices
+      "sd_mod" # SCSI disk support
+      "sr_mod" # SCSI CD-ROM support
+    ];
+    initrd.kernelModules = [];
+    kernelModules = ["kvm-amd"]; # AMD virtualization
+    extraModulePackages = [];
+  };
 
   # WARNING: These are PLACEHOLDER UUIDs and device paths!
   # They MUST be replaced with actual values from `nixos-generate-config`

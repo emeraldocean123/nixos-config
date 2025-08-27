@@ -1,13 +1,23 @@
 # modules/shared/hardware-base.nix
 # Shared hardware configuration for all hosts
 {lib, ...}: {
-  # Enable redistributable firmware (needed for WiFi, etc.)
-  hardware.enableRedistributableFirmware = true;
+  # Consolidate hardware.* to avoid repeated keys
+  hardware = {
+    # Enable redistributable firmware (needed for WiFi, etc.)
+    enableRedistributableFirmware = true;
 
-  # Graphics support (common for all hosts)
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
+    # Graphics support (common for all hosts)
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+
+    # Enable Bluetooth (power settings can be overridden per-host)
+    bluetooth = {
+      enable = true;
+      # powerOnBoot default to true, hosts can override
+      powerOnBoot = lib.mkDefault true;
+    };
   };
 
   # Enable touchpad and input devices (common touchpad settings)
@@ -20,10 +30,5 @@
     };
   };
 
-  # Enable Bluetooth (power settings can be overridden per-host)
-  hardware.bluetooth = {
-    enable = true;
-    # powerOnBoot default to true, hosts can override
-    powerOnBoot = lib.mkDefault true;
-  };
+  # Bluetooth consolidated under hardware above
 }
