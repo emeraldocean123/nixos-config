@@ -101,77 +101,86 @@
     '';
   };
 
-  # Systemd service for automated configuration backup
-  systemd.services.backup-nixos-config = {
-    description = "Backup NixOS configuration";
-    path = with pkgs; [git rsync gzip gnutar coreutils nixos-rebuild];
+  # Consolidate systemd services/timers to avoid repeated keys
+  systemd = {
+    services = {
+      # Systemd service for automated configuration backup
+      backup-nixos-config = {
+        description = "Backup NixOS configuration";
+        path = with pkgs; [git rsync gzip gnutar coreutils nixos-rebuild];
 
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-      WorkingDirectory = "/etc/nixos";
+        serviceConfig = {
+          Type = "oneshot";
+          User = "root";
+          WorkingDirectory = "/etc/nixos";
+        };
+
+        script = ''
+          set -euo pipefail
+
+          BACKUP_DIR="/var/backups/nixos"
+          TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+          CONFIG_BACKUP="$BACKUP_DIR/config/nixos-config-$TIMESTAMP.tar.gz"
+
+          echo "Starting NixOS configuration backup at $TIMESTAMP"
+
+          # Backup current configuration
+          if [ -d "/etc/nixos" ]; then
+            cd /etc/nixos
+
+            # Create git bundle if we're in a git repository
+            if [ -d ".git" ]; then
+              git bundle create "$BACKUP_DIR/config/nixos-git-$TIMESTAMP.bundle" --all
+              echo "Git repository backed up to $BACKUP_DIR/config/nixos-git-$TIMESTAMP.bundle"
+            fi
+
+            # Create compressed archive of all configuration files
+            tar -czf "$CONFIG_BACKUP" \
+              --exclude='.git' \
+              --exclude='*.log' \
+              --exclude='*.tmp' \
+              --exclude='result*' \
+              .
+
+            echo "Configuration archived to $CONFIG_BACKUP"
+
+            # Also backup hardware configuration separately for easy access
+            if ls hosts/*/hardware-configuration.nix >/dev/null 2>&1; then
+              cp hosts/*/hardware-configuration.nix "$BACKUP_DIR/hardware/" || true
+            fi
+          fi
+
+          # Backup current system generation info
+          nixos-rebuild list-generations > "$BACKUP_DIR/generations/generations-$TIMESTAMP.txt" || true
+
+          # Keep only last 10 backups to prevent disk usage growth
+          cd "$BACKUP_DIR/config"
+          ls -t nixos-config-*.tar.gz 2>/dev/null | tail -n +11 | xargs -r rm -f
+          ls -t nixos-git-*.bundle 2>/dev/null | tail -n +11 | xargs -r rm -f
+
+          cd "$BACKUP_DIR/generations"
+          ls -t generations-*.txt 2>/dev/null | tail -n +11 | xargs -r rm -f
+
+          echo "Backup completed successfully"
+        '';
+
+        wantedBy = ["multi-user.target"];
+      };
     };
 
-    script = ''
-      set -euo pipefail
+    timers = {
+      # Timer for regular automated backups
+      backup-nixos-config = {
+        description = "Regular NixOS configuration backup";
+        wantedBy = ["timers.target"];
 
-      BACKUP_DIR="/var/backups/nixos"
-      TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-      CONFIG_BACKUP="$BACKUP_DIR/config/nixos-config-$TIMESTAMP.tar.gz"
-
-      echo "Starting NixOS configuration backup at $TIMESTAMP"
-
-      # Backup current configuration
-      if [ -d "/etc/nixos" ]; then
-        cd /etc/nixos
-
-        # Create git bundle if we're in a git repository
-        if [ -d ".git" ]; then
-          git bundle create "$BACKUP_DIR/config/nixos-git-$TIMESTAMP.bundle" --all
-          echo "Git repository backed up to $BACKUP_DIR/config/nixos-git-$TIMESTAMP.bundle"
-        fi
-
-        # Create compressed archive of all configuration files
-        tar -czf "$CONFIG_BACKUP" \
-          --exclude='.git' \
-          --exclude='*.log' \
-          --exclude='*.tmp' \
-          --exclude='result*' \
-          .
-
-        echo "Configuration archived to $CONFIG_BACKUP"
-
-        # Also backup hardware configuration separately for easy access
-        if [ -f "hosts/*/hardware-configuration.nix" ]; then
-          cp hosts/*/hardware-configuration.nix "$BACKUP_DIR/hardware/" || true
-        fi
-      fi
-
-      # Backup current system generation info
-      nixos-rebuild list-generations > "$BACKUP_DIR/generations/generations-$TIMESTAMP.txt" || true
-
-      # Keep only last 10 backups to prevent disk usage growth
-      cd "$BACKUP_DIR/config"
-      ls -t nixos-config-*.tar.gz 2>/dev/null | tail -n +11 | xargs -r rm -f
-      ls -t nixos-git-*.bundle 2>/dev/null | tail -n +11 | xargs -r rm -f
-
-      cd "$BACKUP_DIR/generations"
-      ls -t generations-*.txt 2>/dev/null | tail -n +11 | xargs -r rm -f
-
-      echo "Backup completed successfully"
-    '';
-  };
-
-  # Timer for regular automated backups
-  systemd.timers.backup-nixos-config = {
-    description = "Regular NixOS configuration backup";
-    wantedBy = ["timers.target"];
-
-    timerConfig = {
-      # Run daily at 3 AM
-      OnCalendar = "daily";
-      RandomizedDelaySec = "30m";
-      Persistent = true;
+        timerConfig = {
+          # Run daily at 3 AM
+          OnCalendar = "daily";
+          RandomizedDelaySec = "30m";
+          Persistent = true;
+        };
+      };
     };
   };
 
@@ -184,6 +193,5 @@
     };
   };
 
-  # Ensure backup service is enabled
-  systemd.services.backup-nixos-config.wantedBy = ["multi-user.target"];
+  # backup-nixos-config wantedBy moved into consolidated systemd.services above
 }

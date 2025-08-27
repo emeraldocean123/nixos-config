@@ -99,13 +99,17 @@
           ./hosts/hp-dv9500-pavilion-nixos/hardware-configuration.nix
           home-manager.nixosModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            # Also expose flake inputs to Home Manager modules
-            home-manager.extraSpecialArgs = {inherit dotfiles;};
-            home-manager.users.joseph = import ./home/hp-dv9500-pavilion-nixos/joseph.nix;
-            home-manager.users.follett = import ./home/hp-dv9500-pavilion-nixos/follett.nix;
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "backup";
+              # Also expose flake inputs to Home Manager modules
+              extraSpecialArgs = {inherit dotfiles;};
+              users = {
+                joseph = import ./home/hp-dv9500-pavilion-nixos/joseph.nix;
+                follett = import ./home/hp-dv9500-pavilion-nixos/follett.nix;
+              };
+            };
           }
         ];
       };
@@ -144,12 +148,16 @@
           ./hosts/msi-ge75-raider-nixos/hardware-configuration.nix
           home-manager.nixosModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.extraSpecialArgs = {inherit dotfiles;};
-            home-manager.users.joseph = import ./home/msi-ge75-raider-nixos/joseph.nix;
-            home-manager.users.follett = import ./home/msi-ge75-raider-nixos/follett.nix;
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "backup";
+              extraSpecialArgs = {inherit dotfiles;};
+              users = {
+                joseph = import ./home/msi-ge75-raider-nixos/joseph.nix;
+                follett = import ./home/msi-ge75-raider-nixos/follett.nix;
+              };
+            };
           }
         ];
       };
