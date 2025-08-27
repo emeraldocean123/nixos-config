@@ -22,19 +22,21 @@
     fastfetch
   ];
 
-  # Common program configurations
-  programs.bash = {
-    enable = true;
-    # Aliases and PATH handled via shared modules
-  };
+  # Common program configurations (grouped to avoid repeated keys)
+  programs = {
+    bash = {
+      enable = true;
+      # Aliases and PATH handled via shared modules
+    };
 
-  programs.fzf = {
-    enable = true;
-    enableBashIntegration = true;
-  };
+    fzf = {
+      enable = true;
+      enableBashIntegration = true;
+    };
 
-  programs.htop.enable = true;
-  programs.fastfetch.enable = true;
+    htop.enable = true;
+    fastfetch.enable = true;
+  };
 
   home.stateVersion = "25.05";
 }

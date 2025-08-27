@@ -1,16 +1,20 @@
 # modules/shared/desktop-base.nix
 # Shared desktop base configuration for all hosts
 {pkgs, ...}: {
-  # Enable X11 windowing system
-  services.xserver.enable = true;
+  # Consolidate services.* to avoid repeated keys
+  services = {
+    # Enable X11 windowing system
+    xserver = {
+      enable = true;
+      # X11 keyboard configuration
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+    };
 
-  # SDDM display manager configuration
-  services.displayManager.sddm.enable = true;
-
-  # X11 keyboard configuration
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+    # SDDM display manager configuration
+    displayManager.sddm.enable = true;
   };
 
   # Essential fonts for terminals and desktop

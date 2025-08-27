@@ -31,33 +31,36 @@
   # Conservative power settings for battery preservation
   hardware.bluetooth.powerOnBoot = false; # Save battery on old laptop
 
-  # Disable power-hungry features on legacy hardware
-  services.tlp = {
-    enable = true;
-    settings = {
-      # Conservative CPU scaling for battery life
-      CPU_SCALING_GOVERNOR_ON_AC = "ondemand";
-      CPU_SCALING_GOVERNOR_ON_BAT = "conservative";
+  # Consolidate services.* to avoid repeated keys
+  services = {
+    # Disable power-hungry features on legacy hardware
+    tlp = {
+      enable = true;
+      settings = {
+        # Conservative CPU scaling for battery life
+        CPU_SCALING_GOVERNOR_ON_AC = "ondemand";
+        CPU_SCALING_GOVERNOR_ON_BAT = "conservative";
 
-      # Reduce CPU boost on battery
-      CPU_BOOST_ON_AC = 1;
-      CPU_BOOST_ON_BAT = 0;
+        # Reduce CPU boost on battery
+        CPU_BOOST_ON_AC = 1;
+        CPU_BOOST_ON_BAT = 0;
 
-      # Aggressive disk power management
-      DISK_APM_LEVEL_ON_AC = "254";
-      DISK_APM_LEVEL_ON_BAT = "128";
+        # Aggressive disk power management
+        DISK_APM_LEVEL_ON_AC = "254";
+        DISK_APM_LEVEL_ON_BAT = "128";
 
-      # Conservative USB autosuspend
-      USB_AUTOSUSPEND = 1;
-      USB_BLACKLIST_WWAN = 1;
+        # Conservative USB autosuspend
+        USB_AUTOSUSPEND = 1;
+        USB_BLACKLIST_WWAN = 1;
+      };
     };
+
+    # Traditional scrolling for older users
+    libinput.touchpad.naturalScrolling = lib.mkDefault false;
+
+    # Support for both AMD and legacy NVIDIA graphics
+    xserver.videoDrivers = lib.mkDefault ["ati" "radeon" "nouveau" "vesa"];
   };
-
-  # Traditional scrolling for older users
-  services.libinput.touchpad.naturalScrolling = lib.mkDefault false;
-
-  # Support for both AMD and legacy NVIDIA graphics
-  services.xserver.videoDrivers = lib.mkDefault ["ati" "radeon" "nouveau" "vesa"];
 
   # Legacy hardware compatibility
   hardware = {
