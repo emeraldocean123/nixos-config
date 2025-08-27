@@ -4,18 +4,21 @@
   pkgs,
   ...
 }: {
-  # Automatic garbage collection
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 14d";
-    persistent = true; # Run even if machine was off
-  };
+  # Group nix.* to avoid repeated keys
+  nix = {
+    # Automatic garbage collection
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 14d";
+      persistent = true; # Run even if machine was off
+    };
 
-  # Automatic store optimization
-  nix.optimise = {
-    automatic = true;
-    dates = ["weekly"];
+    # Automatic store optimization
+    optimise = {
+      automatic = true;
+      dates = ["weekly"];
+    };
   };
 
   # System performance tuning
@@ -34,20 +37,37 @@
     memoryPercent = lib.mkDefault 50; # Gaming profiles may override to 25%
   };
 
-  # SSD optimizations (if applicable)
-  services.fstrim = {
-    enable = lib.mkDefault true;
-    interval = "weekly";
+  # Group services.* to avoid repeated keys
+  services = {
+    # SSD optimizations (if applicable)
+    fstrim = {
+      enable = lib.mkDefault true;
+      interval = "weekly";
+    };
+
+    # Earlyoom - kill processes before OOM
+    earlyoom = {
+      enable = true;
+      freeMemThreshold = 5;
+      freeSwapThreshold = 10;
+      enableNotifications = true;
+    };
+
+    # Force systembus-notify for earlyoom notifications (conflicts with smartd default)
+    systembus-notify.enable = lib.mkForce true;
   };
 
+  # Group boot.* to avoid repeated keys
   # Better I/O scheduling and performance tuning
   # NOTE: CPU vulnerability mitigations are kept enabled for security
   # Use selective optimizations instead of blanket "mitigations=off"
-  boot.kernelParams = [
-    # I/O and performance optimizations that don't compromise security
-    "elevator=mq-deadline" # Better I/O scheduler for SSDs
-    "transparent_hugepage=madvise" # More efficient memory management
-  ];
+  boot = {
+    kernelParams = [
+      # I/O and performance optimizations that don't compromise security
+      "elevator=mq-deadline" # Better I/O scheduler for SSDs
+      "transparent_hugepage=madvise" # More efficient memory management
+    ];
+  };
 
   # Systemd service optimizations
   systemd.services = {
