@@ -2,7 +2,6 @@
 # Backup and recovery configurations for NixOS system
 {
   config,
-  lib,
   pkgs,
   ...
 }: {

@@ -1,11 +1,6 @@
 # modules/shared/desktop-base.nix
 # Shared desktop base configuration for all hosts
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
+{pkgs, ...}: {
   # Enable X11 windowing system
   services.xserver.enable = true;
 

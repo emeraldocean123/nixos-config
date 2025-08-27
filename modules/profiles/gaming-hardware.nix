@@ -1,7 +1,6 @@
 # modules/profiles/gaming-hardware.nix
 # Profile for gaming hardware optimizations
 {
-  config,
   lib,
   pkgs,
   ...

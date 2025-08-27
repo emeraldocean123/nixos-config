@@ -1,11 +1,6 @@
 ## hosts/hp-dv9500-pavilion-nixos/bootloader.nix
 # BIOS GRUB bootloader for HP dv9500 (legacy BIOS) with CachyOS dual boot
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{lib, ...}: {
   # Force GRUB for legacy BIOS (override common systemd-boot)
   boot.loader.grub.enable = lib.mkForce true;
   boot.loader.grub.devices = ["/dev/sda"];

@@ -1,7 +1,6 @@
 # modules/roles/multimedia.nix
 # Multimedia role - video/audio codecs, media players, and content creation tools
 {
-  config,
   lib,
   pkgs,
   ...

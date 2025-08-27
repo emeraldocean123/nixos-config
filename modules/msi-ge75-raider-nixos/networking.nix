@@ -1,10 +1,6 @@
 # modules/msi-ge75-raider-nixos/networking.nix
 # MSI GE75 Raider networking (2018, i7-9750H, RTX 2070)
-{
-  config,
-  pkgs,
-  ...
-}: {
+{...}: {
   # Set system hostname
   networking.hostName = "msi-ge75-raider-nixos";
 

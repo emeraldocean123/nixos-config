@@ -1,10 +1,5 @@
 # Security hardening module
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{lib, ...}: {
   # Firewall configuration
   networking.firewall = {
     enable = lib.mkDefault true;

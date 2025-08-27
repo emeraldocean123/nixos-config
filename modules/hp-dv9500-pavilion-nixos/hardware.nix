@@ -2,7 +2,6 @@
 # (Legacy optimizations are in profiles/legacy-hardware.nix)
 # (Laptop optimizations are in profiles/laptop-base.nix)
 {
-  config,
   lib,
   pkgs,
   ...

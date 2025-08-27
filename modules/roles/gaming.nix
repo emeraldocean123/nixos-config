@@ -1,11 +1,6 @@
 # modules/roles/gaming.nix
 # Gaming role - Steam, performance optimizations, and gaming tools
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
+{pkgs, ...}: {
   # Enable Steam and gaming features
   programs.steam = {
     enable = true;

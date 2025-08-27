@@ -1,10 +1,6 @@
 ## hosts/hp-dv9500-pavilion-nixos/configuration.nix
 # Main host configuration for HP dv9500 Pavilion
-{
-  config,
-  pkgs,
-  ...
-}: {
+{...}: {
   imports = [
     # Common settings are applied via shared/profile/role modules in flake.nix
     ../../modules/common.nix

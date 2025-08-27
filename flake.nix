@@ -46,14 +46,11 @@
   };
 
   outputs = {
-    self,
-    nixpkgs,
-    nixpkgs-unstable,
-    home-manager,
-    nixos-hardware,
-    dotfiles,
+        nixpkgs,
+        home-manager,
+        dotfiles,
     ...
-  } @ inputs: let
+  } @ : let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
   in {

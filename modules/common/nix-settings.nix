@@ -1,10 +1,5 @@
 # Nix daemon and store optimization settings
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{lib, ...}: {
   nix = {
     # Enable flakes and new commands
     settings = {

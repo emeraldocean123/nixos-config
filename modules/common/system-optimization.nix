@@ -1,6 +1,5 @@
 # System optimization module with garbage collection and performance tuning
 {
-  config,
   lib,
   pkgs,
   ...

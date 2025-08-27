@@ -1,6 +1,5 @@
 # Common base module with core optimizations
 {
-  config,
   lib,
   pkgs,
   ...

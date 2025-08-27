@@ -1,10 +1,6 @@
 # modules/roles/gaming-performance.nix
 # Gaming performance optimizations - TLP settings, thermal management, etc.
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   # Power management optimized for gaming
   services.power-profiles-daemon.enable = false; # conflicts with TLP
   services.auto-cpufreq.enable = false; # disable; TLP is our choice

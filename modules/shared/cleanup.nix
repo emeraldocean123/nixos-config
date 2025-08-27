@@ -1,8 +1,6 @@
 ## modules/shared/cleanup.nix
 # User-level systemd timer to run cleanup-dotfiles.sh daily (dry-run)
 {
-  config,
-  lib,
   pkgs,
   dotfiles,
   ...

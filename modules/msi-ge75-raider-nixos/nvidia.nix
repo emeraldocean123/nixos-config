@@ -1,10 +1,6 @@
 ## modules/msi-ge75-raider-nixos/nvidia.nix
 # NVIDIA configuration for MSI GE75 Raider
-{
-  config,
-  pkgs,
-  ...
-}: {
+{config, ...}: {
   # Enable proprietary NVIDIA drivers
   hardware.graphics.enable = true;
   hardware.nvidia = {

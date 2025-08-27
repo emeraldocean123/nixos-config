@@ -1,10 +1,6 @@
 # modules/profiles/kde-plasma.nix
 # KDE Plasma 6 desktop environment profile
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   # KDE Plasma 6 desktop environment
   services.desktopManager.plasma6.enable = true;
 

@@ -1,10 +1,6 @@
 # modules/profiles/lxqt.nix
 # LXQt desktop environment profile
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   # LXQt Desktop Environment
   services.xserver.desktopManager.lxqt.enable = true;
 

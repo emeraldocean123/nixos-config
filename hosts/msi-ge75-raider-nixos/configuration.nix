@@ -1,10 +1,6 @@
 ## hosts/msi-ge75-raider-nixos/configuration.nix
 # Main host configuration for MSI GE75 Raider
-{
-  config,
-  pkgs,
-  ...
-}: {
+{config, ...}: {
   imports = [
     # Common settings are applied via shared/profile/role modules in flake.nix
     ../../modules/common.nix

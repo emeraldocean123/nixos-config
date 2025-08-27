@@ -1,10 +1,6 @@
 # modules/shared/users.nix
 # Shared user definitions for all hosts
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   # Primary user: joseph
   users.groups.joseph = {};
   users.users.joseph = {

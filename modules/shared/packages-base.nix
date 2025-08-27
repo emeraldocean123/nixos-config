@@ -1,10 +1,6 @@
 # modules/shared/packages-base.nix
 # Core packages shared across all hosts
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     # Core utilities
     htop

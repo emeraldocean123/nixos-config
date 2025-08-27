@@ -1,12 +1,6 @@
 ## modules/shared/dotfiles.nix
 # Shared user dotfiles: aliases and Oh My Posh theme symlink from dotfiles flake input
-{
-  config,
-  lib,
-  pkgs,
-  dotfiles,
-  ...
-}: {
+{dotfiles, ...}: {
   home.file = {
     ".bash_aliases".text = ''
       alias ll='ls -alF'

@@ -1,7 +1,6 @@
 # modules/profiles/legacy-hardware.nix
 # Profile for legacy hardware optimizations (2007-era laptops)
 {
-  config,
   lib,
   pkgs,
   ...

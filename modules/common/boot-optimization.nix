@@ -1,10 +1,5 @@
 # Boot time optimization module
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{lib, ...}: {
   boot = {
     # Parallel startup and quiet boot
     kernelParams = [
