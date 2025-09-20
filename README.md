@@ -13,10 +13,10 @@ For detailed guides and documentation, see the [docs repository](https://github.
 
 ## 🔧 Cross-Platform Utilities
 
-SSH and connectivity utilities have been moved to the [dotfiles repository](https://github.com/emeraldocean123/dotfiles) for better cross-platform support:
-- **Test SSH connectivity**: `~/Documents/dev/dotfiles/scripts/ssh/test-ssh-connectivity.ps1 -All`
-- **Connect to hosts**: `~/Documents/dev/dotfiles/scripts/ssh/connect-host.ps1 hp` (hp, msi, nas, etc.)
-- **Environment validation**: `~/Documents/dev/dotfiles/scripts/validate-environment.ps1 -All`
+SSH, validation, and other shared helpers now live in the [shared automation repository](https://github.com/emeraldocean123/shared):
+- **Test SSH connectivity**: `~/Documents/dev/shared/scripts/ssh/test-ssh-connectivity.ps1 -All`
+- **Connect to hosts**: `~/Documents/dev/shared/scripts/ssh/connect-host.ps1 hp` (hp, msi, nas, etc.)
+- **Environment validation**: `~/Documents/dev/shared/scripts/validation/validate-environment.ps1 -All`
 
 🏗️ Repository Structure
 The repository is organized around a main flake and three core directories for system and user configurations:
@@ -326,4 +326,5 @@ This installs Nix (daemon mode), enables flakes, reuses your unified SSH key, cl
 - Commit Template: this repo is configured with a commit message template to guide messages.
 - Hooks: shared `pre-commit` and `commit-msg` hooks run automatically (configured via global `core.hooksPath`).
 - Bypass (rare): set `GITHOOKS_BYPASS=1` to skip checks once.
+
 

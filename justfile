@@ -18,12 +18,7 @@ fix:
 pre-commit:
     pre-commit run -a || true
 
-# Optional AI fixer (uses shared scripts repo if available)
+# Optional: AI fixer (uses shared scripts repo if available)
 ai-fix:
-    set -euo pipefail
     script="$HOME/Documents/dev/shared/scripts/nix/ai-fix.sh"
-    if [ -x "$script" ]; then
-        "$script"
-    else
-        echo "AI fixer not available at $script" >&2
-    fi
+    if [ -x "$script" ]; then "$script"; else echo "AI fixer not available at $script" >&2; fi
