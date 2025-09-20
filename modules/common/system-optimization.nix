@@ -79,17 +79,6 @@
     };
   };
 
-  # Earlyoom - kill processes before OOM
-  services.earlyoom = {
-    enable = true;
-    freeMemThreshold = 5;
-    freeSwapThreshold = 10;
-    enableNotifications = true;
-  };
-
-  # Force systembus-notify for earlyoom notifications (conflicts with smartd default)
-  services.systembus-notify.enable = lib.mkForce true;
-
   # System monitoring tools
   environment.systemPackages = with pkgs; [
     htop
@@ -116,3 +105,5 @@
   boot.tmp.useTmpfs = lib.mkDefault true;
   boot.tmp.tmpfsSize = lib.mkDefault "50%";
 }
+
+

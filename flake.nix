@@ -91,6 +91,8 @@
           ./modules/roles/multimedia.nix
           # ./modules/roles/development.nix
           # ./modules/roles/gaming.nix
+          # VS Code Remote SSH support
+          ./modules/shared/vscode-remote.nix
           # Host-specific overrides (minimal)
           ./modules/hp-dv9500-pavilion-nixos/hardware.nix
           ./modules/hp-dv9500-pavilion-nixos/networking.nix
@@ -137,6 +139,8 @@
           ./modules/roles/gaming.nix
           ./modules/roles/gaming-performance.nix
           ./modules/roles/development.nix
+          # VS Code Remote SSH support
+          ./modules/shared/vscode-remote.nix
           # Host-specific overrides (minimal)
           ./modules/msi-ge75-raider-nixos/hardware.nix
           # Choose one: nvidia.nix (basic) or nvidia-optimized.nix (performance)

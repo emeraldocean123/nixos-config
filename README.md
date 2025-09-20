@@ -299,7 +299,7 @@ Prefer Debian on WSL2 with systemd enabled.
 1) Inside Debian (one-time):
 
    ```bash
-   sudo /mnt/c/Users/josep/Documents/dev/scripts/wsl/bootstrap-nix-debian.sh --write-wslconf
+   sudo /mnt/c/Users/josep/Documents/dev/nixos-config/tools/wsl/bootstrap-nix-debian.sh --write-wslconf
    ```
 
    Then from Windows PowerShell:
@@ -311,7 +311,7 @@ Prefer Debian on WSL2 with systemd enabled.
 2) User-level bootstrap inside Debian:
 
    ```bash
-   /mnt/c/Users/josep/Documents/dev/scripts/wsl/bootstrap-nix-debian.sh
+   /mnt/c/Users/josep/Documents/dev/nixos-config/tools/wsl/bootstrap-nix-debian.sh
    ```
 
 This installs Nix (daemon mode), enables flakes, reuses your unified SSH key, clones this repo into `~/projects/nixos-config`, and runs `nix flake check -L`.
@@ -326,3 +326,4 @@ This installs Nix (daemon mode), enables flakes, reuses your unified SSH key, cl
 - Commit Template: this repo is configured with a commit message template to guide messages.
 - Hooks: shared `pre-commit` and `commit-msg` hooks run automatically (configured via global `core.hooksPath`).
 - Bypass (rare): set `GITHOOKS_BYPASS=1` to skip checks once.
+

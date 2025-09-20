@@ -11,30 +11,9 @@ lint:
 
 fix:
     statix fix || statix check
-    ./scripts/deadnix-fix.sh
+    deadnix --edit || deadnix --check
     treefmt
 
 # Optional: run pre-commit across the repo if installed
 pre-commit:
     pre-commit run -a || true
-
-# Optional AI fixer (placeholder): requires scripts/ai-fix.sh wiring to a local model or API
-ai-fix:
-    ./scripts/ai-fix.sh || true
-
-# Batch run across multiple repos with logging
-review REPOS=../bmad-method ../bookmark-cleaner ../docs ../dotfiles ../nixos-config:
-    bash scripts/run-all.sh {{REPOS}}
-
-# View the last run logs (full and error summary)
-logs:
-    ./scripts/view-last-log.sh
-
-# Run cleanup (fix) and then produce a statix detailed report
-fix-report REPOS=../bmad-method ../bookmark-cleaner ../docs ../dotfiles ../nixos-config:
-    bash scripts/cleanup-all.sh {{REPOS}}
-    bash scripts/statix-report.sh
-
-# One-shot audit: cleanup + report, default repos
-audit:
-    bash scripts/audit.sh

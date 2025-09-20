@@ -1,45 +1,26 @@
-Nix + local tooling template (WSL‑friendly)
+Nix tooling helper (WSL-friendly)
+=================================
 
-What you get
-- Nix dev shell exposing: alejandra, nixfmt, statix, deadnix, treefmt, nil (Nix LSP)
-- treefmt.toml configured for Nix formatting
-- pre-commit hooks to format and lint locally (no CI required)
-- justfile with common tasks (fmt, lint, fix)
-- deadnix-fix.sh wrapper that auto-detects the proper flag (fix/remove) for your deadnix version
-- Optional AI fixer script placeholder (off by default)
+This directory keeps a lightweight toolchain for maintaining Nix-based projects on Windows + WSL. It pairs with the shared automation scripts that now live in `~/Documents/dev/shared/scripts/`.
 
-Prerequisites
-- WSL with Nix installed (https://nixos.org/download) or Nix on your Linux/macOS host.
-- Optional: Python + pip for pre-commit, or run hooks via justfile only.
+What is included
+----------------
+- `flake.nix` / `flake.lock`: dev shell with alejandra, nixfmt, statix, deadnix, treefmt, nil, git, just.
+- `justfile`: simple `fmt`, `lint`, `fix`, and optional `pre-commit` recipes that do not rely on repo-local shell scripts.
+- `install-standalone.sh`: downloads standalone binaries for alejandra/statix/deadnix/treefmt into `tools/bin` when Nix is unavailable.
+- `snapshot.sh`: helper to capture current flake inputs.
+- `wsl/`: bootstrap scripts + first-run notes for Debian WSL.
+- `logs/`: scratch area for tooling output (safe to delete).
 
-Quick start
-1) Enter the dev shell (flakes):
-   nix develop
-   # or without flakes: nix-shell -p alejandra nixfmt statix deadnix treefmt nil
-
-2) Copy the config into a repo:
-   # from this folder
-   cp treefmt.toml pre-commit-config.yaml justfile scripts/ai-fix.sh /path/to/repo/
-
-3) Optional: enable pre-commit in that repo:
-   cd /path/to/repo
-   pip install --user pre-commit  # or python -m pip install --user pre-commit
-   pre-commit install
-
-4) Run locally:
-  # Using just (preferred)
-  just fmt     # run formatters
-  just lint    # run statix, deadnix checks
-  just fix     # run statix fix, deadnix (auto-detected), then treefmt
-
-Batch run across repos (optional)
-- From this folder (in `nix develop`):
-  bash scripts/run-all.sh ../bmad-method ../bookmark-cleaner ../docs ../dotfiles ../nixos-config
-
-VS Code tips
-- Install: Nix IDE (nil or nixd), Treefmt extension optional.
-- Settings: enable format on save for Nix files and use alejandra or nixfmt.
+Usage
+-----
+1. `nix develop` inside `tools/` (or `direnv allow` if you wire it up) to enter the dev shell.
+2. Run `just fmt` / `just lint` / `just fix` for common maintenance.
+3. Optionally `just pre-commit` to execute local hooks.
+4. For cross-repo cleanup/audit scripts use the shared copies under `~/Documents/dev/shared/scripts/`.
 
 Notes
-- All tools run locally — no GitHub Actions cost.
-- Keep these tools; they improve dev quality. Removing them won’t change cost since CI is disabled already.
+-----
+- The dev shell expects the repo-level `treefmt.toml` and related config that already live at the root of `nixos-config`.
+- Standalone installs are idempotent; re-run when upstream releases change.
+- Keep this directory under source control so every machine inherits the same toolchain.

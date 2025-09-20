@@ -11,12 +11,13 @@ This document provides comprehensive maintenance procedures for the NixOS config
 - **Major Version Updates**: Follow NixOS release cycle (typically every 6 months)
 
 ### Update Procedures
+*Shared maintenance helpers live in `~/Documents/dev/shared/scripts/maintenance`.*
 
 #### 1. Preview Available Updates
 
 ```bash
 # Check what updates are available
-./scripts/update-flake-inputs.sh preview
+~/Documents/dev/shared/scripts/maintenance/update-flake-inputs.sh preview
 
 # Or manually:
 nix flake update --dry-run
@@ -26,7 +27,7 @@ nix flake update --dry-run
 
 ```bash
 # Update all inputs with automatic validation
-./scripts/update-flake-inputs.sh update
+~/Documents/dev/shared/scripts/maintenance/update-flake-inputs.sh update
 
 # Manual process:
 nix flake update
@@ -38,18 +39,18 @@ nix build .#nixosConfigurations.msi-ge75-raider-nixos.config.system.build.toplev
 
 ```bash
 # Pin to latest stable security versions
-./scripts/update-flake-inputs.sh pin-security
+~/Documents/dev/shared/scripts/maintenance/update-flake-inputs.sh pin-security
 
 # Update specific critical inputs only:
-./scripts/update-flake-inputs.sh update-input nixpkgs
-./scripts/update-flake-inputs.sh update-input home-manager
+~/Documents/dev/shared/scripts/maintenance/update-flake-inputs.sh update-input nixpkgs
+~/Documents/dev/shared/scripts/maintenance/update-flake-inputs.sh update-input home-manager
 ```
 
 #### 4. Validate Configuration
 
 ```bash
 # Validate current configuration
-./scripts/update-flake-inputs.sh validate
+~/Documents/dev/shared/scripts/maintenance/update-flake-inputs.sh validate
 
 # Or manually:
 nix flake check
@@ -221,7 +222,7 @@ sudo smartctl -a /dev/sda      # For SATA drives
 
 ### Monthly Tasks
 
-1. Update flake inputs: `./scripts/update-flake-inputs.sh update`
+1. Update flake inputs: `~/Documents/dev/shared/scripts/maintenance/update-flake-inputs.sh update`
 2. Clean old generations: `sudo nix-collect-garbage --delete-older-than 30d`
 3. Review security logs: `sudo journalctl -u fail2ban --since "1 month ago"`
 4. Check hardware health: `sudo sensors` and `sudo smartctl -a /dev/nvme0n1`
@@ -296,3 +297,4 @@ All maintenance activities should be logged here:
 **Next Scheduled Maintenance**: First weekend of February 2025
 **Last Security Update**: 2025-01-18
 **Configuration Version**: v2.0.0 (major security update)
+
